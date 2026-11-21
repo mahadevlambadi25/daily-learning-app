@@ -1,0 +1,11 @@
+node_modules
+.next
+out
+*.db
+*.db-journal
+.env
+.env.local
+*.tsbuildinfo
+next-env.d.ts
+qa-screenshots
+.next-verify

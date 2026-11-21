@@ -1,0 +1,172 @@
+{"lessons":[
+{
+"topic_slug":"artificial-intelligence-ai-tools",
+"title":"Why AI chatbots sound confident even when they are wrong",
+"hook":"AI assistants can write a fluent paragraph with an invented fact in the middle. Knowing why this happens tells you exactly when to trust them and when to check.",
+"body":"Large language models, the engines behind most AI chatbots, are trained on huge amounts of text to do one job: predict a likely next chunk of words. When you ask a question, the model builds an answer piece by piece, each time choosing a continuation that fits the patterns it learned.\n\nThat design explains a famous weakness. The model is optimised to sound plausible, not to look things up in a verified database. If the patterns suggest that a citation, statistic or quote belongs in a sentence, it can generate one that looks real but does not exist. People call this a hallucination, and it arrives in the same calm, confident tone as accurate answers.\n\nSome situations raise the risk:\n- Precise details such as dates, figures, names and references\n- Niche topics with little training text\n- Recent events the model may not know about\n- Questions that assume a false premise\n\nThis does not make AI tools useless. They are strong at drafting, summarising text you provide, brainstorming and explaining well-known ideas. The practical rule is to match your checking effort to the stakes. Use AI freely for first drafts and ideas, but verify any specific fact you plan to rely on, publish or act on with an independent, trustworthy source.",
+"takeaways":["Language models predict plausible text; they do not automatically check facts against a verified source.","Invented details, or hallucinations, sound just as confident as correct answers.","Verify specific facts, figures and citations before you rely on them, especially when stakes are high."],
+"action_text":"Ask an AI assistant for three sources on a topic you know well, including authors and titles. Then search for each one yourself. Note how many exist exactly as described, and how many are partly or fully invented.",
+"sources":[
+{"source_title":"Artificial intelligence","source_url":"https://www.britannica.com/technology/artificial-intelligence","author_or_publisher":"Encyclopaedia Britannica"},
+{"source_title":"AI Risk Management Framework","source_url":"https://www.nist.gov/itl/ai-risk-management-framework","author_or_publisher":"National Institute of Standards and Technology (NIST)"}
+],
+"questions":[
+{"question":"What is a large language model fundamentally trained to do?","options":["Search a verified fact database","Predict likely next pieces of text","Copy answers from websites in real time","Run logical proofs on every claim"],"correct_index":1,"explanation":"Models learn to predict plausible continuations of text, which is why fluent but false output is possible."},
+{"question":"Which request carries the highest hallucination risk?","options":["Brainstorming names for a pet","Rewording a paragraph you pasted in","Listing exact journal citations on a niche topic","Explaining a widely known concept simply"],"correct_index":2,"explanation":"Precise references on niche topics are where models most often generate convincing but non-existent details."}
+]
+},
+{
+"topic_slug":"artificial-intelligence-ai-tools",
+"title":"The four ingredients of a prompt that gets useful AI answers",
+"hook":"Most disappointing AI answers come from vague requests. A few simple ingredients turn a generic reply into something you can actually use.",
+"body":"An AI assistant only knows what you tell it in the conversation plus general patterns from training. When a request is vague, it fills the gaps with the most average answer possible. Good prompting is mostly about removing those gaps.\n\nFour ingredients do most of the work:\n- Goal: what you want and why, such as an email declining a meeting politely\n- Context: who the audience is, what has happened so far, and any facts it must use\n- Constraints: length, tone, format, reading level, or things to avoid\n- Example: a short sample of the style or structure you like\n\nCompare two requests. The first says write about exercise. The second says write a 120-word note for busy parents explaining why ten-minute walks count as exercise, in a warm tone, ending with one simple tip. The second leaves far less to guesswork, so the result needs fewer edits.\n\nTreat the first answer as a draft, not a verdict. Follow-up instructions like make it shorter, use plainer words, or give me three alternatives are often faster than rewriting the original prompt. If you keep repeating the same corrections, add them to your starting prompt next time. Over a week, you build a personal template that reliably gets you closer on the first try.",
+"takeaways":["Vague prompts produce average answers because the model fills gaps with generic patterns.","State the goal, context, constraints and, where helpful, a short example.","Iterate with quick follow-ups, then fold repeated fixes into a reusable template."],
+"action_text":"Pick a real task you need today, such as an email or a summary. Write a one-line prompt and save the answer. Then rewrite the prompt with goal, context, constraints and an example. Compare the two answers and note which changes made the biggest difference.",
+"sources":[
+{"source_title":"Artificial intelligence","source_url":"https://www.britannica.com/technology/artificial-intelligence","author_or_publisher":"Encyclopaedia Britannica"},
+{"source_title":"Artificial intelligence","source_url":"https://www.nist.gov/artificial-intelligence","author_or_publisher":"National Institute of Standards and Technology (NIST)"}
+],
+"questions":[
+{"question":"Why do vague prompts tend to give generic answers?","options":["The model is deliberately lazy","The model fills missing details with the most typical patterns","Short prompts are blocked by safety filters","The model ignores prompts under 20 words"],"correct_index":1,"explanation":"Without specific context, the model defaults to the most common, average kind of response."},
+{"question":"Which item is an example of a constraint in a prompt?","options":["Keep it under 100 words and avoid jargon","I am writing to my landlord","Here is a sample paragraph I like","I want to decline the invitation"],"correct_index":0,"explanation":"Length and vocabulary limits are constraints; the others are context, an example and a goal."}
+]
+},
+{
+"topic_slug":"technology-future-trends",
+"title":"Why new technologies are overhyped at first and underestimated later",
+"hook":"Every few years a technology is said to change everything by next year. Understanding the typical adoption curve helps you avoid both panic and dismissal.",
+"body":"A pattern often called Amara's Law, after futurist Roy Amara, suggests that people tend to overestimate the effect of a technology in the short run and underestimate it in the long run. It is a rule of thumb rather than a scientific law, but it fits many histories.\n\nEarly on, a new technology looks magical in demos. Expectations race ahead of reality because the hard parts are still unsolved: cost, reliability, infrastructure, regulation and simply teaching people new habits. When quick results fail to appear, enthusiasm crashes and many declare the idea dead.\n\nMeanwhile, quieter work continues. Prices fall, standards emerge, and complementary tools appear. Electricity is a classic case: factories needed decades to redesign their layouts before productivity gains showed up. The internet followed a similar arc, with a boom and bust around 2000 followed by deeper change over the next twenty years.\n\nAdoption often follows an S-shaped curve: slow at first, then rapid, then levelling off as most potential users are reached. The practical lesson is to ask different questions at each stage. Early on, ask what must become cheaper or easier for this to spread. Later, ask which everyday routines are quietly being rebuilt around it.",
+"takeaways":["Short-term hype often outruns reality, while long-term effects are often bigger than expected.","Real impact usually waits on cost, reliability, infrastructure and changes in habits.","Adoption often follows an S-curve: slow start, rapid growth, then a plateau."],
+"action_text":"Choose one technology currently in the news. Write down two things that must become cheaper, easier or more trusted before it reaches everyday use. Set a reminder for one year from now to check what changed.",
+"sources":[
+{"source_title":"Gartner Hype Cycle","source_url":"https://www.gartner.com/en/research/methodologies/gartner-hype-cycle","author_or_publisher":"Gartner"},
+{"source_title":"Diffusion of innovation","source_url":"https://en.wikipedia.org/wiki/Diffusion_of_innovations","author_or_publisher":"Wikipedia"}
+],
+"questions":[
+{"question":"According to Amara's Law, how do people tend to judge new technology?","options":["They underestimate it short-term and overestimate it long-term","They judge it accurately at every stage","They overestimate it short-term and underestimate it long-term","They ignore it until it is fully mature"],"correct_index":2,"explanation":"The rule of thumb says short-run effects are overestimated and long-run effects are underestimated."}
+]
+},
+{
+"topic_slug":"data-digital-literacy",
+"title":"Relative vs absolute risk: the trick behind scary health headlines",
+"hook":"A headline saying a food doubles your risk sounds alarming. Whether it actually matters depends on a number the headline usually leaves out.",
+"body":"Relative risk compares two groups as a ratio. Absolute risk tells you the actual chance of something happening. Mixing them up is one of the most common ways numbers mislead, often without anyone lying.\n\nImagine a condition that affects 1 in 10,000 people. A study finds a habit raises that to 2 in 10,000. The relative risk has doubled, a 100 percent increase, which makes a dramatic headline. But the absolute risk rose by just 1 in 10,000, or 0.01 percentage points. For most people, that is a tiny change.\n\nThe same trick works in reverse. A treatment that cuts risk by 50 percent sounds impressive, yet if the risk falls from 2 in 1,000 to 1 in 1,000, you would need to treat about 1,000 people to prevent one case. That might still be worthwhile, but it is a very different picture.\n\nWhen you see a percentage change in risk, ask three questions:\n- What was the starting risk?\n- What is the new risk, in plain counts like X in 1,000?\n- Who was studied, and do they resemble me?\n\nConverting percentages into natural frequencies, such as people out of 1,000, is one of the simplest ways to see what a number really means.",
+"takeaways":["Relative risk is a ratio between groups; absolute risk is the actual chance of the outcome.","A doubled risk can still be tiny if the starting risk was very small.","Convert claims into counts, like X in 1,000 people, to judge how much they matter."],
+"action_text":"Find one news story today that reports a percentage increase or decrease in risk. Look for the baseline numbers in the article or the study summary, then rewrite the claim as X in 1,000 people before and after.",
+"sources":[
+{"source_title":"Statistics","source_url":"https://www.britannica.com/science/statistics","author_or_publisher":"Encyclopaedia Britannica"},
+{"source_title":"Relative risk","source_url":"https://en.wikipedia.org/wiki/Relative_risk","author_or_publisher":"Wikipedia"}
+],
+"questions":[
+{"question":"A risk goes from 1 in 10,000 to 2 in 10,000. What is the absolute increase?","options":["100 percent","50 percent","1 in 100","1 in 10,000"],"correct_index":3,"explanation":"Absolute change is the difference in actual chance, here one extra case per 10,000 people."}
+]
+},
+{
+"topic_slug":"science-explained",
+"title":"Why the sky is blue but sunsets turn orange and red",
+"hook":"You see it every day, yet the explanation reveals how light and air interact. Once you know it, every sunset becomes a small physics demonstration.",
+"body":"Sunlight looks white, but it contains all the colours of the rainbow, each with a different wavelength. Blue and violet light have short wavelengths, while red and orange have longer ones.\n\nAs sunlight passes through the atmosphere, it bumps into gas molecules, mostly nitrogen and oxygen. These molecules are far smaller than the wavelength of visible light, and they scatter short wavelengths much more strongly than long ones. This effect is called Rayleigh scattering. Blue light gets bounced around the sky in every direction, so wherever you look away from the Sun, blue light reaches your eyes.\n\nIf violet scatters even more, why is the sky not violet? Sunlight contains less violet than blue, some violet is absorbed high in the atmosphere, and our eyes are more sensitive to blue. The combined result looks sky blue.\n\nAt sunrise and sunset, light from the Sun travels through much more air to reach you. Along that long path, most of the blue is scattered away before it arrives. What remains is dominated by longer wavelengths, giving oranges and reds. Dust, smoke and tiny droplets can intensify these colours, which is why sunsets after wildfires or volcanic eruptions can be especially vivid.",
+"takeaways":["Sunlight contains all colours; blue has a shorter wavelength than red.","Air molecules scatter short blue wavelengths far more than long red ones, filling the sky with blue.","At sunset, light crosses more atmosphere, so blue is scattered away and reds and oranges remain."],
+"action_text":"Watch the sky near sunset today. Compare the colour directly overhead with the colour near the horizon by the Sun. Explain to someone, in one or two sentences, why they differ using the idea of path length.",
+"sources":[
+{"source_title":"Why Is the Sky Blue?","source_url":"https://spaceplace.nasa.gov/blue-sky/en/","author_or_publisher":"NASA Space Place"},
+{"source_title":"Rayleigh scattering","source_url":"https://www.britannica.com/science/Rayleigh-scattering","author_or_publisher":"Encyclopaedia Britannica"}
+],
+"questions":[
+{"question":"Why do sunsets look red and orange?","options":["The Sun cools down in the evening","Light passes through more air, so blue is scattered away","Clouds absorb all the blue light","Red light travels faster near the horizon"],"correct_index":1,"explanation":"The longer path through the atmosphere removes most blue light, leaving longer red and orange wavelengths."}
+]
+},
+{
+"topic_slug":"history-civilisations",
+"title":"How bookkeeping, not poetry, gave the world its first writing",
+"hook":"We often imagine writing was invented for stories or laws. The earliest evidence points somewhere far more practical: keeping track of grain, sheep and debts.",
+"body":"Writing first developed in Mesopotamia, in present-day Iraq, more than 5,000 years ago. Cities such as Uruk had growing populations, temples that stored goods, and complex trade. Officials needed a reliable way to record who owed what, and memory alone could not keep up.\n\nBefore writing, people used small clay tokens shaped like cones, spheres and discs to represent goods. Over time, marks pressed into clay tablets replaced the tokens. Early tablets are largely lists: quantities of barley, numbers of animals, rations for workers. The script, later called cuneiform from the Latin for wedge-shaped, was made by pressing a cut reed into wet clay.\n\nAt first the signs were mostly pictures of things plus numbers. Gradually, scribes began using signs for sounds, which allowed them to write names, grammar and eventually whole sentences. Centuries later, the same system recorded letters, laws, medicine, astronomy and literature such as the Epic of Gilgamesh.\n\nThe broader lesson is that major inventions often start by solving a dull administrative problem. Once the tool exists, people discover uses its creators never imagined. Writing also changed power: those who could read and keep records gained a lasting advantage in organising states and economies.",
+"takeaways":["Some of the earliest writing appeared in Mesopotamia over 5,000 years ago, mainly for accounting.","Cuneiform evolved from picture signs and numbers to signs for sounds, enabling full sentences.","Powerful inventions often begin as practical tools before people find wider uses."],
+"action_text":"Look at a receipt, bill or bank statement you have today. Note what information it records and who benefits from that record. Then think of one everyday tool you use that began as a narrow, practical solution.",
+"sources":[
+{"source_title":"Cuneiform","source_url":"https://www.britannica.com/topic/cuneiform","author_or_publisher":"Encyclopaedia Britannica"},
+{"source_title":"Writing","source_url":"https://www.britannica.com/topic/writing","author_or_publisher":"Encyclopaedia Britannica"}
+],
+"questions":[
+{"question":"What were most of the earliest Mesopotamian written records about?","options":["Epic poems about heroes","Religious hymns","Economic records like goods and quantities","Maps of trade routes"],"correct_index":2,"explanation":"Early tablets were mainly administrative lists tracking goods, rations and debts."},
+{"question":"What does the word cuneiform refer to?","options":["The wedge-shaped marks made in clay","The city where writing began","The scribes who wrote the tablets","A type of papyrus"],"correct_index":0,"explanation":"Cuneiform comes from the Latin for wedge, describing marks pressed by a reed stylus into clay."}
+]
+},
+{
+"topic_slug":"philosophy-ethics",
+"title":"The veil of ignorance: a thought experiment for fairer decisions",
+"hook":"When we judge whether a rule is fair, our own position quietly shapes the answer. This classic thought experiment helps strip that bias away.",
+"body":"In 1971, philosopher John Rawls proposed a way to think about justice. Imagine you must design the basic rules of a society, but behind a veil of ignorance. You do not know whether you will be rich or poor, healthy or ill, which gender, religion or talents you will have, or what generation you will be born into.\n\nRawls called this starting point the original position. The idea is simple: if you cannot tailor rules to benefit yourself, you are pushed to choose rules that are acceptable from every position. He argued that people in this situation would protect equal basic liberties for everyone, and would accept inequalities only if they also benefit the least advantaged.\n\nPhilosophers have debated his conclusions for decades. Critics ask whether people would really be so cautious, and whether the veil leaves out things that matter, such as what people have earned. But the method itself has proved useful far beyond academic debate.\n\nYou can apply a small version anywhere:\n- Before setting a household or team rule, imagine you might end up in any role it affects\n- Ask which version you could accept from the least comfortable position\n\nIt will not settle every disagreement, but it makes self-interest easier to notice.",
+"takeaways":["Rawls's veil of ignorance asks you to design rules without knowing your own place in them.","Removing self-interest pushes choices toward rules acceptable from every position.","Use a mini version: test a rule by imagining yourself in the role it affects most."],
+"action_text":"Pick one rule you have a say in today, such as a chore split, team process or group plan. Imagine you could be assigned any role affected by it. Write down one change you would want if you did not know which role you would get.",
+"sources":[
+{"source_title":"Original Position","source_url":"https://plato.stanford.edu/entries/original-position/","author_or_publisher":"Stanford Encyclopedia of Philosophy"},
+{"source_title":"John Rawls","source_url":"https://www.britannica.com/biography/John-Rawls","author_or_publisher":"Encyclopaedia Britannica"}
+],
+"questions":[
+{"question":"What is hidden from you behind Rawls's veil of ignorance?","options":["The laws of the society","Your own position, traits and circumstances","The opinions of other people","The economic history of the country"],"correct_index":1,"explanation":"The veil hides your personal situation so you cannot design rules that favour yourself."}
+]
+},
+{
+"topic_slug":"climate-sustainability",
+"title":"Weather vs climate: why a cold week does not disprove warming",
+"hook":"A freezing day sometimes gets used as proof that global warming is not real. Understanding the difference between weather and climate clears this up for good.",
+"body":"Weather is what the atmosphere is doing over hours and days: today's temperature, rain, wind and clouds. Climate is the long-term pattern of weather in a place, usually described by averages and ranges over about 30 years or more.\n\nA simple way to remember it: weather is your mood today, climate is your personality. One grumpy afternoon does not change who you are, and one cold week does not change a long-term trend.\n\nWeather varies a lot from day to day, so single events tell you little about the bigger picture. Climate scientists therefore look at records across decades and across the whole planet. Those records show that global average surface temperature has risen by more than 1 degree Celsius since the late 1800s, and that most recent decades have each been warmer than the one before.\n\nA warming climate does not mean every place warms evenly or that cold snaps disappear. It shifts the odds: hot extremes become more frequent, some heavy rain events grow stronger, and record cold days become rarer relative to record hot days.\n\nWhen you hear a claim about climate, check its timescale and area. A local day is weather. Decades of global data are climate.",
+"takeaways":["Weather is short-term conditions; climate is the long-term pattern, usually averaged over 30 years or more.","Single cold or hot days cannot confirm or disprove a long-term climate trend.","A warming climate shifts the odds, making hot extremes more common without ending cold snaps."],
+"action_text":"Look up today's weather where you live, then find the long-term average temperature for this month in your city from a national weather service. Compare the two, and note whether today is unusual or within the normal range.",
+"sources":[
+{"source_title":"Climate Change: Vital Signs of the Planet","source_url":"https://science.nasa.gov/climate-change/","author_or_publisher":"NASA"},
+{"source_title":"Intergovernmental Panel on Climate Change","source_url":"https://www.ipcc.ch/","author_or_publisher":"IPCC"},
+{"source_title":"National Oceanic and Atmospheric Administration","source_url":"https://www.noaa.gov/","author_or_publisher":"NOAA"}
+],
+"questions":[
+{"question":"Which statement describes climate rather than weather?","options":["It will rain this afternoon","Last Tuesday was unusually windy","Average July temperatures here over 30 years","A storm is expected tonight"],"correct_index":2,"explanation":"Climate refers to long-term averages and patterns, typically over three decades or more."}
+]
+},
+{
+"topic_slug":"geopolitics-world-affairs",
+"title":"How the UN Security Council veto works, and why it matters",
+"hook":"News reports often say a UN resolution was vetoed. Knowing how the Security Council's voting works helps you understand why some global crises stall.",
+"body":"The United Nations Security Council has primary responsibility for international peace and security. It is the only UN body whose decisions member states are obliged to carry out, and it can authorise measures such as sanctions or peacekeeping missions.\n\nThe Council has 15 members. Five are permanent: China, France, Russia, the United Kingdom and the United States. The other ten are elected by the General Assembly for two-year terms, with seats spread across world regions.\n\nFor important decisions, a resolution needs at least nine votes in favour, and none of the five permanent members can vote against it. A single no vote from a permanent member blocks the resolution, which is what people call a veto. Abstaining does not count as a veto, so a permanent member can step aside without stopping a decision.\n\nThe veto was built into the UN Charter in 1945 so that the most powerful states of the time would join and stay in the organisation. Supporters say it keeps major powers engaged and prevents the UN from acting against them directly. Critics argue it can paralyse the Council when a permanent member or its allies are involved in a conflict. Reform proposals have been discussed for decades, but changing the Charter itself requires approval from all five permanent members.",
+"takeaways":["The Security Council has 15 members: five permanent and ten elected for two-year terms.","Key resolutions need nine yes votes and no vote against from any permanent member.","An abstention is not a veto; one permanent member's no vote is enough to block."],
+"action_text":"Visit the UN Security Council website and find one recent meeting or resolution. Note how many members voted for, against and abstained, and identify whether any permanent member's vote decided the outcome.",
+"sources":[
+{"source_title":"United Nations Security Council","source_url":"https://www.un.org/securitycouncil/","author_or_publisher":"United Nations"},
+{"source_title":"United Nations Security Council","source_url":"https://www.britannica.com/topic/United-Nations-Security-Council","author_or_publisher":"Encyclopaedia Britannica"}
+],
+"questions":[
+{"question":"What happens if a permanent member abstains on a resolution?","options":["The resolution automatically fails","The vote is postponed","The resolution can still pass with enough yes votes","The General Assembly decides instead"],"correct_index":2,"explanation":"Only a no vote from a permanent member counts as a veto; abstaining does not block a resolution."},
+{"question":"How many votes in favour does a Security Council resolution need?","options":["At least five","At least nine","All fifteen","A simple majority of eight"],"correct_index":1,"explanation":"A resolution needs nine affirmative votes and no veto from a permanent member."}
+]
+},
+{
+"topic_slug":"culture-human-society",
+"title":"How easily people form us and them groups, and how to notice it",
+"hook":"Team loyalty can form in minutes, even over meaningless labels. Seeing how quickly this happens helps you catch unfair bias in yourself and others.",
+"body":"In the early 1970s, social psychologist Henri Tajfel and colleagues ran a striking set of experiments. Participants were split into groups using trivial criteria, such as supposedly preferring one abstract painter over another, or even at random. They never met their group mates and had no shared history.\n\nYet when asked to divide small rewards, people tended to favour members of their own group. Often they even preferred options that maximised the gap between groups over options that gave their own group more in total. This setup became known as the minimal group paradigm.\n\nThe findings helped shape social identity theory, the idea that part of how we see ourselves comes from the groups we belong to. Belonging feels good, and favouring our group can boost that feeling. Real-world groups such as nations, religions, sports teams and workplaces involve far more history and meaning, but the experiments suggest the basic tilt can start with very little.\n\nThis tendency is not destiny. Research also shows that shared goals and cooperation across groups can reduce bias. Some practical checks:\n- Ask whether you would judge the same action differently if the other side did it\n- Look for a goal both groups share\n- Notice labels that divide people for no real reason",
+"takeaways":["Experiments show people favour their own group even when groups are formed on trivial grounds.","Social identity theory links group membership to how people see themselves.","Shared goals and cooperation across groups can reduce us-versus-them bias."],
+"action_text":"Today, notice one moment where you instinctively take a side, such as in sport, work or online debate. Ask yourself how you would judge the same behaviour if the other group did it, and write down your honest answer.",
+"sources":[
+{"source_title":"Minimal group paradigm","source_url":"https://en.wikipedia.org/wiki/Minimal_group_paradigm","author_or_publisher":"Wikipedia"},
+{"source_title":"American Psychological Association","source_url":"https://www.apa.org/","author_or_publisher":"American Psychological Association"}
+],
+"questions":[
+{"question":"What did the minimal group experiments show?","options":["People only favour groups with long shared histories","People favour their own group even when it was formed on trivial grounds","Random groups always cooperate equally","Group bias appears only in children"],"correct_index":1,"explanation":"Participants favoured in-group members even when groups were based on meaningless criteria."}
+]
+},
+{
+"topic_slug":"design-visual-thinking",
+"title":"The proximity principle: how spacing alone tells people what belongs together",
+"hook":"Before anyone reads a single word, they judge which items are related by how close they sit. Using space deliberately makes slides, forms and notes instantly clearer.",
+"body":"Early twentieth-century Gestalt psychologists studied how the mind organises what we see into patterns and wholes. One of their best-known observations is the principle of proximity: elements placed close together are perceived as a group, while elements separated by space are perceived as separate.\n\nThis happens automatically and quickly. Show someone a grid of dots where some columns sit slightly closer together, and they will see pairs or clusters before they consciously count anything. Spacing communicates structure even without lines, boxes or colours.\n\nThat makes white space one of the most powerful and cheapest design tools. A few common uses:\n- In a form, keep each label closer to its own input box than to the next one\n- On a slide, group related bullet points and leave a clear gap between groups\n- In a document, put more space above a heading than below it, so it attaches to the text it introduces\n\nA frequent mistake is spacing everything evenly. When all gaps are equal, the reader has no clues about structure and must work it out from the words. Another mistake is adding borders and boxes to fix confusion that better spacing would solve more cleanly.\n\nBefore adding decoration, try adjusting distance. Often that alone makes a layout feel organised.",
+"takeaways":["Items close together are seen as a group; space signals separation.","Equal spacing everywhere hides structure and makes readers work harder.","Try adjusting spacing before adding lines, boxes or extra colour."],
+"action_text":"Open a document, slide or form you made recently. Adjust only the spacing: tighten gaps within related items and widen gaps between groups. Put more space above headings than below. Compare before and after side by side.",
+"sources":[
+{"source_title":"Gestalt psychology","source_url":"https://www.britannica.com/science/Gestalt-psychology","author_or_publisher":"Encyclopaedia Britannica"},
+{"source_title":"Nielsen Norman Group","source_url":"https://www.nngroup.com/","author_or_publisher":"Nielsen Norman Group"}
+],
+"questions":[
+{"question":"In a form, where should a label sit for clear grouping?","options":["Equally distant from all input boxes","Closer to the box below the one it describes","Inside a separate coloured box","Closer to its own input box than to the next one"],"correct_index":3,"explanation":"Proximity makes a label read as belonging to the input it sits nearest."}
+]
+}
+]}

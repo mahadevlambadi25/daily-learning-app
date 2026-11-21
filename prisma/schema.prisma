@@ -1,0 +1,314 @@
+// Daily Learning App — MVP data model (PRD §13).
+// Local development uses SQLite. For production (Supabase/PostgreSQL) change
+// `provider` to "postgresql"; string "enums" are validated in src/lib/validation.ts.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String   @id @default(uuid())
+  email        String   @unique
+  passwordHash String
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  profile        Profile?
+  roles          Role[]
+  sessions       Session[]
+  resetTokens    PasswordResetToken[]
+  topics         UserTopic[]
+  deliveries     Delivery[]
+  progress       LessonProgress[]
+  bookmarks      Bookmark[]
+  quizAttempts   QuizAttempt[]
+  notifications  NotificationLog[]
+  pushSubscriptions PushSubscription[]
+}
+
+/// Web Push endpoint for daily reminders (one per browser/device).
+model PushSubscription {
+  id        String   @id @default(uuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  endpoint  String   @unique
+  p256dh    String
+  auth      String
+  userAgent String?
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+}
+
+/// One profile per authenticated user. Default timezone Asia/Kolkata.
+model Profile {
+  id                    String    @id
+  user                  User      @relation(fields: [id], references: [id], onDelete: Cascade)
+  displayName           String?
+  timezone              String    @default("Asia/Kolkata")
+  preferredDeliveryTime String    @default("07:00")
+  emailDailyEnabled     Boolean   @default(false)
+  reminderEnabled       Boolean   @default(true)
+  onboardedAt           DateTime?
+  unsubscribeToken      String    @unique
+  createdAt             DateTime  @default(now())
+  updatedAt             DateTime  @updatedAt
+}
+
+/// "admin" | "learner". No public self-enrolment as admin.
+model Role {
+  id        String   @id @default(uuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  role      String
+  createdAt DateTime @default(now())
+
+  @@unique([userId, role])
+}
+
+model Session {
+  id        String   @id @default(uuid())
+  tokenHash String   @unique
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+}
+
+model PasswordResetToken {
+  id        String    @id @default(uuid())
+  tokenHash String    @unique
+  userId    String
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  expiresAt DateTime
+  usedAt    DateTime?
+  createdAt DateTime  @default(now())
+}
+
+model Topic {
+  id           String   @id @default(uuid())
+  slug         String   @unique
+  name         String
+  description  String
+  groupName    String
+  iconKey      String
+  isFeatured   Boolean  @default(false)
+  displayOrder Int
+  isActive     Boolean  @default(true)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  lessons    Lesson[]
+  userTopics UserTopic[]
+
+  @@index([isFeatured, displayOrder])
+}
+
+model UserTopic {
+  id        String   @id @default(uuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  topicId   String
+  topic     Topic    @relation(fields: [topicId], references: [id], onDelete: Restrict)
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([userId, topicId])
+}
+
+/// status: draft | in_review | scheduled | published | archived
+/// rightsBasis: original | public_domain | licensed | other_reviewed
+model Lesson {
+  id              String    @id @default(uuid())
+  topicId         String
+  topic           Topic     @relation(fields: [topicId], references: [id], onDelete: Restrict)
+  title           String
+  hook            String
+  body            String
+  takeaway1       String
+  takeaway2       String
+  takeaway3       String
+  actionText      String
+  readTimeMinutes Int
+  readTimeOverride Boolean  @default(false)
+  tags            String    @default("")
+  /// Internal only, never shown to learners (e.g. AI draft claims to verify).
+  editorNotes     String    @default("")
+  rightsBasis     String?
+  requiresSources Boolean   @default(true)
+  isRepeatable    Boolean   @default(false)
+  status          String    @default("draft")
+  publishedAt     DateTime?
+  scheduledAt     DateTime?
+  approvedAt      DateTime?
+  approvedBy      String?
+  createdBy       String?
+  updatedBy       String?
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  sources    LessonSource[]
+  questions  LessonQuestion[]
+  deliveries Delivery[]
+  progress   LessonProgress[]
+  bookmarks  Bookmark[]
+  quizAttempts QuizAttempt[]
+
+  @@index([topicId, status, publishedAt])
+  @@index([status, scheduledAt])
+}
+
+model LessonSource {
+  id                String    @id @default(uuid())
+  lessonId          String
+  lesson            Lesson    @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+  sourceTitle       String
+  sourceUrl         String?
+  authorOrPublisher String?
+  accessedAt        DateTime?
+  rightsBasis       String?
+  reviewerNote      String?
+  createdAt         DateTime  @default(now())
+
+  @@index([lessonId])
+}
+
+model LessonQuestion {
+  id            String @id @default(uuid())
+  lessonId      String
+  lesson        Lesson @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+  question      String
+  optionA       String
+  optionB       String
+  optionC       String
+  optionD       String
+  correctOption String // "a" | "b" | "c" | "d"
+  explanation   String
+  displayOrder  Int    @default(0)
+
+  @@index([lessonId])
+}
+
+/// email_status: pending | sent | failed | skipped
+model Delivery {
+  id          String    @id @default(uuid())
+  userId      String
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  lessonId    String
+  lesson      Lesson    @relation(fields: [lessonId], references: [id], onDelete: Restrict)
+  topicId     String
+  localDate   String // YYYY-MM-DD in the user's timezone
+  assignedAt  DateTime  @default(now())
+  emailStatus String    @default("pending")
+  emailSentAt DateTime?
+
+  @@unique([userId, lessonId, localDate])
+  @@unique([userId, topicId, localDate])
+  @@index([userId, localDate])
+  @@index([lessonId])
+}
+
+/// status: started | completed
+model LessonProgress {
+  id          String    @id @default(uuid())
+  userId      String
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  lessonId    String
+  lesson      Lesson    @relation(fields: [lessonId], references: [id], onDelete: Restrict)
+  status      String
+  startedAt   DateTime  @default(now())
+  completedAt DateTime?
+
+  @@unique([userId, lessonId])
+  @@index([userId, status])
+}
+
+model Bookmark {
+  id        String   @id @default(uuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  lessonId  String
+  lesson    Lesson   @relation(fields: [lessonId], references: [id], onDelete: Restrict)
+  createdAt DateTime @default(now())
+
+  @@unique([userId, lessonId])
+  @@index([userId])
+}
+
+model QuizAttempt {
+  id          String   @id @default(uuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  lessonId    String
+  lesson      Lesson   @relation(fields: [lessonId], references: [id], onDelete: Restrict)
+  score       Int
+  total       Int
+  answersJson String
+  submittedAt DateTime @default(now())
+
+  @@index([userId, lessonId])
+}
+
+/// Email delivery log. The unique key is the idempotency key per user/date/channel.
+/// status: sending | sent | failed
+model NotificationLog {
+  id           String   @id @default(uuid())
+  userId       String
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  channel      String
+  templateKey  String
+  localDate    String
+  status       String
+  attempts     Int      @default(0)
+  providerId   String?
+  errorMessage String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@unique([userId, channel, templateKey, localDate])
+  @@index([status])
+}
+
+/// Lightweight first-party analytics event log (PRD §16).
+model AnalyticsEvent {
+  id         String   @id @default(uuid())
+  name       String
+  userId     String?
+  properties String   @default("{}")
+  createdAt  DateTime @default(now())
+
+  @@index([name, createdAt])
+}
+
+/// Scheduled-job run outcomes (observability).
+model JobRun {
+  id         String    @id @default(uuid())
+  jobName    String
+  status     String // running | succeeded | failed
+  summary    String    @default("{}")
+  startedAt  DateTime  @default(now())
+  finishedAt DateTime?
+
+  @@index([jobName, startedAt])
+}
+
+/// Admin actions (publish, unpublish, archive...) for content approval records.
+model AuditLog {
+  id         String   @id @default(uuid())
+  actorId    String?
+  action     String
+  entityType String
+  entityId   String
+  details    String   @default("{}")
+  createdAt  DateTime @default(now())
+
+  @@index([entityType, entityId])
+}

@@ -1,0 +1,448 @@
+{
+  "lessons": [
+    {
+      "topic_slug": "psychology-human-behaviour",
+      "title": "Why we blame people's character but excuse our own bad days",
+      "hook": "When someone cuts you off in traffic, you assume they're rude. When you do it, you were in a hurry. This everyday mental shortcut shapes how fairly we judge everyone around us.",
+      "body": "Psychologists call it the fundamental attribution error: when we explain other people's behaviour, we lean heavily on their personality and underplay the situation they were in. A colleague who misses a deadline seems lazy or disorganised. A friend who forgets to reply seems uncaring.\n\nWhen it comes to ourselves, we tend to do the opposite. We know our own context in detail, the bad night's sleep, the urgent family call, the unclear instructions, so we naturally explain our slip-ups through circumstances rather than character. This mismatch is sometimes called the actor-observer bias.\n\nWhy does it happen? Other people's situations are mostly invisible to us, while their actions are vivid and easy to notice. Our brains take the shortcut of linking the action directly to the person. It is fast and often good enough, but it can make us harsher, less patient and quicker to hold grudges than the facts justify.\n\nThe fix is not to excuse everything. It is to widen the explanation before settling on one. A useful habit is to ask: what situation would make a reasonable person act this way? Often you can think of two or three plausible answers in seconds.\n\nThis small pause makes conversations calmer, feedback fairer and relationships more forgiving, without ignoring patterns that genuinely repeat over time.",
+      "takeaways": [
+        "We tend to explain others' actions by their character and our own by our circumstances.",
+        "Other people's situations are mostly invisible to us, so we overlook them.",
+        "Before judging, ask what situation might make a reasonable person act that way."
+      ],
+      "action_text": "The next time someone annoys you today, pause and write down or think of three situational explanations for their behaviour that have nothing to do with their personality. Notice whether your irritation changes once you have more than one possible story.",
+      "sources": [
+        {
+          "source_title": "Fundamental attribution error",
+          "source_url": "https://en.wikipedia.org/wiki/Fundamental_attribution_error",
+          "author_or_publisher": "Wikipedia"
+        },
+        {
+          "source_title": "Actor-observer asymmetry",
+          "source_url": "https://en.wikipedia.org/wiki/Actor%E2%80%93observer_asymmetry",
+          "author_or_publisher": "Wikipedia"
+        }
+      ],
+      "questions": [
+        {
+          "question": "A coworker arrives late to a meeting. Which response best counters the fundamental attribution error?",
+          "options": [
+            "Concluding they don't respect other people's time",
+            "Considering possible delays like traffic or an earlier meeting running over",
+            "Assuming they are always disorganised",
+            "Deciding to stop inviting them to meetings"
+          ],
+          "correct_index": 1,
+          "explanation": "Considering situational causes balances our natural tendency to over-blame personality."
+        }
+      ]
+    },
+    {
+      "topic_slug": "psychology-human-behaviour",
+      "title": "The invisible crowd: how other people quietly steer your choices",
+      "hook": "Busy restaurants feel safer, popular products feel better and a crowded queue feels worth joining. Understanding social proof helps you notice when you are following the crowd rather than thinking for yourself.",
+      "body": "Social proof is our tendency to look at what other people are doing to decide what we should do. When a situation is unfamiliar or uncertain, copying others is a sensible shortcut. If everyone is leaving a building, it is wise to follow before asking questions.\n\nThe effect gets stronger under two conditions. First, uncertainty: the less sure we are, the more we rely on others. Second, similarity: we are most influenced by people who seem like us. That is why reviews from people \"just like you\" are so persuasive.\n\nSocial proof shows up everywhere:\n- Star ratings and \"bestseller\" labels in online shops\n- Laugh tracks on television comedies\n- Messages saying most people in your area pay their taxes on time\n- Long queues outside a cafe\n\nIt is not bad in itself. Following the crowd often leads to good outcomes, and public campaigns use it to encourage healthy behaviour. The risk is when a crowd is wrong, manufactured or simply not like you. Fake reviews, inflated follower counts and herd behaviour in investing all exploit this instinct.\n\nThe practical skill is to notice the moment you feel reassured by popularity, and then ask whether that popularity actually tells you anything about your specific needs.",
+      "takeaways": [
+        "Social proof means using other people's behaviour as a guide to our own.",
+        "It is strongest when we feel uncertain and when the crowd seems similar to us.",
+        "Popularity is useful evidence, but check whether it actually fits your own situation."
+      ],
+      "action_text": "Before your next purchase or sign-up today, notice any popularity signals such as ratings, 'most popular' badges or follower counts. Write one sentence on what you would choose if you could not see those signals at all, and compare.",
+      "sources": [
+        {
+          "source_title": "Social proof",
+          "source_url": "https://en.wikipedia.org/wiki/Social_proof",
+          "author_or_publisher": "Wikipedia"
+        },
+        {
+          "source_title": "Conformity",
+          "source_url": "https://en.wikipedia.org/wiki/Conformity",
+          "author_or_publisher": "Wikipedia"
+        }
+      ],
+      "questions": [
+        {
+          "question": "When is social proof likely to have the strongest effect on us?",
+          "options": [
+            "When we are experts on the topic",
+            "When the crowd seems very different from us",
+            "When we are uncertain and the crowd seems similar to us",
+            "When we have plenty of time to research"
+          ],
+          "correct_index": 2,
+          "explanation": "Uncertainty and similarity are the two main conditions that amplify social proof."
+        }
+      ]
+    },
+    {
+      "topic_slug": "emotional-intelligence",
+      "title": "Name it to tame it: why precise emotion words calm you down",
+      "hook": "Saying 'I feel bad' gives your brain very little to work with. Learning to label emotions precisely is one of the simplest, best-supported ways to manage them.",
+      "body": "Researchers have found that simply putting feelings into words can reduce their intensity. In lab studies, people who labelled the emotion in an upsetting image showed less activity in brain regions linked to alarm than people who just looked at it. This process is known as affect labelling.\n\nA related idea is emotional granularity: the ability to tell similar feelings apart. Someone with low granularity might describe most unpleasant states as \"stressed\" or \"bad\". Someone with higher granularity can distinguish between disappointed, embarrassed, lonely, overwhelmed and resentful.\n\nWhy does precision help? Each emotion points to a different need. Disappointment suggests an unmet expectation. Overwhelm suggests too many demands. Loneliness suggests a need for connection. When you name the feeling accurately, the next helpful step often becomes obvious, while a vague label leaves you stuck.\n\nGranularity is a skill, not a fixed trait. You can build it by expanding your emotional vocabulary and checking in with yourself a few times a day. Reading fiction, journaling and talking openly with trusted people also help.\n\nIf difficult emotions feel constant or unmanageable, speaking with a qualified mental health professional is a sensible step. Labelling is a helpful everyday tool, not a substitute for support.",
+      "takeaways": [
+        "Putting a feeling into words can reduce its intensity.",
+        "Distinguishing similar emotions helps you identify the need behind them.",
+        "Emotional vocabulary is a skill you can grow with regular practice."
+      ],
+      "action_text": "Set three reminders today (morning, afternoon, evening). Each time, stop and name your current feeling using a word more specific than good, bad, fine or stressed. Then note in one line what that feeling might be asking you to do.",
+      "sources": [
+        {
+          "source_title": "Affect labeling",
+          "source_url": "https://en.wikipedia.org/wiki/Affect_labeling",
+          "author_or_publisher": "Wikipedia"
+        },
+        {
+          "source_title": "Emotional granularity",
+          "source_url": "https://en.wikipedia.org/wiki/Emotional_granularity",
+          "author_or_publisher": "Wikipedia"
+        }
+      ],
+      "questions": [
+        {
+          "question": "What does 'emotional granularity' refer to?",
+          "options": [
+            "Hiding emotions in professional settings",
+            "Feeling emotions more intensely than others",
+            "Only experiencing positive emotions",
+            "Distinguishing between similar emotions with precise labels"
+          ],
+          "correct_index": 3,
+          "explanation": "Granularity is the ability to tell apart closely related feelings and name them accurately."
+        }
+      ]
+    },
+    {
+      "topic_slug": "emotional-intelligence",
+      "title": "Change the story, change the feeling: a practical guide to reappraisal",
+      "hook": "You can't always control what happens, but you can often change how you interpret it. Cognitive reappraisal is a well-studied way to shift how you feel without bottling anything up.",
+      "body": "Emotions don't come straight from events. They come from the meaning we give those events. A friend who doesn't reply might feel like rejection if you read it as \"they don't care\", or barely register if you read it as \"they're probably busy\".\n\nCognitive reappraisal means deliberately looking for a different, still realistic interpretation of a situation. It is not pretending things are fine. It is checking whether your first story is the only one, or the most accurate one.\n\nResearch comparing emotion strategies generally finds that reappraisal is linked with better wellbeing than suppression, which means hiding or pushing down feelings. Suppression tends to leave the emotion intact inside while adding extra strain, whereas reappraisal changes the emotional response at its source.\n\nA few questions make reappraisal easier:\n- What else could explain this?\n- How will this matter in a week or a year?\n- What would I tell a friend in the same position?\n- Is there anything I can learn or gain here?\n\nReappraisal works best for situations you can't change. When something is genuinely wrong and fixable, action is usually better than reinterpretation. The skill is knowing which approach fits, and using reappraisal to stay calm enough to decide.",
+      "takeaways": [
+        "Emotions are shaped by how we interpret events, not just the events themselves.",
+        "Reappraisal finds a realistic alternative view; suppression only hides the feeling.",
+        "Use reappraisal for what you can't change and action for what you can."
+      ],
+      "action_text": "Recall one small frustrating moment from the last day or two. Write your first interpretation of it, then write two alternative, realistic interpretations. Rate how strongly you feel about it (0-10) before and after.",
+      "sources": [
+        {
+          "source_title": "Emotional self-regulation",
+          "source_url": "https://en.wikipedia.org/wiki/Emotional_self-regulation",
+          "author_or_publisher": "Wikipedia"
+        },
+        {
+          "source_title": "American Psychological Association",
+          "source_url": "https://www.apa.org/",
+          "author_or_publisher": "American Psychological Association"
+        }
+      ],
+      "questions": [
+        {
+          "question": "How does cognitive reappraisal differ from suppression?",
+          "options": [
+            "Reappraisal changes the interpretation; suppression hides the feeling",
+            "Reappraisal ignores the situation; suppression faces it",
+            "They are two names for the same technique",
+            "Suppression is generally linked with better wellbeing"
+          ],
+          "correct_index": 0,
+          "explanation": "Reappraisal alters the meaning that drives the emotion, while suppression only masks its expression."
+        }
+      ]
+    },
+    {
+      "topic_slug": "habits-behaviour-change",
+      "title": "The 'if-then' sentence that makes good intentions actually happen",
+      "hook": "Most plans fail not from lack of motivation but from forgetting or hesitating at the key moment. A simple if-then plan links your goal to a specific cue so the decision is already made.",
+      "body": "Psychologists call it an implementation intention. Instead of a vague goal like \"I'll exercise more\", you write a plan in the form: if situation X happens, then I will do Y. For example: \"If I finish my morning coffee, then I will put on my walking shoes.\"\n\nThis works because it moves the decision ahead of time. When the cue appears, you don't have to deliberate, remember or summon willpower. The situation itself acts as a trigger. Many studies across health, study and work goals have found that people who form if-then plans follow through more often than those who only set goals.\n\nGood if-then plans share a few features:\n- The cue is specific and reliable, like a time, place or existing routine\n- The action is concrete and small enough to start immediately\n- The plan is written or said out loud, not just thought\n\nYou can also use if-then plans for obstacles. \"If I feel tempted to skip my walk because it's raining, then I'll do ten minutes of stretching indoors.\" Planning for setbacks keeps one bad moment from ending the habit.\n\nStart with one plan for one habit. Once it feels automatic, add another rather than overhauling your whole routine at once.",
+      "takeaways": [
+        "An if-then plan links a specific cue to a specific action.",
+        "Deciding in advance reduces reliance on memory and willpower in the moment.",
+        "Create backup if-then plans for the obstacles you expect."
+      ],
+      "action_text": "Pick one habit you keep meaning to start. Write one if-then sentence linking it to something you already do every day, plus one backup plan for a likely obstacle. Stick the note somewhere you'll see it at the cue moment.",
+      "sources": [
+        {
+          "source_title": "Implementation intention",
+          "source_url": "https://en.wikipedia.org/wiki/Implementation_intention",
+          "author_or_publisher": "Wikipedia"
+        },
+        {
+          "source_title": "Habit",
+          "source_url": "https://en.wikipedia.org/wiki/Habit",
+          "author_or_publisher": "Wikipedia"
+        }
+      ],
+      "questions": [
+        {
+          "question": "Which of these is the best example of an implementation intention?",
+          "options": [
+            "I want to read more this year",
+            "I will try harder to drink water",
+            "Reading is important to me",
+            "If I get into bed, then I will read two pages before using my phone"
+          ],
+          "correct_index": 3,
+          "explanation": "It links a specific cue (getting into bed) to a specific, concrete action."
+        }
+      ]
+    },
+    {
+      "topic_slug": "confidence-self-esteem",
+      "title": "Confidence comes after action, not before: building self-efficacy",
+      "hook": "Many people wait to feel confident before trying something new. Research on self-efficacy suggests it usually works the other way round: small successes build the belief that you can.",
+      "body": "Self-efficacy is your belief in your ability to succeed at a specific task. It is different from general self-esteem. You might feel good about yourself overall but doubt you can give a presentation, or vice versa.\n\nPsychologists have identified several main sources of self-efficacy:\n- Mastery experiences: actually doing the task and succeeding\n- Seeing others like you succeed at it\n- Encouragement from people you trust\n- How you read your body's signals, such as nerves or calm\n\nMastery experiences are the most powerful. Each time you complete a challenge, your brain gathers evidence that you are capable. That evidence is far more convincing than positive self-talk alone.\n\nThis is why breaking a big, intimidating goal into small steps matters so much. If public speaking feels terrifying, starting with a two-minute talk to two friends gives you a winnable experience. Then you raise the challenge gradually. Each step should feel a little uncomfortable but achievable.\n\nIt also helps to reinterpret nervousness. A racing heart before a task is not proof that you'll fail; it is your body preparing to perform. Treating it as energy rather than danger can make you more willing to act.\n\nConfidence, in short, is something you build through doing, one manageable step at a time.",
+      "takeaways": [
+        "Self-efficacy is belief in your ability to do a specific task, not general self-worth.",
+        "Actually succeeding at small steps is the strongest way to build confidence.",
+        "Nerves are often your body preparing to perform, not a sign you'll fail."
+      ],
+      "action_text": "Choose one skill you feel unsure about. Write down the smallest possible version of it you could do today in under ten minutes, then do it. Afterwards, note one piece of evidence it gave you that you're capable.",
+      "sources": [
+        {
+          "source_title": "Self-efficacy",
+          "source_url": "https://en.wikipedia.org/wiki/Self-efficacy",
+          "author_or_publisher": "Wikipedia"
+        },
+        {
+          "source_title": "American Psychological Association",
+          "source_url": "https://www.apa.org/",
+          "author_or_publisher": "American Psychological Association"
+        }
+      ],
+      "questions": [
+        {
+          "question": "Which source of self-efficacy is generally considered the most powerful?",
+          "options": [
+            "Mastery experiences of actually succeeding",
+            "Reading motivational quotes",
+            "Avoiding difficult tasks",
+            "Comparing yourself to experts"
+          ],
+          "correct_index": 0,
+          "explanation": "Direct experience of success provides the strongest evidence of your own capability."
+        }
+      ]
+    },
+    {
+      "topic_slug": "mindfulness-meditation",
+      "title": "Your mind will wander, and noticing that is the whole exercise",
+      "hook": "Many beginners quit meditation because they think they're doing it wrong when their thoughts drift. Understanding what the practice really trains makes it far easier to stick with.",
+      "body": "Mindfulness means paying attention to the present moment on purpose, without judging what you find. A common beginner practice is to focus on the sensation of breathing. Within seconds, most people find their mind has drifted to plans, memories or worries.\n\nThis is not failure. Mind-wandering is what minds naturally do. The training happens in the moment you notice you've drifted and gently bring your attention back. Each return is like a single repetition at the gym. A session where you wander and return fifty times is not a bad session; it is fifty repetitions.\n\nThe word \"gently\" matters. Criticising yourself for drifting adds a layer of frustration and makes the practice feel like a test. Instead, you might silently note \"thinking\" and return to the breath with curiosity.\n\nOver time, this builds a useful everyday skill: catching yourself sooner when you're lost in worry or autopilot, and choosing where to put your attention. Research suggests mindfulness practices may help with stress for many people, though results vary and it isn't right for everyone.\n\nIf meditation brings up distressing feelings or memories, it's fine to stop. Speaking with a qualified professional can help you find an approach that suits you.",
+      "takeaways": [
+        "Mind-wandering during meditation is normal, not a sign you're doing it wrong.",
+        "Each time you notice and return your attention is one 'repetition' of the skill.",
+        "Return to your focus gently; self-criticism makes practice harder."
+      ],
+      "action_text": "Sit comfortably for three minutes and focus on the feeling of air moving in and out. Each time you notice your mind has wandered, silently say 'thinking' and return to the breath. Count roughly how many times you came back.",
+      "sources": [
+        {
+          "source_title": "Meditation and Mindfulness: What You Need To Know",
+          "source_url": "https://www.nccih.nih.gov/health/meditation-and-mindfulness-what-you-need-to-know",
+          "author_or_publisher": "National Center for Complementary and Integrative Health (NIH)"
+        },
+        {
+          "source_title": "Mindfulness",
+          "source_url": "https://www.nhs.uk/mental-health/self-help/tips-and-support/mindfulness/",
+          "author_or_publisher": "NHS"
+        }
+      ],
+      "questions": [
+        {
+          "question": "During a breathing meditation, you realise you've been thinking about dinner. What is the most helpful response?",
+          "options": [
+            "End the session because it isn't working",
+            "Try to force all thoughts out of your mind",
+            "Gently notice it and return attention to the breath",
+            "Criticise yourself so you focus better next time"
+          ],
+          "correct_index": 2,
+          "explanation": "Noticing and gently returning is the core skill that mindfulness practice builds."
+        }
+      ]
+    },
+    {
+      "topic_slug": "stress-management-resilience",
+      "title": "Sort your stress into two piles: what you can change and what you can't",
+      "hook": "Stress often feels like one heavy fog. Splitting it into problems you can act on and situations you need to accept helps you choose a coping strategy that actually fits.",
+      "body": "Psychologists describe two broad ways of coping with stress. Problem-focused coping tackles the cause directly: making a plan, asking for help, setting a boundary or gathering information. Emotion-focused coping manages your reaction: calming your body, reframing the situation, or seeking comfort and support.\n\nNeither is better in all cases. The key is matching the strategy to the situation. When you can influence the outcome, problem-focused coping tends to work well. When you can't, such as waiting for test results or dealing with a decision someone else made, emotion-focused coping is often more helpful.\n\nTrouble starts when we mismatch them. Endlessly trying to fix something outside your control leads to frustration and rumination. Only soothing yourself about a problem you could solve lets it grow.\n\nA simple sorting exercise helps:\n- List what is currently stressing you\n- Mark each item as \"can influence\" or \"can't influence\"\n- For the first group, choose one small action\n- For the second, choose one way to look after yourself\n\nResilience isn't about never feeling stressed. It is about having flexible tools and recovering over time. If stress feels overwhelming or lasts for weeks, talking to a doctor or qualified mental health professional is a good step.",
+      "takeaways": [
+        "Problem-focused coping changes the situation; emotion-focused coping manages your reaction.",
+        "Match the strategy to whether you can actually influence the outcome.",
+        "Resilience means flexible coping and recovery, not the absence of stress."
+      ],
+      "action_text": "Take five minutes to list everything stressing you right now. Mark each one 'can influence' or 'can't influence'. Pick one small action for an item you can influence, and one caring activity, like a walk or a call to a friend, for one you can't.",
+      "sources": [
+        {
+          "source_title": "Stress",
+          "source_url": "https://www.apa.org/topics/stress",
+          "author_or_publisher": "American Psychological Association"
+        },
+        {
+          "source_title": "Coping",
+          "source_url": "https://en.wikipedia.org/wiki/Coping",
+          "author_or_publisher": "Wikipedia"
+        }
+      ],
+      "questions": [
+        {
+          "question": "You're anxiously waiting for a decision that is entirely out of your hands. Which coping approach is usually most helpful?",
+          "options": [
+            "Problem-focused coping, like drafting a new plan to change the result",
+            "Emotion-focused coping, like calming techniques or talking to a friend",
+            "Ignoring all feelings until the result arrives",
+            "Repeatedly checking for updates"
+          ],
+          "correct_index": 1,
+          "explanation": "When you can't influence an outcome, managing your emotional response is usually the better fit."
+        }
+      ]
+    },
+    {
+      "topic_slug": "motivation-discipline",
+      "title": "Procrastination is a mood problem, not a time problem",
+      "hook": "We often blame procrastination on poor planning or laziness. Research suggests it's frequently about avoiding an uncomfortable feeling, which changes how you should fight it.",
+      "body": "When you put off a task, you rarely do it because you've misjudged the time. More often, the task triggers an unpleasant feeling such as boredom, confusion, self-doubt or fear of doing it badly. Delaying gives instant relief from that feeling, which makes avoidance rewarding in the moment, even though it creates more stress later.\n\nSeen this way, the solution isn't just a better calendar. It's reducing the discomfort of starting. A few approaches help:\n- Shrink the first step until it feels almost silly, such as opening the document and writing one sentence\n- Set a short timer, like ten minutes, and allow yourself to stop when it ends\n- Name the feeling you're avoiding, since awareness reduces its pull\n- Make the task clearer by writing down exactly what \"done\" looks like\n\nStarting is usually the hardest part. Once you're working, the discomfort often fades and momentum takes over.\n\nIt also helps to be kinder to yourself. Studies have found that people who forgave themselves for procrastinating on one task procrastinated less on the next. Harsh self-criticism adds more negative feeling, which makes avoidance more tempting.\n\nDiscipline, then, is less about forcing yourself and more about making the start easy enough to begin.",
+      "takeaways": [
+        "Procrastination is often a way of escaping an uncomfortable feeling about a task.",
+        "Make the first step tiny and time-limited to lower the barrier to starting.",
+        "Self-forgiveness tends to reduce future procrastination more than self-criticism."
+      ],
+      "action_text": "Pick one task you've been avoiding. Write down the feeling it gives you in one word. Then set a timer for ten minutes and do only the very first step. When the timer ends, you may stop, or keep going if you want.",
+      "sources": [
+        {
+          "source_title": "Procrastination",
+          "source_url": "https://en.wikipedia.org/wiki/Procrastination",
+          "author_or_publisher": "Wikipedia"
+        },
+        {
+          "source_title": "American Psychological Association",
+          "source_url": "https://www.apa.org/",
+          "author_or_publisher": "American Psychological Association"
+        }
+      ],
+      "questions": [
+        {
+          "question": "According to the mood-based view of procrastination, why do we delay tasks?",
+          "options": [
+            "Because we always underestimate how long they take",
+            "Because we have too much free time",
+            "To avoid unpleasant feelings the task triggers",
+            "Because the tasks are never important"
+          ],
+          "correct_index": 2,
+          "explanation": "Delaying gives short-term relief from discomfort, which reinforces the avoidance."
+        }
+      ]
+    },
+    {
+      "topic_slug": "critical-thinking",
+      "title": "How to catch your brain only searching for what it already believes",
+      "hook": "We all like being right, so our minds quietly favour evidence that agrees with us. Learning to spot confirmation bias is one of the most useful critical thinking skills you can build.",
+      "body": "Confirmation bias is the tendency to search for, notice, interpret and remember information in ways that support what we already believe. It isn't deliberate dishonesty. It's a natural shortcut that saves mental effort and protects our sense of being right.\n\nIt shows up in subtle ways. We type search queries phrased to get the answer we want. We scrutinise studies that disagree with us but accept supportive ones at face value. We remember the times a hunch was correct and forget the times it wasn't.\n\nBecause it feels like ordinary reasoning, it's hard to notice from the inside. That's why deliberate checks help more than simply trying to be open-minded:\n- Ask what evidence would change your mind, and then look for it\n- Search for the strongest version of the opposing view, not the weakest\n- Phrase questions neutrally, such as \"effects of X\" rather than \"benefits of X\"\n- Notice when an argument feels satisfying, and check it as carefully as one that annoys you\n\nNone of this means abandoning your views. It means holding them with the right level of confidence. A belief that has survived honest attempts to challenge it is far stronger than one that has only ever been confirmed.",
+      "takeaways": [
+        "Confirmation bias makes us favour information that supports what we already believe.",
+        "It feels like normal reasoning, so deliberate checks work better than good intentions.",
+        "Ask what evidence would change your mind, then actively look for it."
+      ],
+      "action_text": "Choose one opinion you hold fairly strongly. Spend ten minutes finding the best argument against it from a credible source. Write one sentence summarising that argument fairly, as its supporters would put it.",
+      "sources": [
+        {
+          "source_title": "Confirmation bias",
+          "source_url": "https://en.wikipedia.org/wiki/Confirmation_bias",
+          "author_or_publisher": "Wikipedia"
+        },
+        {
+          "source_title": "The Foundation for Critical Thinking",
+          "source_url": "https://www.criticalthinking.org/",
+          "author_or_publisher": "The Foundation for Critical Thinking"
+        }
+      ],
+      "questions": [
+        {
+          "question": "Which habit best helps counter confirmation bias?",
+          "options": [
+            "Only reading sources you already trust",
+            "Searching for the strongest version of the opposing view",
+            "Ignoring evidence that is inconvenient",
+            "Phrasing searches to find supporting answers"
+          ],
+          "correct_index": 1,
+          "explanation": "Engaging seriously with the best counterarguments tests whether your belief holds up."
+        }
+      ]
+    },
+    {
+      "topic_slug": "decision-making",
+      "title": "Imagine your plan already failed: the pre-mortem technique",
+      "hook": "Teams and individuals often miss obvious risks because everyone is focused on success. A pre-mortem flips the question and makes it safe to name what could go wrong before it does.",
+      "body": "A post-mortem looks back at why a project failed. A pre-mortem does the same thing before you start. You imagine it is some months in the future, your plan has clearly failed, and you ask: what went wrong?\n\nThis small shift in framing has a big effect. When people are asked \"what might go wrong?\" they often give vague or cautious answers, especially in groups where nobody wants to seem negative. When asked to explain a failure that has supposedly already happened, people tend to generate more specific and creative reasons. Research on prospective hindsight, imagining an event has already occurred, supports this boost in identifying causes.\n\nRunning a pre-mortem is simple:\n- Describe the plan or decision clearly\n- Imagine it has failed badly at a set point in the future\n- Spend a few minutes writing every reason you can think of\n- Pick the most likely or most damaging reasons\n- Adjust the plan to prevent or prepare for them\n\nIt works for personal decisions too, like a job change, a move or a fitness goal. The aim isn't to talk yourself out of acting. It's to go ahead with your eyes open and a few safeguards in place.",
+      "takeaways": [
+        "A pre-mortem imagines a plan has already failed and asks why.",
+        "Assuming failure makes people name more specific, honest risks.",
+        "Use the results to strengthen the plan, not to abandon it."
+      ],
+      "action_text": "Pick a decision or plan you're working on. Set a five-minute timer and imagine it's six months from now and it has failed. Write down every reason why. Circle the top two and note one change that would reduce each risk.",
+      "sources": [
+        {
+          "source_title": "Pre-mortem",
+          "source_url": "https://en.wikipedia.org/wiki/Pre-mortem",
+          "author_or_publisher": "Wikipedia"
+        },
+        {
+          "source_title": "Harvard Business Review",
+          "source_url": "https://hbr.org/",
+          "author_or_publisher": "Harvard Business Publishing"
+        }
+      ],
+      "questions": [
+        {
+          "question": "What is the key framing of a pre-mortem?",
+          "options": [
+            "Imagining the plan has already failed and explaining why",
+            "Reviewing a project after it has ended",
+            "Listing only the reasons a plan will succeed",
+            "Asking an outside expert to approve the plan"
+          ],
+          "correct_index": 0,
+          "explanation": "Assuming failure has already happened helps people identify specific risks they might otherwise miss."
+        }
+      ]
+    },
+    {
+      "topic_slug": "creativity-innovation",
+      "title": "Stuck on a problem? Why stepping away can spark the solution",
+      "hook": "Many good ideas arrive in the shower or on a walk rather than at the desk. Psychologists call this incubation, and you can use it on purpose instead of waiting for luck.",
+      "body": "Creative problem-solving often follows a pattern. You work hard on a problem, get stuck, step away, and later an answer seems to pop up when you're doing something else. Psychologists call the stepping-away stage incubation.\n\nWhy might it help? One explanation is that taking a break lets you drop unhelpful approaches you'd become fixated on. When you return, you see the problem with fresh eyes. Another is that your mind keeps making loose connections in the background, especially during undemanding activities like walking, showering or washing dishes.\n\nThe important detail is that incubation works best after real effort. Your mind needs material to work with. Walking away before you've properly engaged with the problem tends to give you a pleasant break and not much else.\n\nTo use incubation deliberately:\n- Work on the problem seriously first, and write down where you're stuck\n- Switch to a low-effort activity rather than another demanding task\n- Keep a way to capture ideas, like a notes app\n- Return to the problem later, ideally after a gap of hours or a night's sleep\n\nThis approach doesn't guarantee a breakthrough, but it turns frustrated staring into a more productive creative rhythm.",
+      "takeaways": [
+        "Incubation is the stage where stepping away from a problem helps solutions emerge.",
+        "It works best after you've already engaged seriously with the problem.",
+        "Low-effort activities like walking give your mind room to make new connections."
+      ],
+      "action_text": "Choose a problem you're stuck on. Spend ten focused minutes on it and write one sentence describing exactly where you're stuck. Then take a 15-minute walk or do a simple chore, with a way to note any ideas. Revisit the problem afterwards.",
+      "sources": [
+        {
+          "source_title": "Incubation (psychology)",
+          "source_url": "https://en.wikipedia.org/wiki/Incubation_(psychology)",
+          "author_or_publisher": "Wikipedia"
+        },
+        {
+          "source_title": "Creativity",
+          "source_url": "https://en.wikipedia.org/wiki/Creativity",
+          "author_or_publisher": "Wikipedia"
+        }
+      ],
+      "questions": [
+        {
+          "question": "When does incubation tend to be most effective?",
+          "options": [
+            "Before you've looked at the problem at all",
+            "When you switch to another highly demanding task",
+            "Only when you stay at your desk",
+            "After you've worked seriously on the problem and then step away"
+          ],
+          "correct_index": 3,
+          "explanation": "Incubation needs prior effort so the mind has material to rework during the break."
+        }
+      ]
+    }
+  ]
+}
