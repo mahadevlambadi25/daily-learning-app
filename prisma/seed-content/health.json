@@ -2,7 +2,7 @@
   "lessons": [
     {
       "topic_slug": "nutrition-healthy-eating",
-      "title": "The Plate Method: Build a Balanced Meal Without Counting a Single Calorie",
+      "title": "Build a balanced plate without counting calories",
       "hook": "Most people know they should eat better but freeze when faced with apps, macros and rules. A simple visual split of your plate does much of the work for you.",
       "body": "Healthy eating advice can feel overwhelming, but public health guidance from bodies like the WHO and the NHS points in a fairly consistent direction: more vegetables, fruit, whole grains and legumes, enough protein, and less added sugar, salt and heavily processed food. The plate method turns that guidance into something you can use at every meal without tracking anything.\n\nPicture your plate divided into sections:\n- Half: vegetables and fruit, ideally a mix of colours\n- A quarter: starchy foods, preferably wholegrain, such as brown rice, oats, wholewheat pasta or potatoes with skins\n- A quarter: protein, such as beans, lentils, eggs, fish, tofu, poultry or lean meat\n\nAdd a small amount of healthier fat, like olive oil, nuts or seeds, and drink water rather than sugary drinks.\n\nWhy does this work? Filling half the plate with vegetables adds fibre and volume, which helps you feel full while naturally leaving less room for energy-dense extras. Including protein and whole grains keeps energy steadier between meals.\n\nThe method is a guide, not a rulebook. Mixed dishes like curries, stews or stir-fries count too; just ask whether the overall balance looks roughly right. If you have a medical condition, allergies or specific dietary needs, a registered dietitian or doctor can tailor advice to you.",
       "takeaways": [
@@ -26,15 +26,23 @@
       "questions": [
         {
           "question": "Using the plate method, roughly how much of your plate should be vegetables and fruit?",
-          "options": ["A quarter", "A third", "Half", "Three quarters"],
+          "options": [
+            "A quarter",
+            "A third",
+            "Half",
+            "Three quarters"
+          ],
           "correct_index": 2,
           "explanation": "The plate method suggests filling about half the plate with vegetables and fruit, with whole grains and protein sharing the rest."
         }
+      ],
+      "previous_titles": [
+        "The Plate Method: Build a Balanced Meal Without Counting a Single Calorie"
       ]
     },
     {
       "topic_slug": "nutrition-healthy-eating",
-      "title": "Read a Food Label in 30 Seconds: The Two Spots That Tell You Most",
+      "title": "How to read a food label in 30 seconds",
       "hook": "Packaging is designed to sell, not inform. Knowing exactly where to look on a label lets you compare products quickly and avoid being swayed by front-of-pack claims.",
       "body": "Words like 'natural', 'light' or 'multigrain' on the front of a package can sound healthy without telling you much. The useful information is usually on the back or side, and you can get the gist by checking just two places.\n\nFirst, the ingredients list. Ingredients are listed in order of weight, from most to least. If sugar, or another name for it such as glucose syrup, dextrose or honey, appears near the top, the product contains a lot of it. A long list of unfamiliar additives can be a hint that a food is heavily processed.\n\nSecond, the nutrition table, and specifically the 'per 100g' column. Serving sizes vary between brands and are often smaller than what people actually eat, so comparing per 100g gives a fair, like-for-like view. Focus on a few numbers:\n- Sugars and saturated fat: lower is generally better\n- Salt or sodium: lower is generally better\n- Fibre: higher is generally better\n\nIn some countries, colour-coded front labels summarise these as high, medium or low, which makes quick comparisons even easier.\n\nYou do not need to analyse every item. Use labels to compare two similar products, like two breakfast cereals, and pick the better option more often.",
       "takeaways": [
@@ -78,11 +86,14 @@
           "correct_index": 3,
           "explanation": "Ingredients are listed in descending order by weight, so the first item makes up the most."
         }
+      ],
+      "previous_titles": [
+        "Read a Food Label in 30 Seconds: The Two Spots That Tell You Most"
       ]
     },
     {
       "topic_slug": "fitness-strength-training",
-      "title": "Why Twice a Week Is the Strength Training Target Most Adults Miss",
+      "title": "Twice a week is enough strength training for most adults",
       "hook": "Muscle strength helps you carry shopping, climb stairs and stay independent as you age, yet many adults only do cardio. Health guidelines ask for something specific and achievable.",
       "body": "Major health guidelines, including those from the WHO and the NHS, recommend that adults do muscle-strengthening activity on at least two days a week, working all the major muscle groups: legs, hips, back, abdomen, chest, shoulders and arms. This sits alongside the more familiar advice to get around 150 minutes of moderate aerobic activity weekly.\n\nStrength training does not require a gym. Your body weight, a pair of water bottles or resistance bands all count. What matters is that the muscles work hard enough that the last few repetitions feel challenging while you can still keep good form.\n\nA simple beginner routine might include:\n- Squats or sit-to-stands from a chair\n- Wall or knee push-ups\n- Glute bridges lying on your back\n- Rows using a band or a filled backpack\n\nStart with one or two sets of 8 to 12 slow, controlled repetitions. Rest a day between sessions for the same muscles, and increase difficulty gradually rather than suddenly.\n\nMild muscle soreness a day or two later is common when starting. Sharp pain, dizziness or chest discomfort is not, so stop and seek advice. If you have a health condition, are pregnant, or have not been active for a long time, check with a doctor or qualified exercise professional first.",
       "takeaways": [
@@ -115,11 +126,14 @@
           "correct_index": 0,
           "explanation": "WHO and NHS guidance recommends strengthening all major muscle groups on at least two days a week."
         }
+      ],
+      "previous_titles": [
+        "Why Twice a Week Is the Strength Training Target Most Adults Miss"
       ]
     },
     {
       "topic_slug": "sleep-recovery",
-      "title": "Your Body Clock Loves Routine: The Case for a Fixed Wake-Up Time",
+      "title": "Get up at the same time every day, weekends too",
       "hook": "Many people focus on what time they go to bed, but the time you get up may be the stronger lever for better sleep. Consistency helps your internal clock do its job.",
       "body": "Your body runs on an internal clock, sometimes called the circadian rhythm, which roughly follows a 24-hour cycle. It influences when you feel alert, when you feel sleepy, and many processes in between. Light, especially morning daylight, is one of the main signals that keeps this clock on time.\n\nWhen your sleep and wake times shift a lot, for example staying up and sleeping in late at weekends, your clock gets mixed signals. The result can feel a bit like jet lag: groggy mornings and difficulty falling asleep the following night.\n\nThat is why sleep guidance from organisations like the NHS and CDC emphasises keeping a regular schedule. A fixed wake-up time is often easier to control than a bedtime, because you cannot force yourself to fall asleep, but you can set an alarm. Over time, a steady wake time tends to make you feel sleepy at a more predictable hour.\n\nHelpful habits that support this:\n- Get outside or near a bright window soon after waking\n- Keep weekend wake times within about an hour of weekdays\n- Avoid long naps late in the day\n\nIf you regularly struggle to sleep, snore loudly, or feel very tired despite enough time in bed, speak to a doctor, as these can have treatable causes.",
       "takeaways": [
@@ -152,11 +166,14 @@
           "correct_index": 1,
           "explanation": "You can reliably set an alarm to wake, while you cannot force sleep, so a steady wake time anchors your rhythm."
         }
+      ],
+      "previous_titles": [
+        "Your Body Clock Loves Routine: The Case for a Fixed Wake-Up Time"
       ]
     },
     {
       "topic_slug": "mental-health-literacy",
-      "title": "How to Check In on Someone Who Seems Not Quite Themselves",
+      "title": "How to check in on someone who doesn't seem themselves",
       "hook": "You do not need to be an expert to help someone who is struggling. A calm, caring conversation can make a real difference and help them find further support.",
       "body": "Mental health affects everyone, and most of us will at some point notice a friend, relative or colleague who seems withdrawn, unusually irritable, exhausted or not like themselves. Many people hesitate to say anything, worried they will make it worse. In reality, a gentle, private check-in is usually welcomed, even if the person is not ready to talk yet.\n\nA simple approach:\n- Choose a quiet moment and say what you have noticed, without judgement\n- Ask openly, for example 'How are you really doing?' and be ready to ask twice\n- Listen more than you speak; you do not need to fix anything\n- Encourage them to talk to a doctor, counsellor or other qualified professional\n- Offer practical help, such as helping them find a service or checking in again later\n\nAvoid rushing to advice, comparing their experience to your own, or telling them to cheer up.\n\nIf someone mentions thoughts of harming themselves or others, or you believe they are in immediate danger, take it seriously. Stay with them if it is safe, and contact local emergency services or a crisis line straight away.\n\nSupporting others can be draining, so look after your own wellbeing too, and reach out for support yourself if you need it.",
       "takeaways": [
@@ -189,48 +206,54 @@
           "correct_index": 2,
           "explanation": "Any mention of self-harm should be taken seriously and connected with urgent professional help."
         }
+      ],
+      "previous_titles": [
+        "How to Check In on Someone Who Seems Not Quite Themselves"
       ]
     },
     {
       "topic_slug": "brain-health-memory",
-      "title": "The Retrieval Trick: Why Testing Yourself Beats Rereading Your Notes",
-      "hook": "Rereading feels productive, but it often creates an illusion of learning. Pulling information out of your memory is one of the most reliable ways to make it stick.",
-      "body": "When you reread notes or a book, the material feels familiar, and that familiarity is easy to mistake for knowing it. Learning researchers have found again and again that a different approach works better: actively recalling information from memory, often called retrieval practice or the testing effect.\n\nEach time you retrieve something, such as answering a question, explaining an idea aloud or writing down what you remember, you strengthen the pathways that lead back to it. Retrieval is effortful, and that effort is part of what makes the memory more durable.\n\nRetrieval works even better when spaced out. Reviewing material after a day, then a few days, then a week tends to produce longer-lasting memory than cramming everything in one session.\n\nWays to use it in daily life:\n- Close the book and summarise the key points from memory\n- Use flashcards, answering before you flip them\n- Teach the idea to a friend in your own words\n\nGetting answers wrong during practice is not a failure. Checking and correcting mistakes is part of the process. Alongside good learning habits, regular sleep, physical activity and social connection also support overall brain health.",
+      "title": "Regular walking helps your memory as well as your heart",
+      "hook": "Most people think of exercise as something for the body. The part of the brain that handles memory seems to benefit too, and you don't need a gym for it.",
+      "body": "Your hippocampus is a small, curved structure deep in the brain that helps form new memories. Like a lot of the brain, it tends to shrink slowly as we age.\n\nIn a well-known study published in 2011, researchers split older adults into two groups. One group walked briskly for about 40 minutes, three times a week. The other did stretching and toning. After a year, the walkers' hippocampus had grown slightly, and their spatial memory had improved. In the stretching group it had shrunk a little, as you'd expect with age.\n\nOne study doesn't settle everything, but it fits with plenty of other research. Public health agencies list better thinking and memory among the benefits of regular physical activity, next to the heart and mood benefits most of us already know about.\n\nWhat stands out is how ordinary the exercise was. Nobody was training for a marathon. It was walking fast enough to raise the heart rate a bit, while still being able to talk.\n\nIf you're not active at the moment, start smaller than you think you need to. Ten minutes after lunch counts, and you can build up over a few weeks. If you have a health condition, check with your doctor first.",
       "takeaways": [
-        "Actively recalling information strengthens memory more than passively rereading it.",
-        "Spacing your reviews over days and weeks helps memories last longer than cramming.",
-        "Mistakes during self-testing are useful, as correcting them reinforces learning."
+        "The hippocampus, which helps form memories, tends to shrink slowly with age.",
+        "In one study, a year of brisk walking three times a week made it slightly larger.",
+        "Moderate exercise counts: fast enough to raise your heart rate, easy enough to talk."
       ],
-      "action_text": "Think of something you learned this week, like an article, a work process or this lesson. Without looking, write down three key points from memory. Then check the original, correct any gaps, and set a reminder to repeat the recall in three days.",
+      "action_text": "Take a ten-minute brisk walk today, ideally after a meal, at a pace where you can talk but not sing. If it feels fine, put three walks in your calendar for next week.",
       "sources": [
         {
-          "source_title": "National Institute on Aging",
-          "source_url": "https://www.nia.nih.gov/",
-          "author_or_publisher": "National Institutes of Health"
+          "source_title": "Exercise training increases size of hippocampus and improves memory",
+          "source_url": "https://www.pnas.org/doi/10.1073/pnas.1015950108",
+          "author_or_publisher": "Erickson et al., Proceedings of the National Academy of Sciences (2011)"
         },
         {
-          "source_title": "The Learning Scientists",
-          "source_url": "https://www.learningscientists.org/",
-          "author_or_publisher": "The Learning Scientists (cognitive psychology researchers)"
+          "source_title": "Benefits of Physical Activity",
+          "source_url": "https://www.cdc.gov/physical-activity-basics/benefits/index.html",
+          "author_or_publisher": "Centers for Disease Control and Prevention"
         }
       ],
       "questions": [
         {
-          "question": "Which study method is most likely to produce lasting memory?",
+          "question": "In the 2011 study, what happened to the walking group's hippocampus after a year?",
           "options": [
-            "Rereading notes several times in one evening",
-            "Highlighting key sentences",
-            "Listening to a recording while doing other tasks",
-            "Recalling the material from memory on several different days"
+            "It shrank faster",
+            "It stayed exactly the same",
+            "It grew slightly larger",
+            "It wasn't measured"
           ],
-          "correct_index": 3,
-          "explanation": "Spaced retrieval practice combines active recall with time gaps, which strengthens long-term memory."
+          "correct_index": 2,
+          "explanation": "The walkers' hippocampus grew slightly, while the stretching group's shrank a little, as is typical with age."
         }
+      ],
+      "previous_titles": [
+        "The Retrieval Trick: Why Testing Yourself Beats Rereading Your Notes"
       ]
     },
     {
       "topic_slug": "longevity-preventive-health",
-      "title": "Know Your Numbers: Why Blood Pressure Is the Check-Up Worth Not Skipping",
+      "title": "Get your blood pressure checked, even if you feel fine",
       "hook": "High blood pressure rarely causes symptoms, yet it raises the risk of heart attack, stroke and kidney disease. A quick, painless check can reveal it early.",
       "body": "Blood pressure is the force of blood pushing against the walls of your arteries. It is recorded as two numbers: the higher one reflects pressure when your heart beats, and the lower one reflects pressure when it rests between beats.\n\nThe tricky part is that high blood pressure, also called hypertension, usually feels like nothing at all. Many people only discover it at a routine check. Over years, persistently raised pressure can strain the heart, blood vessels, brain and kidneys. The WHO notes that a large share of adults with hypertension are unaware they have it.\n\nThe good news is that it is easy to measure and often manageable. Checks are available at doctors' surgeries, many pharmacies, and with validated home monitors. Lifestyle habits that generally support healthy blood pressure include:\n- Eating less salt and more fruit and vegetables\n- Staying physically active\n- Limiting alcohol and not smoking\n- Maintaining a healthy weight\n\nOne reading on its own is not a diagnosis, because blood pressure naturally varies. A doctor or nurse can interpret your readings, advise how often to check, and discuss whether any treatment is needed. If you have never had it measured, or not in a while, it is a simple step worth taking.",
       "takeaways": [
@@ -263,11 +286,14 @@
           "correct_index": 0,
           "explanation": "Hypertension is often silent, so measurement is the main way to detect it early."
         }
+      ],
+      "previous_titles": [
+        "Know Your Numbers: Why Blood Pressure Is the Check-Up Worth Not Skipping"
       ]
     },
     {
       "topic_slug": "relationships-social-skills",
-      "title": "Turning Toward: The Small Responses That Quietly Strengthen Relationships",
+      "title": "Notice when your partner wants your attention, and respond",
       "hook": "Relationships are shaped less by grand gestures than by how we react to everyday moments. Noticing small bids for attention can change how connected people feel.",
       "body": "Throughout the day, the people around us make small attempts to connect. A partner says 'Look at that bird', a colleague mentions their weekend, a friend sends a funny link. Relationship researchers call these 'bids' for attention or connection.\n\nThere are broadly three ways to respond. You can turn toward the bid, by engaging even briefly: 'Oh, that's a beautiful one.' You can turn away, by not noticing or ignoring it, often because you are distracted. Or you can turn against it, with irritation or dismissal: 'Can't you see I'm busy?'\n\nResearch on couples, including long-running work associated with relationship scientists at the University of Washington, suggests that people in lasting, satisfying relationships tend to turn toward each other's bids much more often. These tiny moments add up to a sense of being seen and valued.\n\nTurning toward does not require much time. A few ideas:\n- Pause and make eye contact when someone starts talking\n- Respond with interest, even in a single sentence\n- If you truly are busy, acknowledge it kindly and come back later\n\nThis applies to friendships, families and workplaces as much as to romantic relationships.",
       "takeaways": [
@@ -300,13 +326,16 @@
           "correct_index": 1,
           "explanation": "Showing interest and engaging with the comment is turning toward, which builds connection."
         }
+      ],
+      "previous_titles": [
+        "Turning Toward: The Small Responses That Quietly Strengthen Relationships"
       ]
     },
     {
       "topic_slug": "parenting-family",
-      "title": "Serve and Return: The Everyday Back-and-Forth That Builds a Child's Brain",
+      "title": "Babies learn by taking turns with you",
       "hook": "Children's brains develop rapidly in the early years, and ordinary interactions matter enormously. You do not need special toys or programmes to support that growth.",
-      "body": "Researchers at Harvard's Center on the Developing Child use the phrase 'serve and return' to describe a simple, powerful kind of interaction. A young child 'serves' by babbling, pointing, making a face or bringing you a toy. An adult 'returns' the serve by noticing and responding with words, a smile or attention. The child then responds again, and a back-and-forth begins.\n\nThese exchanges help build the brain connections that support language, social skills and emotional regulation. They also help children feel secure and understood. The idea applies from infancy through the preschool years, and the spirit of it continues to matter for older children too.\n\nPractical ways to do it:\n- Notice what your child is focused on and share that focus\n- Name what they are seeing, doing or feeling\n- Take turns and wait, giving them time to respond\n- Follow their lead rather than always directing the play\n\nNo parent can respond to every single serve, and that is fine. Busy days, phones and tiredness are part of real life. What matters is that these exchanges happen often overall. If you have concerns about your child's development, talk to a health visitor, paediatrician or family doctor.",
+      "body": "Researchers at Harvard's Center on the Developing Child use the phrase 'serve and return' to describe a simple kind of interaction. A young child 'serves' by babbling, pointing, making a face or bringing you a toy. An adult 'returns' the serve by noticing and responding with words, a smile or attention. The child then responds again, and a back-and-forth begins.\n\nThese exchanges help build the brain connections that support language, social skills and emotional regulation. They also help children feel secure and understood. The idea applies from infancy through the preschool years, and the spirit of it continues to matter for older children too.\n\nPractical ways to do it:\n- Notice what your child is focused on and share that focus\n- Name what they are seeing, doing or feeling\n- Take turns and wait, giving them time to respond\n- Follow their lead rather than always directing the play\n\nNo parent can respond to every single serve, and that is fine. Busy days, phones and tiredness are part of real life. What matters is that these exchanges happen often overall. If you have concerns about your child's development, talk to a health visitor, paediatrician or family doctor.",
       "takeaways": [
         "Serve and return means noticing a child's cues and responding, creating a back-and-forth.",
         "These everyday exchanges support language, social skills and emotional security.",
@@ -337,11 +366,14 @@
           "correct_index": 2,
           "explanation": "Sharing the child's focus and naming what they see is a responsive return that builds connection and language."
         }
+      ],
+      "previous_titles": [
+        "Serve and Return: The Everyday Back-and-Forth That Builds a Child's Brain"
       ]
     },
     {
       "topic_slug": "digital-wellbeing",
-      "title": "Silence the Pings: How Notifications Hijack Your Focus and What to Do",
+      "title": "Turn off most of your notifications",
       "hook": "Every buzz and banner pulls your attention away, and getting back on track takes longer than it feels. Taming notifications is one of the easiest digital habits to change.",
       "body": "Phones and apps are designed to capture attention, and notifications are one of their most effective tools. Each alert invites you to check, and even when you ignore it, part of your attention has already shifted. Research on task switching suggests that interruptions can make work take longer and feel more tiring, because the brain needs time to refocus.\n\nThe problem is not technology itself but the default settings. Many apps turn on every type of notification when you install them, so your phone ends up treating a game reward with the same urgency as a message from family.\n\nA simple reset can help:\n- Keep notifications only for people and things that genuinely need a quick response\n- Turn off badges and sounds for social media, shopping and news apps\n- Use focus or do-not-disturb modes during work, meals and the hour before bed\n- Move distracting apps off your home screen\n\nYou can still check those apps whenever you choose. The difference is that you decide when, rather than the app deciding for you.\n\nIf you find that screen use is affecting your mood, sleep or relationships in a way that is hard to change, it can help to talk it through with someone you trust or a health professional.",
       "takeaways": [
@@ -374,11 +406,14 @@
           "correct_index": 3,
           "explanation": "Fewer alerts mean fewer forced attention switches, so you control when you engage with apps."
         }
+      ],
+      "previous_titles": [
+        "Silence the Pings: How Notifications Hijack Your Focus and What to Do"
       ]
     },
     {
       "topic_slug": "practical-first-aid-safety",
-      "title": "Severe Bleeding: Why Firm, Steady Pressure Is the First Thing to Do",
+      "title": "If someone is bleeding badly, press hard and keep pressing",
       "hook": "Serious bleeding can become life-threatening within minutes, before professional help arrives. Knowing one simple action could help you act calmly in an emergency.",
       "body": "This lesson is general education, not a substitute for hands-on training. Mainstream first aid guidance, such as that from the Red Cross, agrees on the basic priorities when someone is bleeding heavily from a wound.\n\nFirst, make sure the area is safe for you to approach. Then call your local emergency number, or ask someone else to call while you help.\n\nNext, apply firm, direct pressure to the wound. Use a clean cloth, dressing or clothing if available, and wear gloves if you have them. Press down steadily and keep pressing. If blood soaks through, do not remove the first pad, since that can disturb clotting; place another on top and continue pressing.\n\nWhile you wait for help:\n- Keep the person still, warm and reassured\n- Watch for signs of shock, such as pale, cold, clammy skin or confusion\n- Tell emergency responders what happened and what you have done\n\nIf there is an object stuck in the wound, do not pull it out. Press around it instead, and wait for professionals.\n\nReading about first aid is a good start, but practising with a qualified instructor builds real confidence. Consider booking a certified first aid course with the Red Cross or another recognised provider.",
       "takeaways": [
@@ -411,6 +446,9 @@
           "correct_index": 0,
           "explanation": "Leaving the first pad in place and adding more avoids disturbing clotting while maintaining pressure."
         }
+      ],
+      "previous_titles": [
+        "Severe Bleeding: Why Firm, Steady Pressure Is the First Thing to Do"
       ]
     }
   ]

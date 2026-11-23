@@ -168,7 +168,6 @@ export function LessonEditor({ initial, topics, audit = [] }: { initial: EditorL
       return;
     }
     router.push("/admin");
-    router.refresh();
   }
 
   const actions = form.id ? allowedActions(status) : [];

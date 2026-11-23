@@ -62,8 +62,8 @@ export async function pickLessonForTopic(userId: string, topicId: string, localD
  * assignments are kept, and unique(user, topic, date) / unique(user, lesson, date) constraints
  * make concurrent runs safe.
  */
-export async function assignDailyLessons(userId: string, localDate: string, now: Date = new Date()) {
-  const topicIds = await getActiveTopicIds(userId);
+export async function assignDailyLessons(userId: string, localDate: string, now: Date = new Date(), knownTopicIds?: string[]) {
+  const topicIds = knownTopicIds ?? (await getActiveTopicIds(userId));
   const existing = await prisma.delivery.findMany({ where: { userId, localDate }, select: { topicId: true } });
   const covered = new Set(existing.map((d) => d.topicId));
   const created: string[] = [];
@@ -107,10 +107,8 @@ export type FeedItem = {
 export async function getTodayFeed(userId: string, timezone: string, now: Date = new Date()) {
   const tz = safeTimezone(timezone);
   const date = toLocalDate(tz, now);
-  await publishDueLessons(now);
-  await assignDailyLessons(userId, date, now);
-
-  const topicIds = await getActiveTopicIds(userId);
+  const [, topicIds] = await Promise.all([publishDueLessons(now), getActiveTopicIds(userId)]);
+  await assignDailyLessons(userId, date, now, topicIds);
   const deliveries = await prisma.delivery.findMany({
     where: { userId, localDate: date, topicId: { in: topicIds }, lesson: { status: "published" } },
     include: {

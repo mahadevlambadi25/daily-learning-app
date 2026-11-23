@@ -2,7 +2,7 @@ import { prisma, isUniqueViolation } from "@/lib/db";
 import { ApiError } from "@/lib/api";
 import { MAX_TOPICS, MIN_TOPICS } from "@/lib/config";
 import { safeTimezone } from "@/lib/time";
-import { generateToken, hashPassword, hashToken, verifyPassword } from "@/lib/auth/tokens";
+import { generateToken, hashPassword, hashToken, needsRehash, verifyPassword } from "@/lib/auth/tokens";
 import { getEmailProvider, passwordResetEmail } from "./email";
 import { track } from "./analytics";
 
@@ -41,6 +41,10 @@ export async function authenticate(email: string, password: string): Promise<str
   dummyHash ??= await hashPassword(generateToken());
   const ok = await verifyPassword(password, user?.passwordHash ?? dummyHash);
   if (!user || !ok) throw new ApiError(401, "invalid_credentials", "Email or password is incorrect.");
+  // Transparently upgrade legacy bcrypt hashes to scrypt.
+  if (needsRehash(user.passwordHash)) {
+    await prisma.user.update({ where: { id: user.id }, data: { passwordHash: await hashPassword(password) } });
+  }
   return user.id;
 }
 

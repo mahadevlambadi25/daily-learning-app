@@ -19,11 +19,20 @@ Sign in as the admin with `SEED_ADMIN_EMAIL` / `SEED_ADMIN_PASSWORD` and open `/
 > npm 11 may block install scripts. If Prisma or esbuild complain, run
 > `npm approve-scripts prisma @prisma/engines @prisma/client esbuild` and `npm rebuild`.
 
+## Performance notes
+
+- **`npm run dev` is not representative of real speed.** It compiles each page the first time you open it (Turbopack, a few seconds), so first clicks are slow. To feel the real app, stop dev and run `npm run preview` (production build + server).
+- Measured on the production build (`scripts/perf-nav.ts`): the server renders every page in **35–120 ms**, and clicks complete in about **0.2–0.6 s** once warm. Every route has a `loading.tsx` skeleton, so clicks show feedback immediately.
+- Analytics and "lesson started" writes run after the response via `after()`. Per-request stats are memoised, and password hashing uses native async `scrypt`, so login never blocks the server.
+- Never call `router.push()` and `router.refresh()` together. They race in the App Router and can leave navigation stuck. A single `router.replace()`/`push()` already loads fresh data for these dynamic pages.
+
 ## Scripts
 
 | Command | What it does |
 | --- | --- |
-| `npm run dev` / `build` / `start` | Next.js dev server / production build / production server |
+| `npm run dev` / `build` / `start` | Next.js dev server (Turbopack) / production build / production server |
+| `npm run preview` | Build and run in production mode locally: the real app speed |
+| `npx tsx scripts/perf-nav.ts` | Times real clicks (sign-up → Today → lesson → library…) cold and warm |
 | `npm test` | Unit + integration tests (Vitest) against a throwaway `prisma/test.db` |
 | `npm run test:smoke` | 66 end-to-end HTTP checks against a running server (`BASE_URL`, default `http://localhost:3000`) |
 | `npx tsx scripts/qa-screens.ts` | Screenshots every core screen at 360px and 1280px with local Edge, fails on horizontal overflow, and regenerates PWA PNG icons |

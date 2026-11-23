@@ -110,7 +110,7 @@ export function dailyDigestEmail(opts: {
   const base = appUrl();
   const unsubscribeUrl = `${base}/unsubscribe?token=${encodeURIComponent(opts.unsubscribeToken)}`;
   const prefsUrl = `${base}/settings`;
-  const hello = opts.name ? `Good morning, ${esc(opts.name)}.` : "Good morning.";
+  const hello = opts.name ? `Hi ${esc(opts.name)},` : "Hi there,";
   const items = opts.lessons
     .map(
       (l) => `<div style="padding:16px 0;border-top:1px solid #f0ebe1">
@@ -121,25 +121,25 @@ export function dailyDigestEmail(opts: {
     .join("");
   const html = layout(
     `<p style="margin:0 0 4px;font-size:16px">${hello}</p>
-<p style="margin:0 0 12px;color:#4b5563">Here are today's short lessons, picked from your topics.</p>
+<p style="margin:0 0 12px;color:#4b5563">Today's lessons are ready. Each one takes about three minutes.</p>
 ${items}
-<a href="${base}/today" style="display:inline-block;margin-top:16px;background:#c2410c;color:#fff;padding:12px 20px;border-radius:999px;text-decoration:none;font-weight:600">Open today's feed</a>`,
-    `You're receiving this because you turned on daily emails.
+<a href="${base}/today" style="display:inline-block;margin-top:16px;background:#c2410c;color:#fff;padding:12px 20px;border-radius:999px;text-decoration:none;font-weight:600">Read today's lessons</a>`,
+    `You get this email because you turned on daily emails.
 <a href="${prefsUrl}" style="color:#6b7280">Email preferences</a> · <a href="${unsubscribeUrl}" style="color:#6b7280">Unsubscribe</a>`,
   );
   const text = [
-    opts.name ? `Good morning, ${opts.name}.` : "Good morning.",
-    "Here are today's short lessons:",
+    opts.name ? `Hi ${opts.name},` : "Hi there,",
+    "Today's lessons are ready. Each one takes about three minutes.",
     "",
     ...opts.lessons.map((l) => `• [${l.topicName}] ${l.title}\n  ${l.hook}\n  ${base}/lessons/${l.id}`),
     "",
-    `Open today's feed: ${base}/today`,
+    `Read them here: ${base}/today`,
     `Preferences: ${prefsUrl}`,
     `Unsubscribe: ${unsubscribeUrl}`,
   ].join("\n");
   return {
     to: opts.to,
-    subject: opts.lessons.length === 1 ? `Today: ${opts.lessons[0].title}` : `Your ${opts.lessons.length} lessons for today`,
+    subject: opts.lessons.length === 1 ? `Today: ${opts.lessons[0].title}` : `Today: ${opts.lessons[0].title}, and ${opts.lessons.length - 1} more`,
     html,
     text,
     headers: {

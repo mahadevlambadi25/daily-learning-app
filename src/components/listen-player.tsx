@@ -186,7 +186,7 @@ export function ListenPlayer({
               "Finished"
             ) : (
               <>
-                <Volume2 className="size-4 text-accent" aria-hidden /> Tap play to listen
+                <Volume2 className="size-4 text-accent" aria-hidden /> Press play to hear this lesson
               </>
             )}
           </p>
@@ -217,7 +217,7 @@ export function ListenPlayer({
             </button>
           ))}
         </div>
-        <p className="text-xs text-muted">Voice and quality depend on your device and browser.</p>
+        <p className="text-xs text-muted">The voice comes from your device, so it varies.</p>
       </div>
     </div>
   );

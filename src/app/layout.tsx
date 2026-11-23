@@ -8,8 +8,7 @@ const fraunces = Fraunces({ subsets: ["latin"], variable: "--font-fraunces", dis
 
 export const metadata: Metadata = {
   title: { default: `${APP_NAME} · Learn something useful every day`, template: `%s · ${APP_NAME}` },
-  description:
-    "A personalised daily learning app that turns the world's most useful knowledge into short lessons you can read, listen to and apply every day.",
+  description: "Short daily lessons on the topics you pick. Read or listen in about three minutes, then try one thing that day.",
   applicationName: APP_NAME,
   icons: { icon: "/icon.svg", apple: "/icon-192.png" },
   appleWebApp: { capable: true, title: APP_NAME, statusBarStyle: "default" },

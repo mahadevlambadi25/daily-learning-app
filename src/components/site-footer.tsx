@@ -9,7 +9,7 @@ export function SiteFooter({ compact = false }: { compact?: boolean }) {
         {!compact && (
           <div>
             <Logo />
-            <p className="mt-2 max-w-xs text-sm text-muted">Short, original lessons to read or listen to, every day.</p>
+            <p className="mt-2 max-w-xs text-sm text-muted">A short lesson a day on the things you care about.</p>
           </div>
         )}
         <nav aria-label="Legal" className="flex flex-wrap gap-x-6 gap-y-2 text-sm text-muted">

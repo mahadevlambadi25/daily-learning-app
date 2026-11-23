@@ -10,10 +10,13 @@ export default function NotFound() {
         <Compass className="size-8" aria-hidden />
       </div>
       <h1 className="mt-6 font-display text-4xl font-semibold">We couldn&apos;t find that page</h1>
-      <p className="mt-2 max-w-sm text-muted">The lesson may have been moved or is no longer available.</p>
-      <LinkButton href="/today" className="mt-8">
-        Go to today&apos;s lessons
-      </LinkButton>
+      <p className="mt-2 max-w-sm text-muted">Check the address, or use one of these:</p>
+      <div className="mt-8 flex flex-wrap justify-center gap-3">
+        <LinkButton href="/today">Today&apos;s lessons</LinkButton>
+        <LinkButton href="/login" variant="secondary">
+          Sign in
+        </LinkButton>
+      </div>
     </div>
   );
 }

@@ -6,6 +6,7 @@ import { prisma } from "@/lib/db";
 import { SESSION_COOKIE, SESSION_TTL_DAYS } from "@/lib/config";
 import { generateToken, hashToken } from "./tokens";
 import { ApiError } from "@/lib/api";
+import { homeFor, safeNext } from "@/lib/redirects";
 
 export type SessionUser = {
   id: string;
@@ -75,10 +76,17 @@ export const getSessionUser = cache(async (): Promise<SessionUser | null> => {
 
 // ---- Page guards (server components) ---------------------------------------
 
-/** Signed-in users skip the login/sign-up pages. */
-export async function redirectIfSignedIn(): Promise<void> {
+/**
+ * Signed-in users skip the login/sign-up pages and go to ?next= (or their home).
+ * Exception: a learner asked to sign in for an admin page is returned, so the page can
+ * explain they need an admin account instead of bouncing them around.
+ */
+export async function redirectIfSignedIn(next?: string): Promise<SessionUser | null> {
   const user = await getSessionUser();
-  if (user) redirect(user.profile.onboardedAt ? "/today" : "/onboarding/topics");
+  if (!user) return null;
+  const target = safeNext(next);
+  if (target?.startsWith("/admin") && !user.isAdmin) return user;
+  redirect(target ?? homeFor({ isAdmin: user.isAdmin, onboarded: Boolean(user.profile.onboardedAt) }));
 }
 
 export async function requirePageUser(opts: { onboarded?: boolean } = { onboarded: true }): Promise<SessionUser> {
@@ -90,8 +98,8 @@ export async function requirePageUser(opts: { onboarded?: boolean } = { onboarde
 
 export async function requirePageAdmin(): Promise<SessionUser> {
   const user = await getSessionUser();
-  if (!user) redirect("/login?next=/admin");
-  if (!user.isAdmin) redirect("/today");
+  // Signed-out users and learners both go to sign-in, which explains what's needed.
+  if (!user || !user.isAdmin) redirect("/login?next=/admin");
   return user;
 }
 

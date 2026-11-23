@@ -5,12 +5,23 @@ import { useRouter } from "next/navigation";
 import { useState, type FormEvent } from "react";
 import { Eye, EyeOff, MailCheck } from "lucide-react";
 import { api } from "@/lib/client-api";
+import { useHydrated } from "@/lib/use-hydrated";
+import { safeNext } from "@/lib/redirects";
 import { Alert, Button, FieldError, Hint, Input, Label } from "./ui";
 
-/** Only allow same-site relative redirects (prevents open-redirects via ?next=). */
-function safeNext(next: string | null | undefined, fallback: string) {
-  return next && next.startsWith("/") && !next.startsWith("//") ? next : fallback;
+/**
+ * Disabled until React has hydrated: a click before that would trigger a native form
+ * submit instead of our JSON request (and reload the page).
+ */
+function SubmitButton({ loading, children }: { loading: boolean; children: React.ReactNode }) {
+  const hydrated = useHydrated();
+  return (
+    <Button type="submit" size="lg" className="w-full" loading={loading} disabled={!hydrated}>
+      {children}
+    </Button>
+  );
 }
+
 
 function PasswordInput(props: { id: string; value: string; onChange: (v: string) => void; autoComplete: string; invalid?: boolean; describedBy?: string }) {
   const [show, setShow] = useState(false);
@@ -63,8 +74,8 @@ export function SignupForm() {
     const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
     const res = await api("/api/auth/signup", { method: "POST", body: { ...form, timezone } });
     if (res.ok) {
-      router.push("/onboarding/topics");
-      router.refresh();
+      // One navigation only: push+refresh together race in the App Router and can stall.
+      router.replace("/onboarding/topics");
       return;
     }
     setLoading(false);
@@ -85,7 +96,7 @@ export function SignupForm() {
           </>
         }
       />
-      <form onSubmit={submit} className="space-y-5" noValidate>
+      <form method="post" onSubmit={submit} className="space-y-5" noValidate>
         {message && !errors.email && !errors.password && !errors.acceptTerms && <Alert tone="error">{message}</Alert>}
         <div>
           <Label htmlFor="displayName">
@@ -142,9 +153,9 @@ export function SignupForm() {
           </label>
           <FieldError>{errors.acceptTerms}</FieldError>
         </div>
-        <Button type="submit" size="lg" className="w-full" loading={loading}>
+        <SubmitButton loading={loading}>
           Create account
-        </Button>
+        </SubmitButton>
       </form>
     </>
   );
@@ -161,10 +172,9 @@ export function LoginForm({ next }: { next?: string }) {
     e.preventDefault();
     setLoading(true);
     setError(null);
-    const res = await api("/api/auth/login", { method: "POST", body: { email, password } });
+    const res = await api<{ home: string }>("/api/auth/login", { method: "POST", body: { email, password } });
     if (res.ok) {
-      router.push(safeNext(next, "/today"));
-      router.refresh();
+      router.replace(safeNext(next) ?? res.data.home);
       return;
     }
     setLoading(false);
@@ -184,7 +194,7 @@ export function LoginForm({ next }: { next?: string }) {
           </>
         }
       />
-      <form onSubmit={submit} className="space-y-5">
+      <form method="post" onSubmit={submit} className="space-y-5">
         {error && <Alert tone="error">{error}</Alert>}
         <div>
           <Label htmlFor="email">Email</Label>
@@ -201,9 +211,9 @@ export function LoginForm({ next }: { next?: string }) {
           </div>
           <PasswordInput id="password" autoComplete="current-password" value={password} onChange={setPassword} />
         </div>
-        <Button type="submit" size="lg" className="w-full" loading={loading}>
+        <SubmitButton loading={loading}>
           Sign in
-        </Button>
+        </SubmitButton>
       </form>
     </>
   );
@@ -246,15 +256,15 @@ export function ForgotPasswordForm() {
   return (
     <>
       <Heading title="Reset your password" sub="Enter your email and we'll send you a reset link." />
-      <form onSubmit={submit} className="space-y-5">
+      <form method="post" onSubmit={submit} className="space-y-5">
         {error && <Alert tone="error">{error}</Alert>}
         <div>
           <Label htmlFor="email">Email</Label>
           <Input id="email" type="email" autoComplete="email" required value={email} onChange={(e) => setEmail(e.target.value)} />
         </div>
-        <Button type="submit" size="lg" className="w-full" loading={loading}>
+        <SubmitButton loading={loading}>
           Send reset link
-        </Button>
+        </SubmitButton>
         <p className="text-center text-sm">
           <Link href="/login" className="font-semibold text-accent hover:underline">
             Back to sign in
@@ -277,8 +287,7 @@ export function ResetPasswordForm({ token }: { token: string }) {
     setError(null);
     const res = await api("/api/auth/reset-password", { method: "POST", body: { token, password } });
     if (res.ok) {
-      router.push("/today");
-      router.refresh();
+      router.replace("/today");
       return;
     }
     setLoading(false);
@@ -300,16 +309,16 @@ export function ResetPasswordForm({ token }: { token: string }) {
   return (
     <>
       <Heading title="Choose a new password" sub="You'll be signed in once it's saved. Other devices will be signed out." />
-      <form onSubmit={submit} className="space-y-5">
+      <form method="post" onSubmit={submit} className="space-y-5">
         {error && <Alert tone="error">{error}</Alert>}
         <div>
           <Label htmlFor="password">New password</Label>
           <PasswordInput id="password" autoComplete="new-password" value={password} onChange={setPassword} />
           <Hint>At least 8 characters.</Hint>
         </div>
-        <Button type="submit" size="lg" className="w-full" loading={loading}>
+        <SubmitButton loading={loading}>
           Save password
-        </Button>
+        </SubmitButton>
       </form>
     </>
   );

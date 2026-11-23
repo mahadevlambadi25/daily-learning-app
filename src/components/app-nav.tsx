@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { Bookmark, Compass, Flame, LayoutDashboard, LogOut, Settings, Sun } from "lucide-react";
 import { Logo } from "./brand";
@@ -83,7 +83,6 @@ function StreakChip({ streak }: { streak: number }) {
 function UserMenu({ user }: { user: NavUser }) {
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
-  const router = useRouter();
 
   useEffect(() => {
     if (!open) return;
@@ -101,8 +100,8 @@ function UserMenu({ user }: { user: NavUser }) {
 
   async function signOut() {
     await api("/api/auth/logout", { method: "POST" });
-    router.push("/login");
-    router.refresh();
+    // Full page load: drops every cached signed-in screen from the client router.
+    window.location.assign("/login");
   }
 
   const initial = (user.name || user.email).charAt(0).toUpperCase();

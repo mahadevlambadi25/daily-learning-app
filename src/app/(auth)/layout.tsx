@@ -1,4 +1,3 @@
-import { Quote } from "lucide-react";
 import { Logo } from "@/components/brand";
 import { Reveal } from "@/components/motion";
 import Link from "next/link";
@@ -20,11 +19,10 @@ export default async function AuthLayout({ children }: { children: React.ReactNo
       <aside className="relative hidden overflow-hidden bg-ink p-12 text-bg lg:flex lg:flex-col lg:justify-end" aria-hidden>
         <div className="sun-glow absolute -top-40 -right-40 size-[600px] rounded-full opacity-80" />
         <div className="relative">
-          <Quote className="size-10 text-accent" />
-          <p className="mt-6 font-display text-4xl leading-tight font-semibold text-balance">
-            Small lessons, taken daily, quietly change how you think and work.
+          <p className="font-display text-4xl leading-tight font-semibold text-balance">
+            Most of us mean to read more. Three minutes a day is easier to keep up than a book a week.
           </p>
-          <p className="mt-6 opacity-70">2-4 minutes a day · 50 topics · read or listen</p>
+          <p className="mt-6 opacity-70">50 topics · about 3 minutes a lesson · read or listen</p>
         </div>
       </aside>
     </div>

@@ -189,7 +189,7 @@ export function TopicPicker({ topics, initialSelected, mode }: Props) {
             <p className="font-semibold" aria-live="polite">
               {selected.length} of {MAX_TOPICS} selected
             </p>
-            <p className="text-muted">{atMax ? "That's the max. Deselect one to swap." : "You can change these anytime."}</p>
+            <p className="text-muted">{atMax ? "That's the limit. Untick one to swap it." : "You can change these whenever you like."}</p>
           </div>
           {mode === "onboarding" ? (
             <Button onClick={save} disabled={selected.length === 0} loading={saving} size="lg">
@@ -202,7 +202,7 @@ export function TopicPicker({ topics, initialSelected, mode }: Props) {
           )}
         </div>
         {error && <Alert tone="error" className="mt-3">{error}</Alert>}
-        {saved && <Alert tone="success" className="mt-3">Topics saved. Your feed will update right away.</Alert>}
+        {saved && <Alert tone="success" className="mt-3">Saved. Your Today page now uses these topics.</Alert>}
       </div>
     </div>
   );

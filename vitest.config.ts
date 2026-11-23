@@ -10,5 +10,6 @@ export default defineConfig({
     env: { DATABASE_URL: "file:./test.db", EMAIL_PROVIDER: "memory", APP_URL: "http://localhost:3000" },
     fileParallelism: false,
     hookTimeout: 60000,
+    testTimeout: 20000,
   },
 });

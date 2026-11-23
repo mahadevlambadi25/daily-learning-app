@@ -6,6 +6,8 @@ import { addBookmark, getLessonForLearner, getLibrary, removeBookmark, setProgre
 import { applyLessonAction, createLesson, deleteLesson, getContentCoverage, listLessons, updateLesson } from "@/server/admin-lessons";
 import { getEmailProvider, createMemoryProvider } from "@/server/email";
 import { lessonInputSchema } from "@/lib/validation";
+import { hashPassword, verifyPassword } from "@/lib/auth/tokens";
+import bcrypt from "bcryptjs";
 import { makeLesson, makeTopic, makeUser, resetDb } from "./helpers";
 
 beforeEach(resetDb);
@@ -29,6 +31,23 @@ describe("accounts", () => {
     await expectApiError(authenticate("new@example.com", "wrong-pass"), 401);
     await expectApiError(authenticate("nobody@example.com", "password123"), 401);
     expect(await prisma.analyticsEvent.count({ where: { name: "signup_completed" } })).toBe(1);
+  });
+
+  it("hashes with native scrypt and upgrades legacy bcrypt hashes on login", async () => {
+    const hash = await hashPassword("password123");
+    expect(hash).toMatch(/^scrypt\$32768\$8\$1\$/);
+    expect(await verifyPassword("password123", hash)).toBe(true);
+    expect(await verifyPassword("wrong-password", hash)).toBe(false);
+    expect(await verifyPassword("password123", "garbage")).toBe(false);
+
+    const legacy = await bcrypt.hash("oldpassword1", 4);
+    const u = await prisma.user.create({
+      data: { email: "legacy@example.com", passwordHash: legacy, profile: { create: { unsubscribeToken: "legacy-token" } } },
+    });
+    expect(await authenticate("legacy@example.com", "oldpassword1")).toBe(u.id);
+    const upgraded = (await prisma.user.findUniqueOrThrow({ where: { id: u.id } })).passwordHash;
+    expect(upgraded.startsWith("scrypt$")).toBe(true);
+    expect(await authenticate("legacy@example.com", "oldpassword1")).toBe(u.id);
   });
 
   it("resets a password with a single-use token and signs out other sessions", async () => {

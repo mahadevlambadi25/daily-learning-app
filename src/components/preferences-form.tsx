@@ -66,8 +66,7 @@ export function PreferencesForm({ initial, mode }: { initial: Prefs; mode: "onbo
       return;
     }
     if (mode === "onboarding") {
-      router.push("/today?welcome=1");
-      router.refresh();
+      router.replace("/today?welcome=1");
     } else {
       setSaving(false);
       setSaved(true);
@@ -90,7 +89,7 @@ export function PreferencesForm({ initial, mode }: { initial: Prefs; mode: "onbo
         <Switch
           id="reminder"
           label="Daily learning reminder"
-          description="A notification on your devices when today's lessons are ready."
+          description="We'll send a notification when today's lessons are ready."
           checked={prefs.reminderEnabled}
           onChange={(v) => update("reminderEnabled", v)}
         />
@@ -113,7 +112,7 @@ export function PreferencesForm({ initial, mode }: { initial: Prefs; mode: "onbo
             </label>
           ))}
         </div>
-        <p className="mt-2 text-sm text-muted">Your daily lessons are ready in the app all day; this is when we send your reminder and email.</p>
+        <p className="mt-2 text-sm text-muted">Your lessons are in the app all day. This is just when we send the reminder and email.</p>
       </fieldset>
 
       <div className="rounded-3xl border border-line bg-surface-2/60 p-5">
@@ -122,7 +121,7 @@ export function PreferencesForm({ initial, mode }: { initial: Prefs; mode: "onbo
           label="Send me a daily email"
           description={
             <>
-              Lesson titles and a one-line preview at your delivery time. Unsubscribe in one click from any email.
+              A short email with today&apos;s lesson titles. Every email has a one-click unsubscribe link.
             </>
           }
           checked={prefs.emailDailyEnabled}
@@ -144,7 +143,7 @@ export function PreferencesForm({ initial, mode }: { initial: Prefs; mode: "onbo
             </option>
           ))}
         </Select>
-        <p className="mt-1.5 text-sm text-muted">A new set of lessons arrives each day based on your local date.</p>
+        <p className="mt-1.5 text-sm text-muted">Your new lessons start at midnight in this timezone.</p>
       </div>
 
       {error && <Alert tone="error">{error}</Alert>}

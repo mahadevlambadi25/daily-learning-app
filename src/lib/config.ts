@@ -1,5 +1,5 @@
 export const APP_NAME = process.env.NEXT_PUBLIC_APP_NAME || "Daylight";
-export const APP_TAGLINE = "Learn something useful every day.";
+export const APP_TAGLINE = "A short lesson a day on the things you care about.";
 export const DEFAULT_TIMEZONE = "Asia/Kolkata";
 export const DELIVERY_TIMES = ["07:00", "08:00", "12:00", "18:00"] as const;
 export const MAX_TOPICS = 5;

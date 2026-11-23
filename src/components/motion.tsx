@@ -64,7 +64,7 @@ export function Reveal({
   }, []);
   const variantClass = variant === "up" ? "" : `reveal-${variant}`;
   return (
-    <Tag ref={ref} className={`reveal ${variantClass} ${className}`} style={{ "--reveal-delay": `${delay}ms` } as CSSProperties} {...rest}>
+    <Tag ref={ref} className={`reveal ${variantClass} ${className}`} style={{ "--reveal-delay": `${Math.min(delay, 150)}ms` } as CSSProperties} {...rest}>
       {children}
     </Tag>
   );

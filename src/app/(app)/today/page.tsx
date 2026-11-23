@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { after } from "next/server";
 import { ArrowRight, CalendarDays, Coffee, Flame, PartyPopper, Sparkles } from "lucide-react";
 import { requirePageUser } from "@/lib/auth/session";
 import { friendlyDate, greeting } from "@/lib/time";
@@ -18,7 +19,7 @@ export default async function TodayPage({ searchParams }: { searchParams: Promis
   const user = await requirePageUser();
   const { welcome } = await searchParams;
   const [feed, stats] = await Promise.all([getTodayFeed(user.id, user.profile.timezone), getLearningStats(user.id, user.profile.timezone)]);
-  await track("daily_feed_viewed", user.id, { count: feed.items.length, localDate: feed.localDate });
+  after(() => track("daily_feed_viewed", user.id, { count: feed.items.length, localDate: feed.localDate }));
 
   const done = feed.items.filter((i) => i.completed).length;
   const total = feed.items.length;
@@ -31,7 +32,7 @@ export default async function TodayPage({ searchParams }: { searchParams: Promis
       {welcome && (
         <Reveal>
           <Alert tone="success" className="mb-6">
-            Your learning feed is ready. Here&apos;s your first set of ideas.
+            You&apos;re all set. Here are your first lessons.
           </Alert>
         </Reveal>
       )}
@@ -59,7 +60,7 @@ export default async function TodayPage({ searchParams }: { searchParams: Promis
               </p>
               <p className="flex items-center gap-1.5 text-sm text-muted">
                 <Flame className="size-4 text-accent" aria-hidden />
-                {stats.streak > 0 ? `${stats.streak}-day streak` : "Complete a lesson to start a streak"}
+                {stats.streak > 0 ? `${stats.streak}-day streak` : "Finish one to start a streak"}
               </p>
             </div>
           </Reveal>
@@ -72,12 +73,12 @@ export default async function TodayPage({ searchParams }: { searchParams: Promis
             <div className="flex items-center gap-4">
               <PartyPopper className="size-10 shrink-0 text-accent" aria-hidden />
               <div>
-                <p className="font-display text-2xl font-semibold">You&apos;re done for today!</p>
-                <p className="opacity-75">New lessons arrive tomorrow. Want more? Browse your topics.</p>
+                <p className="font-display text-2xl font-semibold">That&apos;s everything for today.</p>
+                <p className="opacity-75">New lessons tomorrow. If you want more now, have a look through the topics.</p>
               </div>
             </div>
             <LinkButton href="/topics" variant="primary">
-              Explore topics <ArrowRight className="size-4" aria-hidden />
+              Browse topics <ArrowRight className="size-4" aria-hidden />
             </LinkButton>
           </div>
         </Reveal>
@@ -91,7 +92,7 @@ export default async function TodayPage({ searchParams }: { searchParams: Promis
             title="We're preparing your next lesson"
             action={<LinkButton href="/topics">Browse the topic library</LinkButton>}
           >
-            You&apos;ve caught up on everything in your topics for now. Explore the library or add another topic in Settings.
+            You&apos;ve read everything we have in your topics so far. Try another topic, or check back tomorrow.
           </EmptyState>
         </div>
       ) : (
@@ -109,11 +110,9 @@ export default async function TodayPage({ searchParams }: { searchParams: Promis
         <Reveal className="mt-8">
           <div className="rounded-3xl border border-dashed border-line p-5">
             <p className="flex items-center gap-2 font-semibold">
-              <Sparkles className="size-4 text-accent" aria-hidden /> More lessons coming soon
+              <Sparkles className="size-4 text-accent" aria-hidden /> More on the way
             </p>
-            <p className="mt-1 text-sm text-muted">
-              You&apos;ve read everything we have so far in these topics. We&apos;re writing more:
-            </p>
+            <p className="mt-1 text-sm text-muted">You&apos;ve finished everything we have in these topics. We&apos;re writing more.</p>
             <ul className="mt-3 flex flex-wrap gap-2">
               {feed.emptyTopics.map((t) => (
                 <li key={t.id}>
@@ -130,7 +129,7 @@ export default async function TodayPage({ searchParams }: { searchParams: Promis
       {total > 0 && (
         <div className="mt-10 flex justify-center">
           <Link href="/library?tab=completed" className="inline-flex items-center gap-1.5 font-semibold text-accent hover:underline">
-            See all your lessons <ArrowRight className="size-4" aria-hidden />
+            Lessons you&apos;ve finished <ArrowRight className="size-4" aria-hidden />
           </Link>
         </div>
       )}

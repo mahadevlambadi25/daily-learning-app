@@ -1,13 +1,11 @@
 "use client";
 
-import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { LogOut, Trash2 } from "lucide-react";
 import { api } from "@/lib/client-api";
 import { Alert, Button, Input, Label } from "./ui";
 
-export function SignOutButton() {
-  const router = useRouter();
+export function SignOutButton({ redirectTo = "/login" }: { redirectTo?: string }) {
   const [loading, setLoading] = useState(false);
   return (
     <Button
@@ -16,8 +14,8 @@ export function SignOutButton() {
       onClick={async () => {
         setLoading(true);
         await api("/api/auth/logout", { method: "POST" });
-        router.push("/login");
-        router.refresh();
+        // Full page load: drops every cached signed-in screen from the client router.
+        window.location.assign(redirectTo);
       }}
     >
       <LogOut className="size-4" aria-hidden /> Sign out
@@ -27,7 +25,6 @@ export function SignOutButton() {
 
 /** Self-service deletion with an explicit typed confirmation. */
 export function DeleteAccount() {
-  const router = useRouter();
   const [open, setOpen] = useState(false);
   const [confirm, setConfirm] = useState("");
   const [loading, setLoading] = useState(false);
@@ -38,8 +35,7 @@ export function DeleteAccount() {
     setError(null);
     const res = await api("/api/me", { method: "DELETE", body: { confirm } });
     if (res.ok) {
-      router.push("/?deleted=1");
-      router.refresh();
+      window.location.assign("/?deleted=1");
       return;
     }
     setLoading(false);

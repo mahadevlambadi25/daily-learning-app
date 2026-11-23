@@ -21,7 +21,8 @@ export function middleware(req: NextRequest) {
     }
   }
 
-  if (PROTECTED_PREFIXES.some((p) => pathname.startsWith(p)) && !req.cookies.get(SESSION_COOKIE)) {
+  // /admin/login is a public alias that forwards to /login?next=/admin (see app/admin/login/route.ts).
+  if (pathname !== "/admin/login" && PROTECTED_PREFIXES.some((p) => pathname.startsWith(p)) && !req.cookies.get(SESSION_COOKIE)) {
     const url = req.nextUrl.clone();
     url.pathname = "/login";
     url.search = `?next=${encodeURIComponent(pathname + req.nextUrl.search)}`;

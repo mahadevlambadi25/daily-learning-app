@@ -6,7 +6,7 @@ export default function manifest(): MetadataRoute.Manifest {
   return {
     name: `${APP_NAME}: Daily Learning`,
     short_name: APP_NAME,
-    description: "Short, useful lessons to read or listen to every day.",
+    description: "A short lesson a day on the topics you pick.",
     start_url: "/today",
     scope: "/",
     display: "standalone",

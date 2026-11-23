@@ -15,8 +15,8 @@ export default async function OnboardingPreferencesPage() {
     <div className="max-w-2xl">
       <OnboardingSteps current={1} />
       <Reveal>
-        <h1 className="font-display text-4xl font-semibold tracking-tight sm:text-5xl">When should we deliver?</h1>
-        <p className="mt-3 text-lg text-muted">Pick a rhythm that fits your day. You can change this anytime in Settings.</p>
+        <h1 className="font-display text-4xl font-semibold tracking-tight sm:text-5xl">When do you want your lessons?</h1>
+        <p className="mt-3 text-lg text-muted">Pick a time that suits your day. You can change it later in Settings.</p>
       </Reveal>
       <Reveal delay={100} className="mt-10 rounded-3xl border border-line bg-surface p-6 shadow-card sm:p-8">
         <PreferencesForm initial={user.profile} mode="onboarding" />

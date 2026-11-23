@@ -2,7 +2,7 @@
   "lessons": [
     {
       "topic_slug": "productivity-time-management",
-      "title": "Why switching between tasks quietly eats your day, and how time blocks fix it",
+      "title": "Every task switch costs you time, so batch similar work",
       "hook": "Every jump from email to a report to a chat message carries a hidden restart cost. Learning to batch similar work can give you back focused time without working longer hours.",
       "body": "When you move from one task to another, your brain does not switch instantly. Psychologists call the delay a switch cost: you have to drop the rules and details of the old task and load the new ones. Each switch might only take a moment, but across dozens of interruptions a day the losses add up, and errors tend to rise as well.\n\nThere is also a lingering effect. Part of your attention often stays stuck on the unfinished task you just left, which makes it harder to think clearly about the new one. That is why a morning of constant checking can feel exhausting even when little gets done.\n\nTime blocking is a simple counter-measure. Instead of reacting to whatever arrives, you reserve chunks of your calendar for one kind of work at a time. A practical setup looks like this:\n- One or two deep-work blocks of 60 to 90 minutes for your most demanding task\n- Short, scheduled windows for email and messages\n- A buffer block for surprises and quick requests\n\nThe plan will rarely survive the day perfectly, and that is fine. The point is to make switching a deliberate choice rather than a constant default.",
       "takeaways": [
@@ -35,43 +35,49 @@
           "correct_index": 1,
           "explanation": "A switch cost is the mental delay and extra error risk that comes from dropping one task and loading another."
         }
+      ],
+      "previous_titles": [
+        "Why switching between tasks quietly eats your day, and how time blocks fix it"
       ]
     },
     {
       "topic_slug": "productivity-time-management",
-      "title": "The if-then sentence that makes you far more likely to follow through",
-      "hook": "Good intentions often fail at the moment of action, not in the planning. A tiny change in how you phrase a goal can link it to a clear trigger and make starting almost automatic.",
-      "body": "Most of us set goals like 'I will exercise more' or 'I will finish the proposal this week'. These describe what we want but leave out when and where it will happen. When the moment arrives, the goal has to compete with every other demand, and it usually loses.\n\nResearchers studying goal pursuit found a simple fix called an implementation intention. Instead of a vague goal, you write a plan in the form 'If situation X happens, then I will do Y'. For example: 'If I sit down at my desk after lunch, then I will open the proposal draft before checking anything else.'\n\nThis works because it hands the decision to the situation. You no longer need to remember or summon willpower; the cue itself prompts the action. Studies across many areas, from health habits to study routines, have found that people who form these plans are noticeably more likely to act on their goals.\n\nA few tips make the plans stronger. Pick a cue that reliably happens every day. Make the action small and concrete, such as writing one paragraph. You can also plan for obstacles: 'If I feel the urge to check my phone, then I will put it in a drawer.'",
+      "title": "Plan tomorrow before you stop for the day",
+      "hook": "Unfinished work has a way of following you home. Ten minutes of planning at the end of the day can switch it off and make tomorrow easier to start.",
+      "body": "Ever lie in bed replaying a task you didn't finish? Psychologists have studied this. Open goals keep nagging at us, and they pull attention away from whatever we're doing next.\n\nThe good news is that you don't have to finish the task to get relief. In experiments by Masicampo and Baumeister, people who made a specific plan for an unfinished goal stopped being distracted by it. The plan was enough, even though the work wasn't done.\n\nSo end your workday with a short shutdown routine:\n- Look at what's still open and write down where you left off.\n- Pick the first thing you'll do tomorrow and when you'll start it.\n- Put anything urgent on tomorrow's calendar so it has a home.\n\nIt takes about ten minutes, and it pays off twice. Your evening is more likely to be yours, because the loose ends have somewhere to live. And the next morning you don't spend the first half hour working out where to begin, because you already decided.\n\nIf you can't do it every day, try it on the days that felt messiest. Those are the ones that tend to follow you home.",
       "takeaways": [
-        "Vague goals fail because they do not say when or where action will happen.",
-        "An if-then plan links a specific cue to a specific action, reducing the need for willpower.",
-        "You can also write if-then plans for predictable obstacles and distractions."
+        "Unfinished tasks keep pulling at your attention after you stop working.",
+        "Making a specific plan for a task eases that pull, even before it's done.",
+        "Deciding tomorrow's first task tonight saves time getting started in the morning."
       ],
-      "action_text": "Choose one task you have been putting off. Write a single sentence in the form 'If [specific daily moment], then I will [small first step].' Put it on a sticky note where the cue happens, and try it tomorrow.",
+      "action_text": "Before you finish work today, spend ten minutes writing down where you left off on each open task, plus the first thing you'll do tomorrow and when. Notice whether work crosses your mind less this evening.",
       "sources": [
         {
-          "source_title": "Implementation intention",
-          "source_url": "https://en.wikipedia.org/wiki/Implementation_intention",
-          "author_or_publisher": "Wikipedia"
+          "source_title": "Consider it done! Plan making can eliminate the cognitive effects of unfulfilled goals",
+          "source_url": "https://doi.org/10.1037/a0024192",
+          "author_or_publisher": "Masicampo & Baumeister, Journal of Personality and Social Psychology (2011)"
         }
       ],
       "questions": [
         {
-          "question": "Which of these is a well-formed implementation intention?",
+          "question": "In the research described, what reduced the distraction caused by an unfinished goal?",
           "options": [
-            "I want to be more productive this year.",
-            "I should really read more books.",
-            "If I pour my morning coffee, then I will write my top task on a card.",
-            "Productivity is about discipline."
+            "Finishing the task straight away",
+            "Making a specific plan for it",
+            "Trying not to think about it",
+            "Working longer hours"
           ],
-          "correct_index": 2,
-          "explanation": "It ties a concrete daily cue to a small, specific action, which is the core of an if-then plan."
+          "correct_index": 1,
+          "explanation": "People who made a concrete plan for an unfinished goal stopped being distracted by it, even though the task wasn't done yet."
         }
+      ],
+      "previous_titles": [
+        "The if-then sentence that makes you far more likely to follow through"
       ]
     },
     {
       "topic_slug": "communication-skills",
-      "title": "Put the conclusion first: a simple rule for messages busy people actually read",
+      "title": "Put your main point in the first line",
       "hook": "Readers skim, and many stop after the first few lines. Leading with your main point means your request or decision lands even if nothing else gets read.",
       "body": "Many of us were taught to write like a story: background first, details next, and the point at the end. That works for essays, but in workplace messages it buries the most important part where busy readers may never reach it.\n\nA widely used alternative is called bottom line up front, a habit that originated in military writing. The idea is simple: your first sentence states the conclusion, decision, or request. Supporting detail comes afterwards, for anyone who wants it.\n\nCompare two openings. The first: 'Last week the team reviewed several vendors and considered pricing, timelines, and support.' The second: 'I recommend we choose Vendor B; I need your approval by Friday.' The second tells the reader exactly why the message exists and what to do.\n\nA quick structure for emails and chat messages:\n- Line one: the main point or the ask, with any deadline\n- Next: two or three reasons or key facts\n- Last: details, links, or background for reference\n\nSubject lines can do the same job. 'Decision needed: vendor choice by Friday' is far more useful than 'Update'. Writing this way also forces you to clarify your own thinking, because you cannot lead with a point you have not yet decided.",
       "takeaways": [
@@ -104,11 +110,14 @@
           "correct_index": 0,
           "explanation": "The approach puts the key point or ask first so readers get it even if they only skim."
         }
+      ],
+      "previous_titles": [
+        "Put the conclusion first: a simple rule for messages busy people actually read"
       ]
     },
     {
       "topic_slug": "communication-skills",
-      "title": "Listen, then play it back: how paraphrasing prevents most misunderstandings",
+      "title": "Repeat back what you heard before you reply",
       "hook": "Many workplace conflicts start with two people sure they agreed on something different. A quick paraphrase before you respond catches the gap while it is still easy to fix.",
       "body": "In conversation, most of us listen while planning our reply. We catch the general idea, fill in the rest with assumptions, and move on. The result is often discovered days later, when a task comes back different from what anyone expected.\n\nActive listening is a set of habits that keeps your attention on what the other person actually means. Its most useful tool is the paraphrase: briefly restating what you heard in your own words and checking whether you got it right.\n\nA paraphrase might sound like: 'So the priority is speed over polish, and you need a rough draft by Thursday. Is that right?' This does three things at once. It shows the speaker you were paying attention. It gives them a chance to correct you. And it often helps them notice what they meant to say but left out.\n\nGood paraphrases are short and neutral. Avoid adding your opinion or jumping to a solution. You can also reflect feelings when they matter, for example: 'It sounds like the shifting deadlines have been frustrating.'\n\nIt can feel awkward at first, as if you are stating the obvious. In practice, people tend to appreciate it, and it saves far more time than it costs.",
       "takeaways": [
@@ -136,11 +145,14 @@
           "correct_index": 3,
           "explanation": "Restating what you heard lets the speaker confirm or fix your understanding before misunderstandings grow."
         }
+      ],
+      "previous_titles": [
+        "Listen, then play it back: how paraphrasing prevents most misunderstandings"
       ]
     },
     {
       "topic_slug": "leadership-management",
-      "title": "Delegate the outcome, not the steps: getting work off your plate without micromanaging",
+      "title": "When you delegate, describe the result and leave the steps to them",
       "hook": "New managers often keep too much work or hand it off with so many instructions that nobody grows. Clear outcomes and agreed check-ins solve both problems.",
       "body": "Delegation is one of the hardest shifts for people moving into leadership. It can feel quicker to do a task yourself, and when you do hand it over, it is tempting to spell out every step. That approach keeps you overloaded and stops your team from building judgement.\n\nA more effective approach is to delegate the outcome. Describe what success looks like, why it matters, and any firm constraints, then let the person decide how to get there. For example: 'We need a one-page summary of customer complaints that the director can read in five minutes, by next Wednesday. Budget for tools is zero.'\n\nIt also helps to agree on the level of authority up front. Will the person research and recommend, decide and inform you, or act fully on their own? Saying this aloud prevents both overstepping and endless permission-seeking.\n\nA simple delegation checklist:\n- The goal and why it matters\n- The deadline and any constraints\n- The decision authority they have\n- When you will check in\n\nFinally, schedule check-ins based on risk, not anxiety. A short midpoint review catches problems early while still leaving room for the person to own the work.",
       "takeaways": [
@@ -173,11 +185,14 @@
           "correct_index": 1,
           "explanation": "Clarifying whether someone should recommend, decide, or fully own a task removes uncertainty about how far they can go."
         }
+      ],
+      "previous_titles": [
+        "Delegate the outcome, not the steps: getting work off your plate without micromanaging"
       ]
     },
     {
       "topic_slug": "leadership-management",
-      "title": "Situation, behaviour, impact: a three-part structure for feedback that lands",
+      "title": "Give feedback people can use: what happened and what it caused",
       "hook": "Vague feedback like 'great job' or 'be more professional' rarely changes anything. Naming the specific moment, action, and effect makes feedback clear, fair, and easier to hear.",
       "body": "Most feedback fails because it is too general. Praise such as 'nice work' feels good but does not tell people what to repeat. Criticism such as 'you need to be more proactive' feels like a judgement of character and often triggers defensiveness.\n\nA widely taught model, developed at the Center for Creative Leadership, breaks feedback into three parts: situation, behaviour, and impact.\n- Situation: when and where it happened\n- Behaviour: what the person actually did or said, described as observable fact\n- Impact: the effect it had on you, the team, or the work\n\nFor example: 'In Tuesday's client call, when you summarised the next steps at the end, the client told me afterwards they finally felt clear on the plan.' Or for a concern: 'In this morning's stand-up, you interrupted Priya twice while she was explaining the bug, and she stopped sharing her ideas.'\n\nThe strength of this structure is that it sticks to things both people can agree happened. It avoids guessing at motives or labelling personalities. After sharing the impact, a good next step is to ask a question, such as 'How did it look from your side?', which turns feedback into a conversation.",
       "takeaways": [
@@ -205,11 +220,14 @@
           "correct_index": 3,
           "explanation": "The model asks you to describe what someone actually did, which both people can verify, rather than motives or traits."
         }
+      ],
+      "previous_titles": [
+        "Situation, behaviour, impact: a three-part structure for feedback that lands"
       ]
     },
     {
       "topic_slug": "public-speaking-storytelling",
-      "title": "Build any talk around one sentence: the situation, complication, resolution arc",
+      "title": "Before any talk, write the one sentence people should remember",
       "hook": "Audiences forget most of what they hear in a presentation. Shaping your talk as a short story with tension and a resolution gives them one clear idea they can carry away.",
       "body": "A common mistake in presentations is trying to say everything. Slides fill with facts, and the audience leaves unsure what the speaker actually wanted. Before building slides, try writing your entire message as one sentence. If you cannot, the talk is not ready yet.\n\nOnce you have that sentence, a simple story arc helps you deliver it. Many consultants and communicators use a three-part structure:\n- Situation: the familiar starting point the audience already accepts\n- Complication: what has changed or gone wrong, creating tension\n- Resolution: your idea, recommendation, or answer\n\nFor example: 'Our support team answers most tickets within a day. But ticket volume has doubled since the new product launch, and waiting times are climbing. A self-service help page for the five most common questions could cut that load significantly.'\n\nThis works because stories create a gap the listener wants closed. The complication raises a question, and your resolution answers it. People pay closer attention when they sense a problem being solved.\n\nUse concrete details, such as a real customer comment or a single striking number, to make the complication feel real. Then end by repeating your one sentence so it is the last thing people hear.",
       "takeaways": [
@@ -242,11 +260,14 @@
           "correct_index": 1,
           "explanation": "The complication raises a problem or question, which makes listeners eager to hear the resolution."
         }
+      ],
+      "previous_titles": [
+        "Build any talk around one sentence: the situation, complication, resolution arc"
       ]
     },
     {
       "topic_slug": "negotiation-conflict-resolution",
-      "title": "Ask 'why' behind every demand: negotiating on interests instead of positions",
+      "title": "In a negotiation, find out why they want it",
       "hook": "Two people arguing over fixed demands usually end in a standoff or a grudging split. Uncovering the needs behind those demands often reveals a deal that works better for both.",
       "body": "In many disagreements, each side states a position: 'I need this finished by Monday' or 'I can't start until next month'. Positions are specific demands, and when they clash, the only obvious options are for someone to give in or to split the difference.\n\nNegotiation researchers, including those at Harvard's Program on Negotiation, distinguish positions from interests. Interests are the underlying needs, worries, or goals that explain why someone holds a position. The person demanding Monday might actually need something to show a client. The person saying next month might be worried about overload.\n\nOnce interests are on the table, new options appear. Perhaps a short draft could be ready Monday for the client, with the full version later. Neither original position was met, yet both people get what they really needed.\n\nThe key skill is curious questioning. Useful questions include:\n- What would that make possible for you?\n- What concerns you most about this?\n- What would a good outcome look like from your side?\n\nIt also helps to know your own fallback, often called your best alternative to a negotiated agreement. Knowing what you will do if talks fail keeps you calm and stops you accepting a poor deal.",
       "takeaways": [
@@ -290,11 +311,14 @@
           "correct_index": 2,
           "explanation": "Your fallback sets a benchmark: any deal worse than it is not worth accepting."
         }
+      ],
+      "previous_titles": [
+        "Ask 'why' behind every demand: negotiating on interests instead of positions"
       ]
     },
     {
       "topic_slug": "career-growth-workplace-skills",
-      "title": "Keep a weekly wins log so your best work is not forgotten at review time",
+      "title": "Write down your wins every Friday",
       "hook": "When review or interview season arrives, most people struggle to remember what they achieved months ago. A few minutes of notes each week builds a ready record of your impact.",
       "body": "Memory is not a reliable record of your work. Recent events feel more important than older ones, and quiet successes from earlier in the year fade fast. That means performance reviews, promotion cases, and job interviews often undersell what you have actually done.\n\nA wins log is a simple running document where you capture accomplishments as they happen. It does not need special software; a note on your phone or a document works well. What matters is the habit of updating it regularly, ideally at the end of each week.\n\nFor each entry, try to record:\n- What you did, in one line\n- The result or impact, with a number if possible\n- Who benefited or noticed, such as a team or client\n- Any skills you used or learned\n\nFor example: 'Rewrote onboarding checklist; new hires' setup time fell from three days to one; praised by the IT lead.'\n\nOver time this log becomes useful in several ways. It provides concrete examples for reviews and interviews. It helps you spot patterns in work you enjoy and do well. And on tough weeks, it is a reminder of real progress that is easy to overlook.",
       "takeaways": [
@@ -327,11 +351,14 @@
           "correct_index": 1,
           "explanation": "Regular notes preserve earlier achievements that memory tends to lose in favour of recent events."
         }
+      ],
+      "previous_titles": [
+        "Keep a weekly wins log so your best work is not forgotten at review time"
       ]
     },
     {
       "topic_slug": "personal-branding-networking",
-      "title": "Your next opportunity may come from someone you barely know: the power of weak ties",
+      "title": "Your next job may come from someone you barely know",
       "hook": "Close friends tend to know the same people and hear the same news you do. Casual acquaintances connect you to new information, and reconnecting with them is easier than you think.",
       "body": "In the 1970s, sociologist Mark Granovetter studied how people found jobs and noticed something surprising. Many useful leads came not from close friends but from acquaintances, people he described as weak ties.\n\nThe reason is about information. Your close contacts usually move in the same circles you do, so they tend to know what you already know. Acquaintances, such as a former colleague, someone from a course, or a friend of a friend, link you to different groups with different news, openings, and ideas.\n\nThe practical lesson is that networking is less about collecting new contacts and more about keeping existing loose connections alive. Dormant ties, people you once knew but have not spoken with in years, are especially valuable. They often remember you warmly and have gained new knowledge since you last spoke.\n\nReconnecting does not need a big reason. A short message works:\n- Mention how you know each other\n- Share a genuine reason you thought of them\n- Ask a light question about what they are working on\n\nThe goal is a friendly exchange, not an immediate favour. Relationships built this way become natural sources of advice and opportunities over time.",
       "takeaways": [
@@ -364,11 +391,14 @@
           "correct_index": 2,
           "explanation": "Weak ties bridge different social circles, so they pass on news and openings you would not otherwise hear about."
         }
+      ],
+      "previous_titles": [
+        "Your next opportunity may come from someone you barely know: the power of weak ties"
       ]
     },
     {
       "topic_slug": "teamwork-collaboration",
-      "title": "What Google found makes teams work, and one question that builds it",
+      "title": "What Google learned about its best teams",
       "hook": "Teams with talented people still fail when members stay silent about risks and ideas. Making it safe to speak up turns individual knowledge into team performance.",
       "body": "Google's research project on team effectiveness, known as Project Aristotle, studied what separated its most effective teams from the rest. The researchers expected the answer to be the right mix of skills or personalities. Instead, the strongest factor was psychological safety.\n\nPsychological safety, a concept developed by Harvard professor Amy Edmondson, is a shared belief that the team is safe for interpersonal risk. In practice, it means people feel able to ask questions, admit mistakes, and disagree without fear of being embarrassed or punished.\n\nIt matters because the information a team needs is often held by quieter members. If someone notices a flaw in the plan but worries about looking foolish, the team loses that insight. Low safety does not remove problems; it just hides them until they grow.\n\nAnyone can help build it, not only managers. Useful habits include:\n- Asking for input explicitly, especially from people who have not spoken\n- Responding to mistakes with curiosity instead of blame\n- Admitting your own uncertainty or errors first\n\nOne simple question works well at the end of a discussion: 'What might we be missing?' It signals that concerns are welcome and gives cautious people an easy opening.",
       "takeaways": [
@@ -401,11 +431,14 @@
           "correct_index": 0,
           "explanation": "It describes a shared belief that speaking up, asking questions, or admitting errors will not lead to embarrassment or punishment."
         }
+      ],
+      "previous_titles": [
+        "What Google found makes teams work, and one question that builds it"
       ]
     },
     {
       "topic_slug": "problem-solving",
-      "title": "Stop fixing symptoms: use 'five whys' to find what is really going wrong",
+      "title": "Keep asking 'why' until you reach the real cause",
       "hook": "Quick fixes feel productive, but if the real cause stays hidden the same problem keeps coming back. Asking 'why' a few times in a row helps you reach the root.",
       "body": "When something goes wrong, the natural reaction is to fix what is visible and move on. But many problems are symptoms of a deeper cause. Patch the symptom and the problem returns, often in a slightly different form.\n\nThe five whys technique, which grew out of Toyota's manufacturing practice, is a simple way to dig deeper. You state the problem, ask why it happened, then ask why again of that answer, repeating until you reach something you can actually change. Five is a rough guide, not a rule.\n\nHere is an example:\n- The monthly report went out late. Why?\n- The sales data arrived late. Why?\n- The person who exports it was on leave. Why did that delay things?\n- Nobody else knew how to run the export. Why?\n- The process was never documented.\n\nThe root fix is not to chase the report harder next month, but to document the export and train a backup.\n\nA few cautions help. Base each answer on evidence, not guesses. Focus on processes rather than blaming individuals, since blame tends to stop honest answers. And remember that complex problems may have several causes, so it is fine for the chain to branch.",
       "takeaways": [
@@ -438,11 +471,14 @@
           "correct_index": 3,
           "explanation": "The chain of whys showed the real cause was an undocumented process with a single point of failure."
         }
+      ],
+      "previous_titles": [
+        "Stop fixing symptoms: use 'five whys' to find what is really going wrong"
       ]
     },
     {
       "topic_slug": "learning-how-to-learn",
-      "title": "Rereading feels productive but fades fast: test yourself and space it out instead",
+      "title": "Rereading feels like studying. Testing yourself works better",
       "hook": "Highlighting and rereading give a comforting sense of familiarity that often vanishes within days. Two research-backed habits make new skills and knowledge stick far longer.",
       "body": "When learning something new for work, such as a software tool or industry concepts, many people reread notes or watch the same video again. It feels effective because the material becomes familiar. But familiarity is not the same as being able to recall and use it later.\n\nCognitive psychology research points to two habits that work much better.\n\nThe first is retrieval practice, also called the testing effect. Instead of reviewing, you close your notes and try to recall the information from memory, for example by answering questions or explaining the idea out loud. The effort of retrieving strengthens memory far more than passive review, even when you get some answers wrong.\n\nThe second is spacing. Rather than studying in one long session, you return to the material several times with gaps in between, such as one day, then a few days, then a week. A little forgetting between sessions makes each recall harder and the learning more durable.\n\nThese methods can feel slower and more frustrating, which is why researchers sometimes call them desirable difficulties. That struggle is a sign the learning is working. Combining both is simple: short self-quizzes, repeated over increasing intervals.",
       "takeaways": [
@@ -480,6 +516,9 @@
           "correct_index": 2,
           "explanation": "Self-quizzing uses retrieval practice, and repeating it after gaps adds the benefit of spacing."
         }
+      ],
+      "previous_titles": [
+        "Rereading feels productive but fades fast: test yourself and space it out instead"
       ]
     }
   ]

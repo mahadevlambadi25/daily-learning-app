@@ -1,3 +1,4 @@
+import { cache } from "react";
 import { prisma, isUniqueViolation } from "@/lib/db";
 import { ApiError } from "@/lib/api";
 import { addDays, localDate, safeTimezone } from "@/lib/time";
@@ -222,7 +223,8 @@ export function computeStreak(completionDates: Date[], timezone: string, now: Da
   return streak;
 }
 
-export async function getLearningStats(userId: string, timezone: string, now: Date = new Date()) {
+/** Per-request memoised: the app layout and the page both ask for these stats. */
+export const getLearningStats = cache(async function getLearningStats(userId: string, timezone: string, now: Date = new Date()) {
   // Only the last ~400 days can affect the streak; bounds the query.
   const since = new Date(now.getTime() - 400 * 86_400_000);
   const [completed, recent, saved] = await Promise.all([
@@ -235,4 +237,4 @@ export async function getLearningStats(userId: string, timezone: string, now: Da
   ]);
   const streak = computeStreak(recent.map((r) => r.completedAt!).filter(Boolean), timezone, now);
   return { completed, streak, saved };
-}
+});

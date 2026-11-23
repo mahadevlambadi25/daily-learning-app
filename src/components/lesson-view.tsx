@@ -209,13 +209,13 @@ export function LessonView({ lesson, initialMode = "read", preview = false }: { 
           {completed ? (
             <>
               <CheckCircle2 className={cn("mx-auto size-12 text-success", celebrate && "animate-pop")} aria-hidden />
-              <p className="mt-3 font-display text-2xl font-semibold">Lesson complete</p>
-              <p className="mt-1 text-muted">Nice work. Small steps, every day.</p>
+              <p className="mt-3 font-display text-2xl font-semibold">Done</p>
+              <p className="mt-1 text-muted">Nice one. Don&apos;t forget to try the action today.</p>
             </>
           ) : (
             <>
-              <p className="font-display text-2xl font-semibold">Finished reading?</p>
-              <p className="mt-1 text-muted">Mark it complete to track your progress and streak.</p>
+              <p className="font-display text-2xl font-semibold">Finished?</p>
+              <p className="mt-1 text-muted">Mark it as done to keep your streak going.</p>
             </>
           )}
           <div className="mt-6 flex flex-wrap items-center justify-center gap-3">
@@ -225,7 +225,7 @@ export function LessonView({ lesson, initialMode = "read", preview = false }: { 
               <>
                 {completed ? (
                   <Button variant="secondary" onClick={toggleComplete} loading={completing}>
-                    <Undo2 className="size-4" aria-hidden /> Mark as not completed
+                    <Undo2 className="size-4" aria-hidden /> Undo
                   </Button>
                 ) : (
                   <Button size="lg" onClick={toggleComplete} loading={completing}>
@@ -268,7 +268,7 @@ export function LessonView({ lesson, initialMode = "read", preview = false }: { 
               ))}
             </ul>
             <p className="mt-3 text-xs text-muted">
-              Lessons are original summaries for general education, not professional advice.{" "}
+              This is general information, not professional advice.{" "}
               <Link href="/disclaimer" className="underline">
                 Content disclaimer
               </Link>
