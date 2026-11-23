@@ -198,3 +198,9 @@ body {
 
 /* Bottom nav safe area on phones */
 .pb-safe { padding-bottom: max(env(safe-area-inset-bottom), 0.5rem); }
+
+/* Read-aloud fallback for voices without word timing: the sentence being spoken. */
+::highlight(tts-sentence) {
+  background-color: #fcd77b;
+  color: #1f2937;
+}

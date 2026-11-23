@@ -2,10 +2,10 @@
 
 import { useEffect, useId, useLayoutEffect, useRef, useState, type KeyboardEvent } from "react";
 import { Check, ChevronDown, Smartphone } from "lucide-react";
-import { accentLabel, shortVoiceName, SYSTEM_DEFAULT, type VoiceLike } from "@/lib/tts/voices";
+import { accentLabel, shortVoiceName, SYSTEM_DEFAULT, voiceGender, type VoiceLike } from "@/lib/tts/voices";
 import { cn } from "./ui";
 
-type Option = { uri: string; name: string; accent: string; badge: string; online: boolean };
+type Option = { uri: string; name: string; accent: string; gender?: string | null; badge: string; online: boolean };
 
 /**
  * Voice menu for the Listen player. A custom listbox instead of a native <select>, so it looks
@@ -38,7 +38,14 @@ export function VoicePicker({
     ...voices.map((v) => {
       const accent = accentLabel(v.lang);
       const region = v.lang.replace("_", "-").split("-")[1]?.toUpperCase();
-      return { uri: v.voiceURI, name: shortVoiceName(v), accent, badge: region === "GB" ? "UK" : (region ?? v.lang.slice(0, 2).toUpperCase()), online: !v.localService };
+      return {
+        uri: v.voiceURI,
+        name: shortVoiceName(v),
+        accent,
+        gender: voiceGender(v),
+        badge: region === "GB" ? "UK" : (region ?? v.lang.slice(0, 2).toUpperCase()),
+        online: !v.localService,
+      };
     }),
   ];
   const selectedIndex = Math.max(0, options.findIndex((o) => o.uri === value));
@@ -170,6 +177,7 @@ export function VoicePicker({
                   <span className={cn("block truncate text-sm", isSelected ? "font-semibold text-accent" : "text-ink")}>{o.name}</span>
                   <span className="block truncate text-[11px] text-muted">
                     {o.accent}
+                    {o.gender ? ` · ${o.gender}` : ""}
                     {o.online ? " · Online" : ""}
                   </span>
                 </span>

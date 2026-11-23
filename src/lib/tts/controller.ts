@@ -15,8 +15,12 @@ import type { VoiceLike } from "./voices";
 
 export type Status = "idle" | "playing" | "paused" | "done";
 export type BoundarySupport = "unknown" | "word" | "none";
-/** `word: null` = segment-level highlight (fallback when word boundaries aren't available). */
-export type Highlight = { seg: number; word: number | null } | null;
+/**
+ * `word` = the word being spoken. `word: null` is the fallback for voices that don't report
+ * word boundaries: `words` then gives the sentence being spoken (first/last word index,
+ * inclusive); without it the whole segment is meant.
+ */
+export type Highlight = { seg: number; word: number | null; words?: [number, number] } | null;
 
 export type BoundaryEventLike = { name?: string; charIndex: number; charLength?: number };
 export type UtteranceLike = {
@@ -63,6 +67,7 @@ export class SpeechController {
   private watchdog: unknown = null;
   private disposed = false;
   private waiting = false;
+  private chunkRange: [number, number] | undefined;
 
   constructor(opts: ControllerOptions) {
     this.o = { timers: defaultTimers, boundaryTimeoutMs: 1500, ...opts };
@@ -126,7 +131,10 @@ export class SpeechController {
   // ---- internals --------------------------------------------------------------------
 
   private resumeOffset(): number {
-    return this.word >= 0 ? (this.words[this.seg][this.word]?.start ?? 0) : 0;
+    const words = this.words[this.seg];
+    if (this.word >= 0) return words[this.word]?.start ?? 0;
+    // Sentence fallback: resume at the start of the sentence that was being spoken.
+    return this.chunkRange ? (words[this.chunkRange[0]]?.start ?? 0) : 0;
   }
 
   private start(seg: number, from: number, fromScratch = false): void {
@@ -153,7 +161,6 @@ export class SpeechController {
     if (seg !== this.seg) this.word = -1;
     this.seg = seg;
     this.o.onProgress?.(seg / this.o.segments.length);
-    if (this.boundary === "none") this.emit({ seg, word: null });
     const chunks = speechChunks(this.o.segments[seg], from);
     if (!chunks.length) return this.speakSegment(run, seg + 1, 0);
     this.speakChunk(run, seg, chunks, 0);
@@ -165,6 +172,9 @@ export class SpeechController {
     const chunk = chunks[k];
     const words = this.words[seg];
     let sawBoundary = false;
+    this.chunkRange = wordsIn(words, chunk.start, chunk.start + chunk.text.length);
+    // Voice without word timing: highlight the sentence being spoken (its start/end are known).
+    if (this.boundary === "none") this.emit({ seg, word: null, words: this.chunkRange });
 
     const u = this.o.createUtterance(chunk.text);
     u.rate = this.rate;
@@ -219,7 +229,7 @@ export class SpeechController {
 
   private noBoundaries(): void {
     this.setBoundary("none");
-    this.emit({ seg: this.seg, word: null });
+    this.emit({ seg: this.seg, word: null, words: this.chunkRange });
   }
 
   private setWaiting(w: boolean): void {
@@ -262,6 +272,19 @@ export class SpeechController {
     this.boundary = b;
     if (!this.disposed) this.o.onBoundary?.(b);
   }
+}
+
+/** First and last word fully inside [from, to), or undefined if none. */
+function wordsIn(words: Word[], from: number, to: number): [number, number] | undefined {
+  let first = -1;
+  let last = -1;
+  for (let i = 0; i < words.length; i++) {
+    if (words[i].start >= from && words[i].end <= to) {
+      if (first < 0) first = i;
+      last = i;
+    } else if (words[i].start >= to) break;
+  }
+  return first < 0 ? undefined : [first, last];
 }
 
 /** Follow-along: how far to scroll so the active word sits mid-band; 0 when it's already visible. */

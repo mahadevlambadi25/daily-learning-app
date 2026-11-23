@@ -52,15 +52,23 @@ export function LessonView({ lesson, initialMode = "read", preview = false }: { 
   const onHighlight = useCallback((h: Highlight) => {
     activeEl.current?.classList.remove("tts-word", "tts-block");
     activeEl.current = null;
+    clearSentence();
     if (!h) return;
     const segEl = segRefs.current.get(h.seg);
     if (!segEl) return;
+    if (h.word == null && h.words && markSentence(segEl, h.words)) {
+      // Fallback for voices without word timing: shade the sentence being spoken.
+      const first = segEl.querySelector<HTMLElement>(`[data-w="${h.words[0]}"]`);
+      if (first && followRef.current) keepInView(first, stickyRef.current);
+      return;
+    }
     const el = h.word == null ? segEl : segEl.querySelector<HTMLElement>(`[data-w="${h.word}"]`);
     if (!el) return;
     el.classList.add(h.word == null ? "tts-block" : "tts-word");
     activeEl.current = el;
     if (followRef.current) keepInView(el, stickyRef.current);
   }, []);
+  useEffect(() => clearSentence, []);
   const onFirstPlay = useCallback(() => {
     if (!preview) track("lesson_listen_started", { lessonId: lesson.id });
   }, [lesson.id, preview]);
@@ -315,4 +323,31 @@ function keepInView(el: HTMLElement, sticky: HTMLElement | null) {
   if (!delta) return;
   const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   window.scrollBy({ top: delta, behavior: reduce ? "instant" : "smooth" });
+}
+
+// ---- Sentence highlight (fallback for voices without word timing) ----------------------
+// Uses the CSS Custom Highlight API (styled by ::highlight(tts-sentence)): it shades a text
+// range, spaces included, without touching the DOM. Returns false where unsupported, so the
+// caller falls back to the whole-passage highlight.
+type HighlightRegistryLike = { set(name: string, h: unknown): void; delete(name: string): void };
+const highlightRegistry = (): HighlightRegistryLike | null =>
+  typeof CSS !== "undefined" && "highlights" in CSS && typeof (globalThis as { Highlight?: unknown }).Highlight === "function"
+    ? ((CSS as unknown as { highlights: HighlightRegistryLike }).highlights ?? null)
+    : null;
+
+function markSentence(segEl: HTMLElement, [from, to]: [number, number]): boolean {
+  const reg = highlightRegistry();
+  const a = segEl.querySelector(`[data-w="${from}"]`);
+  const b = segEl.querySelector(`[data-w="${to}"]`);
+  if (!reg || !a || !b) return false;
+  const range = document.createRange();
+  range.setStartBefore(a);
+  range.setEndAfter(b);
+  const Ctor = (globalThis as unknown as { Highlight: new (r: Range) => unknown }).Highlight;
+  reg.set("tts-sentence", new Ctor(range));
+  return true;
+}
+
+function clearSentence() {
+  highlightRegistry()?.delete("tts-sentence");
 }

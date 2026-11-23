@@ -225,9 +225,8 @@ export function ListenPlayer({
       </div>
 
       {boundary === "none" ? (
-        <p role="status" className="mt-2 flex items-start gap-1.5 text-[11px] leading-snug text-muted">
-          <Info className="mt-px size-3.5 shrink-0 text-accent" aria-hidden />
-          This voice doesn&apos;t report word timing, so the whole passage is highlighted. Try another voice for word-by-word.
+        <p role="status" className="mt-1.5 text-[11px] leading-snug text-muted">
+          This voice follows along sentence by sentence.
         </p>
       ) : supported && voicesSettled && !voices.length ? (
         <p className="mt-2 text-[11px] text-muted">Your device didn&apos;t list any voices, so its default voice is used.</p>

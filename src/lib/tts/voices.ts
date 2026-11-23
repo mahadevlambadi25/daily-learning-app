@@ -50,8 +50,33 @@ export function accentLabel(lang: string, long = false): string {
   }
 }
 
+// Browsers don't expose a voice's gender, so it's taken only from voice names whose gender
+// is documented by their vendor (Windows desktop, Edge online "Natural", macOS/iOS English
+// voices) or stated in the name itself ("Google UK English Male"). Anything else, including
+// Android's locale-named voices, shows no gender rather than a guess.
+const FEMALE = new Set(
+  "zira hazel susan heera catherine aria jenny sonia libby natasha clara neerja emma ava michelle ashley cora elizabeth jane nancy amber maisie samantha karen moira tessa veena fiona victoria allison serena kate nicky zoe".split(" "),
+);
+const MALE = new Set(
+  "david mark george ravi james guy ryan thomas william christopher eric brian andrew roger steffan connor liam prabhat daniel alex fred rishi aaron arthur oliver".split(" "),
+);
+
+export function voiceGender(v: VoiceLike): "Female" | "Male" | null {
+  const name = v.name.toLowerCase();
+  if (/\bfemale\b/.test(name)) return "Female";
+  if (/\bmale\b/.test(name)) return "Male";
+  for (const word of name.replace(/^(microsoft|google|apple)\s+/, "").split(/[^a-z]+/)) {
+    if (FEMALE.has(word)) return "Female";
+    if (MALE.has(word)) return "Male";
+  }
+  return null;
+}
+
 /** Short display name for the picker: "Microsoft Zira - English (United States)" → "Zira". */
 export function shortVoiceName(v: VoiceLike): string {
+  // Android Chrome names voices after their locale ("English United States"); the region badge
+  // already says that, so call it what it is.
+  if (/^english\b/i.test(v.name.trim())) return "Phone voice";
   const short = v.name
     .replace(/^(Microsoft|Google|Apple)\s+/i, "")
     .replace(/\s+(Online\s+\(Natural\)\s*)?[-–]\s+.*$/i, "")

@@ -3,7 +3,7 @@ import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { findWords, speechChunks, toPieces, wordAt } from "@/lib/tts/text";
 import { followScrollDelta, SpeechController, type Highlight, type Status, type UtteranceLike } from "@/lib/tts/controller";
-import { accentLabel, pickVoice, shortVoiceName, SYSTEM_DEFAULT, voiceLabel, voicesForMenu, type VoiceLike } from "@/lib/tts/voices";
+import { accentLabel, pickVoice, shortVoiceName, voiceGender, SYSTEM_DEFAULT, voiceLabel, voicesForMenu, type VoiceLike } from "@/lib/tts/voices";
 import { Speakable } from "@/components/speakable";
 
 // ---- Fakes --------------------------------------------------------------------------------
@@ -287,16 +287,34 @@ describe("speech controller", () => {
     expect(synth.spoken).toHaveLength(2);
   });
 
-  it("falls back to segment highlight when the voice sends no word boundaries", () => {
-    const { synth, timers, c, last, boundaries } = setup(["No boundaries here.", "Next part."]);
+  it("falls back to sentence highlight when the voice sends no word boundaries", () => {
+    const { synth, timers, c, last, boundaries } = setup(["No boundaries here. Second sentence now.", "Next part."]);
     c.play();
     timers.tick();
     timers.tick(1500); // watchdog
     expect(boundaries.at(-1)).toBe("none");
-    expect(last()).toEqual({ seg: 0, word: null });
+    expect(last()).toEqual({ seg: 0, word: null, words: [0, 2] }); // "No boundaries here."
     synth.end();
     timers.tick();
-    expect(last()).toEqual({ seg: 1, word: null });
+    expect(last()).toEqual({ seg: 0, word: null, words: [3, 5] }); // "Second sentence now."
+    synth.end();
+    timers.tick();
+    expect(last()).toEqual({ seg: 1, word: null, words: [0, 1] });
+  });
+
+  it("sentence fallback resumes on the right sentence after pause", () => {
+    const { synth, timers, c, last } = setup(["One two. Three four."]);
+    c.play();
+    timers.tick();
+    timers.tick(1500);
+    synth.end();
+    timers.tick();
+    expect(last()).toEqual({ seg: 0, word: null, words: [2, 3] });
+    c.pause();
+    expect(last()).toEqual({ seg: 0, word: null, words: [2, 3] }); // kept while paused
+    c.play();
+    timers.tick();
+    expect(synth.current?.text).toBe("Three four."); // resumes at that sentence, not the paragraph
   });
 
   it("detects missing boundaries when an utterance ends before the watchdog", () => {
@@ -407,6 +425,17 @@ describe("voice selection", () => {
     expect(shortVoiceName(voice("Microsoft Neerja Online (Natural) - English (India)", "en-IN"))).toBe("Neerja");
     expect(shortVoiceName(voice("Google UK English Female", "en-GB"))).toBe("UK English Female");
     expect(shortVoiceName(voice("Samantha", "en-US"))).toBe("Samantha");
+    expect(shortVoiceName(voice("English United States", "en-US"))).toBe("Phone voice"); // Android Chrome
+  });
+
+  it("infers gender from well-known voice names, and only from those", () => {
+    expect(voiceGender(voice("Microsoft Zira - English (United States)", "en-US"))).toBe("Female");
+    expect(voiceGender(voice("Microsoft David - English (United States)", "en-US"))).toBe("Male");
+    expect(voiceGender(voice("Google UK English Male", "en-GB"))).toBe("Male");
+    expect(voiceGender(voice("Google UK English Female", "en-GB"))).toBe("Female");
+    expect(voiceGender(voice("Microsoft Prabhat Online (Natural) - English (India)", "en-IN"))).toBe("Male");
+    expect(voiceGender(voice("English United States", "en-US"))).toBeNull();
+    expect(voiceGender(voice("Google US English", "en-US"))).toBeNull();
   });
 
   it("restores a saved voice, by URI then by name", () => {
