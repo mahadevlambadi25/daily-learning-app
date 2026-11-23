@@ -5,6 +5,7 @@ import { AiProviderError, aiDraftSchema, DRAFT_INSTRUCTIONS, type AiDraft, type 
  * Model is configurable (GEMINI_MODEL) because Google rotates model names.
  */
 const ENDPOINT = "https://generativelanguage.googleapis.com/v1beta/models";
+export const DEFAULT_MODEL = "gemini-2.5-flash";
 
 const RESPONSE_SCHEMA = {
   type: "OBJECT",
@@ -40,7 +41,7 @@ const RESPONSE_SCHEMA = {
   required: ["title", "hook", "body", "takeaways", "actionText", "sources", "claimsToVerify", "questions"],
 };
 
-export function buildGeminiRequest(req: DraftRequest) {
+export function buildGeminiRequest(req: DraftRequest, model: string = process.env.GEMINI_MODEL || DEFAULT_MODEL) {
   const user = [
     `Topic: ${req.topicName}`,
     `Learning objective: ${req.objective}`,
@@ -49,9 +50,20 @@ export function buildGeminiRequest(req: DraftRequest) {
   return {
     systemInstruction: { parts: [{ text: DRAFT_INSTRUCTIONS }] },
     contents: [{ role: "user", parts: [{ text: user }] }],
-    generationConfig: { responseMimeType: "application/json", responseSchema: RESPONSE_SCHEMA, temperature: 0.7, maxOutputTokens: 8192 },
+    generationConfig: {
+      responseMimeType: "application/json",
+      responseSchema: RESPONSE_SCHEMA,
+      temperature: 0.7,
+      maxOutputTokens: 8192,
+      // Gemini 2.5 "thinks" before answering; uncapped it spent ~4,300 tokens (~30 s) on a
+      // 200-word lesson. A small budget keeps drafts well inside the 50 s request limit.
+      ...(model.startsWith("gemini-2.5") ? { thinkingConfig: { thinkingBudget: THINKING_BUDGET } } : {}),
+    },
   };
 }
+
+/** Thinking tokens allowed for Gemini 2.5 models (2.5 Pro needs at least 128). */
+export const THINKING_BUDGET = 512;
 
 type GeminiResponse = {
   candidates?: { content?: { parts?: { text?: string }[] }; finishReason?: string }[];
@@ -79,7 +91,7 @@ export function parseGeminiResponse(json: GeminiResponse): AiDraft {
 }
 
 export function geminiProvider(apiKey: string): DraftProvider {
-  const model = process.env.GEMINI_MODEL || "gemini-2.5-flash";
+  const model = process.env.GEMINI_MODEL || DEFAULT_MODEL;
   return {
     name: `gemini:${model}`,
     async generate(req) {
@@ -88,7 +100,7 @@ export function geminiProvider(apiKey: string): DraftProvider {
         res = await fetch(`${ENDPOINT}/${encodeURIComponent(model)}:generateContent`, {
           method: "POST",
           headers: { "Content-Type": "application/json", "x-goog-api-key": apiKey },
-          body: JSON.stringify(buildGeminiRequest(req)),
+          body: JSON.stringify(buildGeminiRequest(req, model)),
           signal: AbortSignal.timeout(50_000), // stays under the 60s serverless function limit
         });
       } catch (err) {

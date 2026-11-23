@@ -1,7 +1,7 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { prisma } from "@/lib/db";
 import { ApiError } from "@/lib/api";
-import { buildGeminiRequest, geminiProvider, parseGeminiResponse } from "@/server/ai/gemini";
+import { buildGeminiRequest, geminiProvider, parseGeminiResponse, THINKING_BUDGET } from "@/server/ai/gemini";
 import { AiProviderError, type AiDraft, type DraftProvider } from "@/server/ai/provider";
 import { createAiDraft } from "@/server/ai";
 import { applyLessonAction } from "@/server/admin-lessons";
@@ -35,6 +35,13 @@ describe("Gemini adapter", () => {
     const text = req.contents[0].parts[0].text;
     expect(text).toContain("Topic: Sleep & Recovery");
     expect(text).toContain('"""\nNote A\n"""');
+  });
+
+  it("caps thinking on Gemini 2.5 models only (keeps drafts fast)", () => {
+    const r = { topicName: "T", objective: "Objective here", sourceNotes: "" };
+    expect(buildGeminiRequest(r, "gemini-2.5-flash").generationConfig).toMatchObject({ thinkingConfig: { thinkingBudget: THINKING_BUDGET } });
+    expect(buildGeminiRequest(r, "gemini-2.0-flash").generationConfig).not.toHaveProperty("thinkingConfig");
+    expect(buildGeminiRequest(r, "gemini-2.5-flash").systemInstruction.parts[0].text).toMatch(/sentence case/);
   });
 
   it("parses a valid response and rejects blocked, truncated or malformed ones", () => {
