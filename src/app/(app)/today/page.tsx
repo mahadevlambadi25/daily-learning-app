@@ -53,7 +53,7 @@ export default async function TodayPage({ searchParams }: { searchParams: Promis
         </Reveal>
         {total > 0 && (
           <Reveal delay={100} className="flex items-center gap-4 rounded-3xl border border-line bg-surface p-4 pr-6 shadow-card">
-            <ProgressRing pct={pct} />
+            <ProgressRing pct={pct} done={done} total={total} />
             <div>
               <p className="font-semibold">
                 {done} of {total} done today
@@ -137,11 +137,22 @@ export default async function TodayPage({ searchParams }: { searchParams: Promis
   );
 }
 
-function ProgressRing({ pct }: { pct: number }) {
+function ProgressRing({ pct, done, total }: { pct: number; done: number; total: number }) {
   const r = 22;
   const c = 2 * Math.PI * r;
   return (
-    <svg viewBox="0 0 56 56" className="size-14 -rotate-90" role="img" aria-label={`${pct}% of today's lessons complete`}>
+    <div className="relative size-14 shrink-0" role="img" aria-label={`${done} of ${total} lessons done today`}>
+      <span className="absolute inset-0 grid place-items-center text-sm font-bold tabular-nums" aria-hidden>
+        {done}/{total}
+      </span>
+      <RingSvg pct={pct} r={r} c={c} />
+    </div>
+  );
+}
+
+function RingSvg({ pct, r, c }: { pct: number; r: number; c: number }) {
+  return (
+    <svg viewBox="0 0 56 56" className="size-14 -rotate-90" aria-hidden>
       <circle cx="28" cy="28" r={r} fill="none" strokeWidth="6" className="stroke-surface-2" />
       <circle
         cx="28"

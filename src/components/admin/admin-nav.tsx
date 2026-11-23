@@ -21,7 +21,7 @@ export function AdminNav() {
             key={l.href}
             href={l.href}
             aria-current={active ? "page" : undefined}
-            className={cn("rounded-full px-3.5 py-1.5 text-sm font-semibold", active ? "bg-surface-2 text-ink" : "text-muted hover:text-ink")}
+            className={cn("rounded-full px-2.5 py-1.5 text-sm font-semibold sm:px-3.5", active ? "bg-surface-2 text-ink" : "text-muted hover:text-ink")}
           >
             {l.label}
           </Link>

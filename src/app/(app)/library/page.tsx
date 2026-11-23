@@ -17,8 +17,8 @@ export default async function LibraryPage({ searchParams }: { searchParams: Prom
   const [library, stats] = await Promise.all([getLibrary(user.id, filter), getLearningStats(user.id, user.profile.timezone)]);
 
   const tabs = [
-    { key: "saved", label: "Saved", icon: Bookmark },
-    { key: "completed", label: "Completed", icon: CheckCircle2 },
+    { key: "saved", label: "Saved", icon: Bookmark, count: stats.saved },
+    { key: "completed", label: "Completed", icon: CheckCircle2, count: stats.completed },
   ] as const;
 
   return (
@@ -56,7 +56,7 @@ export default async function LibraryPage({ searchParams }: { searchParams: Prom
               filter === t.key ? "bg-ink text-bg" : "text-muted hover:text-ink",
             )}
           >
-            <t.icon className="size-4" aria-hidden /> {t.label}
+            <t.icon className="size-4" aria-hidden /> {t.label} <span className="tabular-nums opacity-60">{t.count}</span>
           </Link>
         ))}
       </nav>

@@ -55,11 +55,11 @@ export default async function SettingsPage() {
         </nav>
       </Reveal>
 
-      <Section id="topics" title="Your topics" description="Choose 1-5 topics. Changes apply to your feed right away.">
+      <Section id="topics" title="Your topics" description="Pick up to 5. Tap a topic to add or remove it, then save.">
         <TopicPicker topics={topics} initialSelected={selected} mode="settings" />
       </Section>
 
-      <Section id="preferences" title="Delivery & email" description="Control when lessons arrive and whether we email you.">
+      <Section id="preferences" title="Reminders and email" description="When your lessons show up, and how we let you know.">
         <PreferencesForm initial={user.profile} mode="settings" />
       </Section>
 
@@ -75,7 +75,7 @@ export default async function SettingsPage() {
           <div className="flex items-center gap-4 rounded-2xl bg-surface-2 p-4">
             <Flame className="size-8 text-accent" aria-hidden />
             <div>
-              <p className="font-display text-2xl font-semibold">{stats.streak} days</p>
+              <p className="font-display text-2xl font-semibold">{stats.streak} {stats.streak === 1 ? "day" : "days"}</p>
               <p className="text-sm text-muted">current streak</p>
             </div>
           </div>

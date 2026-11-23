@@ -17,7 +17,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
           <span className="hidden rounded-full bg-ink px-2.5 py-0.5 text-xs font-bold text-bg sm:inline">Admin</span>
           <AdminNav />
           <Link href="/today" className="ml-auto inline-flex items-center gap-1.5 text-sm font-semibold text-muted hover:text-ink">
-            <ArrowLeft className="size-4" aria-hidden /> <span className="hidden sm:inline">Learner app</span>
+            <ArrowLeft className="size-4" aria-hidden /> <span className="hidden sm:inline">Back to the app</span><span className="sr-only sm:hidden">Back to the app</span>
           </Link>
         </div>
       </header>

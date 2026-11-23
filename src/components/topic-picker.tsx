@@ -18,13 +18,14 @@ type Props = {
 export function TopicPicker({ topics, initialSelected, mode }: Props) {
   const router = useRouter();
   const [selected, setSelected] = useState<string[]>(initialSelected);
-  const [exploreOpen, setExploreOpen] = useState(mode === "settings" || initialSelected.some((id) => !topics.find((t) => t.id === id)?.isFeatured));
+  const [exploreOpen, setExploreOpen] = useState(initialSelected.some((id) => !topics.find((t) => t.id === id)?.isFeatured));
   const [query, setQuery] = useState("");
   const [group, setGroup] = useState<string>("All");
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [saved, setSaved] = useState(false);
 
+  const isSettings = mode === "settings";
   const featured = topics.filter((t) => t.isFeatured);
   const groups = useMemo(() => ["All", ...new Set(topics.map((t) => t.groupName))], [topics]);
   const byId = useMemo(() => new Map(topics.map((t) => [t.id, t])), [topics]);
@@ -100,32 +101,42 @@ export function TopicPicker({ topics, initialSelected, mode }: Props) {
         )}
       </div>
 
-      <section aria-labelledby="featured-heading">
-        <h2 id="featured-heading" className="sr-only">
-          Featured topics
-        </h2>
-        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
-          {featured.map((t, i) => (
-            <TopicTile key={t.id} topic={t} selected={selected.includes(t.id)} disabled={atMax && !selected.includes(t.id)} onToggle={toggle} index={i} />
-          ))}
-        </div>
-      </section>
+      {/* Onboarding leads with the 10 featured tiles. Settings skips them: there, one compact
+          searchable list avoids showing every featured topic twice. */}
+      {!isSettings && (
+        <section aria-labelledby="featured-heading">
+          <h2 id="featured-heading" className="sr-only">
+            Featured topics
+          </h2>
+          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
+            {featured.map((t, i) => (
+              <TopicTile key={t.id} topic={t} selected={selected.includes(t.id)} disabled={atMax && !selected.includes(t.id)} onToggle={toggle} index={i} />
+            ))}
+          </div>
+        </section>
+      )}
 
-      <section className="mt-8" aria-labelledby="explore-heading">
-        <button
-          type="button"
-          onClick={() => setExploreOpen((o) => !o)}
-          aria-expanded={exploreOpen}
-          aria-controls="explore-panel"
-          className="inline-flex items-center gap-2 rounded-full border border-line bg-surface px-5 py-2.5 font-semibold transition-colors hover:bg-surface-2"
-          id="explore-heading"
-        >
-          Explore all {topics.length} topics
-          <ChevronDown className={cn("size-4 transition-transform duration-300", exploreOpen && "rotate-180")} aria-hidden />
-        </button>
+      <section className={isSettings ? undefined : "mt-8"} aria-labelledby="explore-heading">
+        {isSettings ? (
+          <h3 id="explore-heading" className="sr-only">
+            All topics
+          </h3>
+        ) : (
+          <button
+            type="button"
+            onClick={() => setExploreOpen((o) => !o)}
+            aria-expanded={exploreOpen}
+            aria-controls="explore-panel"
+            className="inline-flex items-center gap-2 rounded-full border border-line bg-surface px-5 py-2.5 font-semibold transition-colors hover:bg-surface-2"
+            id="explore-heading"
+          >
+            Explore all {topics.length} topics
+            <ChevronDown className={cn("size-4 transition-transform duration-300", exploreOpen && "rotate-180")} aria-hidden />
+          </button>
+        )}
 
-        {exploreOpen && (
-          <div id="explore-panel" className="mt-5 rounded-3xl border border-line bg-surface p-4 sm:p-6">
+        {(exploreOpen || isSettings) && (
+          <div id="explore-panel" className={cn("rounded-3xl border border-line bg-surface p-4 sm:p-6", !isSettings && "mt-5")}>
             <div className="relative">
               <Search className="pointer-events-none absolute top-1/2 left-4 size-4 -translate-y-1/2 text-muted" aria-hidden />
               <Input type="search" placeholder="Search topics" aria-label="Search topics" value={query} onChange={(e) => setQuery(e.target.value)} className="pl-11" />
@@ -149,7 +160,7 @@ export function TopicPicker({ topics, initialSelected, mode }: Props) {
             {filtered.length === 0 ? (
               <p className="py-10 text-center text-muted">No topics match &ldquo;{query}&rdquo;.</p>
             ) : (
-              <ul className="mt-5 grid grid-cols-1 gap-2 sm:grid-cols-2">
+              <ul className={cn("mt-5 grid grid-cols-1 gap-2 sm:grid-cols-2", isSettings && "max-h-[26rem] overflow-y-auto overscroll-contain pr-1")}>
                 {filtered.map((t) => {
                   const isSel = selected.includes(t.id);
                   const disabled = atMax && !isSel;
@@ -184,7 +195,7 @@ export function TopicPicker({ topics, initialSelected, mode }: Props) {
       </section>
 
       {/* Sticky action bar with the selected-count indicator */}
-      <div className={cn("sticky z-30 mt-10", mode === "settings" ? "bottom-20 md:bottom-4" : "bottom-4")}>
+      <div className={cn(isSettings ? "mt-5" : "sticky bottom-4 z-30 mt-10")}>
         <div className="flex flex-wrap items-center justify-between gap-3 rounded-3xl border border-line bg-surface/90 p-3 pl-5 shadow-lift backdrop-blur-xl">
           <div className="text-sm">
             <p className="font-semibold" aria-live="polite">
