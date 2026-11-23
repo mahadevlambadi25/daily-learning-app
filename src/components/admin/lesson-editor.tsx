@@ -9,6 +9,7 @@ import { estimateReadTime, wordCount } from "@/lib/lesson-content";
 import { ACTION_LABELS, allowedActions, publishIssues } from "@/lib/lesson-workflow";
 import { RIGHTS_BASES, RIGHTS_LABELS, type LessonAction } from "@/lib/validation";
 import { StatusBadge } from "./status-badge";
+import { LocalTime } from "../local-time";
 import { Alert, Button, Card, cn, FieldError, Input, Label, Select, Textarea } from "../ui";
 
 type Source = { sourceTitle: string; sourceUrl: string; authorOrPublisher: string; accessedAt: string; rightsBasis: string; reviewerNote: string };
@@ -478,9 +479,7 @@ export function LessonEditor({ initial, topics, audit = [] }: { initial: EditorL
               {audit.map((a) => (
                 <li key={a.id} className="flex justify-between gap-3">
                   <span className="font-medium">{AUDIT_LABELS[a.action] ?? ACTION_LABELS[a.action as LessonAction] ?? a.action.replace(/_/g, " ")}</span>
-                  <time className="shrink-0 text-muted" dateTime={a.createdAt}>
-                    {new Date(a.createdAt).toLocaleString(undefined, { dateStyle: "medium", timeStyle: "short" })}
-                  </time>
+                  <LocalTime iso={a.createdAt} className="shrink-0 text-muted" />
                 </li>
               ))}
             </ol>
