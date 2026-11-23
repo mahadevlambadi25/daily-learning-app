@@ -4,7 +4,7 @@ import { requireApiAdmin } from "@/lib/auth/session";
 import { enforceRateLimit } from "@/lib/rate-limit";
 import { createAiDraft, getDraftProvider } from "@/server/ai";
 
-export const maxDuration = 120;
+export const maxDuration = 60; // fits the Vercel Hobby limit
 
 /** Admin-only AI draft generation (PRD §11, P1). Saves as Draft; never publishes. */
 export const POST = route(async (req) => {

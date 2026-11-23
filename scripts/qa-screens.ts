@@ -119,7 +119,7 @@ async function main() {
     await page.fill("#email", env("SEED_ADMIN_EMAIL")!);
     await page.fill("#password", env("SEED_ADMIN_PASSWORD")!);
     await page.click("button[type=submit]");
-    await page.waitForURL(/\/(today|onboarding)/);
+    await page.waitForURL(/\/(admin|today|onboarding)/); // admins land on the console
     results.push(await shoot(page, "10-admin-lessons", "/admin", vp.label));
     const editHref = await page.locator("a[href^='/admin/lessons/']:not([href$='/new'])").first().getAttribute("href");
     results.push(await shoot(page, "11-admin-overview", "/admin/overview", vp.label));

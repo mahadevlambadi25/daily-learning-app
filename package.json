@@ -7,6 +7,8 @@
     "dev": "next dev --turbopack",
     "dev:webpack": "next dev",
     "build": "prisma generate && next build",
+    "vercel-build": "node scripts/vercel-build.mjs",
+    "db:pg:schema": "node scripts/pg-schema.mjs",
     "start": "next start",
     "preview": "next build && next start",
     "typecheck": "tsc --noEmit",

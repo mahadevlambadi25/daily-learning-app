@@ -1,0 +1,32 @@
+# Calls the app's daily delivery job every 15 minutes (Vercel's free plan only allows daily crons).
+# Needs two repository secrets (GitHub → Settings → Secrets and variables → Actions):
+#   APP_URL      e.g. https://daily-learning-app.vercel.app   (no trailing slash)
+#   CRON_SECRET  the same value as CRON_SECRET in Vercel
+# Note: GitHub may delay scheduled runs by a few minutes, and pauses schedules in repos with
+# no activity for 60 days (re-enable from the Actions tab).
+name: Daily delivery
+
+on:
+  schedule:
+    - cron: "*/15 * * * *"
+  workflow_dispatch: {}
+
+permissions: {}
+
+jobs:
+  deliver:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Run due deliveries
+        env:
+          APP_URL: ${{ secrets.APP_URL }}
+          CRON_SECRET: ${{ secrets.CRON_SECRET }}
+        run: |
+          if [ -z "$APP_URL" ] || [ -z "$CRON_SECRET" ]; then
+            echo "::warning::APP_URL or CRON_SECRET secret is not set; skipping."
+            exit 0
+          fi
+          curl --fail-with-body --silent --show-error --max-time 90 --retry 2 --retry-delay 20 \
+            -X POST -H "Authorization: Bearer $CRON_SECRET" \
+            "$APP_URL/api/jobs/daily-delivery"

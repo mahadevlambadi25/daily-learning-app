@@ -7,6 +7,15 @@ import { LESSON_STATUSES, type LessonAction, type LessonInput } from "@/lib/vali
 
 export const ADMIN_PAGE_SIZE = 20;
 
+/**
+ * Case-insensitive title search on both databases: SQLite's LIKE already ignores case, while
+ * PostgreSQL needs `mode: "insensitive"` (which the SQLite client rejects, hence the check).
+ */
+function titleSearch(q: string): Prisma.StringFilter {
+  const isPostgres = /^postgres(ql)?:/i.test(process.env.DATABASE_URL ?? "");
+  return (isPostgres ? { contains: q, mode: "insensitive" } : { contains: q }) as Prisma.StringFilter;
+}
+
 export type AdminLessonFilters = {
   q?: string;
   topicId?: string;
@@ -17,7 +26,7 @@ export type AdminLessonFilters = {
 
 export async function listLessons(f: AdminLessonFilters) {
   const where: Prisma.LessonWhereInput = {};
-  if (f.q?.trim()) where.title = { contains: f.q.trim() };
+  if (f.q?.trim()) where.title = titleSearch(f.q.trim());
   if (f.topicId) where.topicId = f.topicId;
   if (f.status && (LESSON_STATUSES as readonly string[]).includes(f.status)) where.status = f.status;
   if (f.scheduledDate && /^\d{4}-\d{2}-\d{2}$/.test(f.scheduledDate)) {

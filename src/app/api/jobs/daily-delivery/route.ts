@@ -3,7 +3,7 @@ import { ApiError, ok, route } from "@/lib/api";
 import { runDailyDelivery } from "@/server/jobs/daily-delivery";
 
 export const dynamic = "force-dynamic";
-export const maxDuration = 300;
+export const maxDuration = 60; // fits the Vercel Hobby limit
 
 function authorize(req: Request) {
   const secret = process.env.CRON_SECRET;

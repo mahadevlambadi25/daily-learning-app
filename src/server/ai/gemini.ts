@@ -89,7 +89,7 @@ export function geminiProvider(apiKey: string): DraftProvider {
           method: "POST",
           headers: { "Content-Type": "application/json", "x-goog-api-key": apiKey },
           body: JSON.stringify(buildGeminiRequest(req)),
-          signal: AbortSignal.timeout(90_000),
+          signal: AbortSignal.timeout(50_000), // stays under the 60s serverless function limit
         });
       } catch (err) {
         console.error("[ai] gemini request failed", err);

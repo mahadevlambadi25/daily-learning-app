@@ -8,8 +8,10 @@ export const WORDS_PER_MINUTE = 200;
 export const SESSION_COOKIE = "dl_session";
 export const SESSION_TTL_DAYS = 30;
 
+/** Absolute base URL for links in emails. On Vercel it falls back to the production domain. */
 export function appUrl(): string {
-  return (process.env.APP_URL || "http://localhost:3000").replace(/\/$/, "");
+  const vercel = process.env.VERCEL_PROJECT_PRODUCTION_URL;
+  return (process.env.APP_URL || (vercel ? `https://${vercel}` : "http://localhost:3000")).replace(/\/$/, "");
 }
 
 export function supportEmail(): string {

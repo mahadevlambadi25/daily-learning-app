@@ -60,9 +60,9 @@ Browser SpeechSynthesis reads lessons aloud on demand (no audio pipeline)
 | PRD recommendation | This build | Why |
 | --- | --- | --- |
 | Supabase Auth | Own email/password auth: bcrypt hashes, DB-backed sessions in HTTP-only `SameSite=Lax` cookies, password reset by emailed single-use token | Runs locally with no cloud account. Can be swapped for Supabase Auth later. |
-| Supabase Postgres + RLS | Prisma with SQLite locally; switch `provider` to `postgresql` for production | Same schema and migrations. Isolation is enforced in the service layer (every query scoped to the session user) and covered by tests. Add Postgres RLS policies as defence-in-depth when moving to Supabase. |
+| Supabase Postgres + RLS | SQLite locally and in tests; **PostgreSQL (Neon) in production** via a generated schema (`prisma/postgres/`) | One source schema. Isolation is enforced in the service layer (every query scoped to the session user) and covered by tests. Add Postgres RLS policies later as defence-in-depth. |
 | Resend / Postmark | Provider abstraction: `console` (dev), `resend` (prod), `memory` (tests) | |
-| Scheduled functions | `vercel.json` cron calls the job route every 15 min with `Authorization: Bearer $CRON_SECRET` | Vercel Hobby only allows daily crons. On Hobby, use any external cron (GitHub Actions, cron-job.org) to POST every 15 minutes. |
+| Scheduled functions | **GitHub Actions** (`.github/workflows/daily-delivery.yml`) calls the job route every 15 min with `Authorization: Bearer $CRON_SECRET` | Vercel Hobby only allows daily crons. |
 | PostHog / Plausible | First-party `AnalyticsEvent` table + admin Overview dashboard | Forward from `server/analytics.ts` later if needed. |
 
 ### Key folders
@@ -140,8 +140,10 @@ Example lesson payload: see `prisma/seed-content/*.json` (same shape as PRD Appe
 
 | Variable | Required | Purpose |
 | --- | --- | --- |
-| `DATABASE_URL` | yes | `file:./dev.db` locally; Postgres URL in production |
-| `APP_URL` | yes | Absolute base URL used in email links |
+| `DATABASE_URL` | yes | `file:./dev.db` locally; Postgres URL in production (set by the Neon integration) |
+| `DATABASE_URL_UNPOOLED` / `DIRECT_URL` | prod | Direct (non-pooled) Postgres URL for migrations; Neon sets the first, the build maps it |
+| `APP_URL` | local | Absolute base URL for email links. On Vercel it defaults to the production domain. |
+| `SEED_ON_BUILD` | no | Set to `false` to skip seeding during the Vercel build |
 | `CRON_SECRET` | yes | ≥16 chars; protects the job endpoint |
 | `EMAIL_PROVIDER` | yes | `console` \| `resend` (`memory` is test-only) |
 | `RESEND_API_KEY`, `EMAIL_FROM`, `EMAIL_REPLY_TO` | for email | Verified sending domain required (SPF/DKIM/DMARC) |
@@ -152,12 +154,22 @@ Example lesson payload: see `prisma/seed-content/*.json` (same shape as PRD Appe
 
 ## Deploying to production
 
-1. Create a Postgres database (e.g. Supabase). In `prisma/schema.prisma` set `provider = "postgresql"`, delete `prisma/migrations`, and run `npx prisma migrate dev --name init` against a **development** Postgres to generate Postgres migrations. Commit them.
-2. Set the environment variables in your host (e.g. Vercel). Use separate dev and prod databases.
-3. Build command: `npx prisma migrate deploy && npm run build`.
-4. Seed once: `npm run db:seed` with `DATABASE_URL` pointing to production, then create editors with `npm run admin:create`.
-5. Configure the cron (see above) and verify a run under **Admin → Overview → Scheduled job runs**.
-6. Rollback: redeploy the previous build in your host. Migrations are additive; restore from a database backup if a migration must be undone.
+**Vercel + Neon Postgres + GitHub Actions** (all have free tiers).
+
+**How it works:** Vercel runs `npm run vercel-build` (`scripts/vercel-build.mjs`) on each deploy. It checks that the Postgres schema is current, generates the Postgres Prisma client, applies pending migrations (`prisma migrate deploy` never drops data), runs the idempotent seed (topics, starter lessons and admin; skip it with `SEED_ON_BUILD=false`), then runs `next build`. This exact path was tested against a real PostgreSQL 18, including re-deploying and the full smoke and screen QA.
+
+**First deploy:**
+1. In Vercel: **Add New → Project →** import the GitHub repo. Framework: Next.js (detected). Don't deploy yet.
+2. **Storage → Create Database → Neon (Postgres)** and connect it to the project. This sets `DATABASE_URL` and `DATABASE_URL_UNPOOLED` automatically.
+3. **Settings → Environment Variables**: add `CRON_SECRET`, `SEED_ADMIN_EMAIL`, `SEED_ADMIN_PASSWORD`, and the optional `VAPID_*`, `EMAIL_*`, `RESEND_API_KEY` and `GEMINI_API_KEY`. `APP_URL` is optional, because it defaults to the Vercel production domain.
+4. **Deploy.** Then sign in at `/admin/login` with the seed admin.
+5. In GitHub: **Settings → Secrets and variables → Actions**, add `APP_URL` (your Vercel URL) and `CRON_SECRET` (the same value as in Vercel). Run **Actions → Daily delivery → Run workflow** once, then check **Admin → Overview → Scheduled job runs**.
+
+**Changing the database schema later:** edit `prisma/schema.prisma` and create the SQLite migration (`npm run db:migrate`). Then run `npm run db:pg:schema` and add a Postgres migration next to the existing one:
+`npx prisma migrate diff --from-schema-datasource prisma/postgres/schema.prisma --to-schema-datamodel prisma/postgres/schema.prisma --script > prisma/postgres/migrations/<timestamp>_<name>/migration.sql`
+(with `DATABASE_URL` and `DIRECT_URL` pointing at a **development** Postgres that is already up to date). Commit both. The Vercel build refuses to deploy if the Postgres schema is stale.
+
+**Rollback:** in Vercel, promote the previous deployment. Migrations are additive; restore from Neon's point-in-time backup if one must be undone.
 
 ## Testing & QA evidence
 
