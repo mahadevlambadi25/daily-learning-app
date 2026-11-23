@@ -2,15 +2,19 @@
 
 import Link from "next/link";
 import { useMemo, useState } from "react";
-import { Check, Search } from "lucide-react";
+import { Check } from "lucide-react";
 import type { CatalogueTopic } from "@/server/topics";
+import { useTopicQuery } from "./header-search";
 import { TopicIcon } from "./topic-icon";
 import { Reveal } from "./motion";
-import { cn, Input } from "./ui";
+import { cn } from "./ui";
 
-/** Searchable, filterable catalogue of all topics, grouped by collection. */
+/**
+ * Filterable catalogue of all topics, grouped by collection. The text search lives in the app
+ * header (HeaderSearch) and reaches this list through the ?q= URL parameter.
+ */
 export function TopicBrowser({ topics, followingIds }: { topics: CatalogueTopic[]; followingIds: string[] }) {
-  const [query, setQuery] = useState("");
+  const query = useTopicQuery();
   const [group, setGroup] = useState("All");
   const groups = useMemo(() => ["All", ...new Set(topics.map((t) => t.groupName))], [topics]);
 
@@ -26,11 +30,7 @@ export function TopicBrowser({ topics, followingIds }: { topics: CatalogueTopic[
   return (
     <div>
       <div className="sticky top-16 z-20 -mx-4 bg-bg/85 px-4 py-3 backdrop-blur-xl sm:mx-0 sm:px-0">
-        <div className="relative">
-          <Search className="pointer-events-none absolute top-1/2 left-4 size-4 -translate-y-1/2 text-muted" aria-hidden />
-          <Input type="search" placeholder="Search 50 topics" aria-label="Search topics" value={query} onChange={(e) => setQuery(e.target.value)} className="pl-11" />
-        </div>
-        <div className="no-scrollbar mt-3 flex gap-2 overflow-x-auto" role="group" aria-label="Filter by collection">
+        <div className="no-scrollbar flex gap-2 overflow-x-auto" role="group" aria-label="Filter by collection">
           {groups.map((g) => (
             <button
               key={g}

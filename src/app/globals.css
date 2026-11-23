@@ -204,3 +204,11 @@ body {
   background-color: #fcd77b;
   color: #1f2937;
 }
+
+/* Header search: its own focus style (the global outline would square off the pill). */
+.header-search-input:focus-visible {
+  outline: none;
+  border-color: var(--accent);
+  border-radius: 9999px;
+  box-shadow: 0 0 0 3px color-mix(in oklab, var(--accent) 22%, transparent);
+}

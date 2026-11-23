@@ -2,7 +2,8 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useRef, useState } from "react";
+import { Suspense, useEffect, useRef, useState } from "react";
+import { HeaderSearch } from "./header-search";
 import { Bookmark, Compass, Flame, LayoutDashboard, LogOut, Settings, Sun } from "lucide-react";
 import { Logo } from "./brand";
 import { cn } from "./ui";
@@ -33,8 +34,9 @@ export function AppHeader({ user }: { user: NavUser }) {
         scrolled ? "border-b border-line bg-bg/80 shadow-card backdrop-blur-xl" : "border-b border-transparent",
       )}
     >
-      <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-4 px-4 sm:px-6">
-        <Logo href="/today" />
+      <div className="relative mx-auto flex h-16 max-w-6xl items-center gap-2 px-4 sm:gap-4 sm:px-6">
+        {/* On Topics the search box needs the room below lg, so show just the mark there. */}
+        <Logo href="/today" compact={pathname === "/topics" ? "lg" : false} />
         <nav aria-label="Main" className="hidden items-center gap-1 md:flex">
           {NAV.map(({ href, label }) => (
             <Link
@@ -42,7 +44,7 @@ export function AppHeader({ user }: { user: NavUser }) {
               href={href}
               aria-current={isActive(pathname, href) ? "page" : undefined}
               className={cn(
-                "rounded-full px-4 py-2 text-sm font-semibold transition-colors",
+                "rounded-full px-3 py-2 text-sm font-semibold transition-colors lg:px-4",
                 isActive(pathname, href) ? "bg-surface-2 text-ink" : "text-muted hover:text-ink",
               )}
             >
@@ -50,12 +52,15 @@ export function AppHeader({ user }: { user: NavUser }) {
             </Link>
           ))}
           {user.isAdmin && (
-            <Link href="/admin" className="rounded-full px-4 py-2 text-sm font-semibold text-muted hover:text-ink">
+            <Link href="/admin" className="rounded-full px-3 py-2 text-sm font-semibold text-muted hover:text-ink lg:px-4">
               Admin
             </Link>
           )}
         </nav>
-        <div className="flex items-center gap-2">
+        <Suspense fallback={<div className="flex-1" />}>
+          <HeaderSearch />
+        </Suspense>
+        <div className="flex shrink-0 items-center gap-2">
           <StreakChip streak={user.streak} />
           <UserMenu user={user} />
         </div>

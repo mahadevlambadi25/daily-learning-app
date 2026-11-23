@@ -14,12 +14,12 @@ export function LogoMark({ className = "size-8" }: { className?: string }) {
   );
 }
 
-/** `compact` hides the wordmark on small screens (mark only). */
-export function Logo({ href = "/", className, compact = false }: { href?: string; className?: string; compact?: boolean }) {
+/** `compact` hides the wordmark on small screens (mark only); `"lg"` hides it below lg. */
+export function Logo({ href = "/", className, compact = false }: { href?: string; className?: string; compact?: boolean | "lg" }) {
   return (
     <Link href={href} aria-label={`${APP_NAME} home`} className={cn("inline-flex shrink-0 items-center gap-2.5 font-display text-xl font-semibold tracking-tight", className)}>
       <LogoMark />
-      <span className={compact ? "hidden sm:inline" : undefined}>{APP_NAME}</span>
+      <span className={compact === "lg" ? "hidden lg:inline" : compact ? "hidden sm:inline" : undefined}>{APP_NAME}</span>
     </Link>
   );
 }
