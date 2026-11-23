@@ -176,10 +176,10 @@ export function LessonEditor({ initial, topics, audit = [] }: { initial: EditorL
   const err = (k: string) => errors[k];
 
   return (
-    <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_340px]">
+    <div className="grid grid-cols-[minmax(0,1fr)] gap-6 lg:grid-cols-[minmax(0,1fr)_340px]">
       {/* ---------------- Form ---------------- */}
       <div className="space-y-6">
-        <fieldset disabled={!editable} className="space-y-6">
+        <fieldset disabled={!editable} className="min-w-0 space-y-6">
           <Card className="space-y-5 p-6">
             <h2 className="font-display text-xl font-semibold">Content</h2>
             <div className="grid gap-4 sm:grid-cols-2">
