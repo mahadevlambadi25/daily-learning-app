@@ -6,6 +6,8 @@ export type EmailMessage = {
   html: string;
   text: string;
   headers?: Record<string, string>;
+  /** Provider-side de-duplication key, so a retried request can't send the same email twice. */
+  idempotencyKey?: string;
 };
 
 export type SendResult = { ok: true; providerId: string } | { ok: false; error: string; transient: boolean };
@@ -15,11 +17,24 @@ export interface EmailProvider {
   send(message: EmailMessage): Promise<SendResult>;
 }
 
-/** Dev provider: prints the email to the server log. */
+export function maskEmail(address: string): string {
+  const [name, domain] = address.split("@");
+  return `${name.slice(0, 1)}***@${domain ?? "?"}`;
+}
+
+/**
+ * No-op provider that logs instead of sending. Locally it prints the full email (handy for
+ * testing reset links). In production it logs only a masked recipient and the subject: email
+ * bodies can contain password-reset tokens, and server logs must never hold them.
+ */
 export const consoleProvider: EmailProvider = {
   name: "console",
   async send(m) {
-    console.info(`\n[email] to=${m.to} subject="${m.subject}"\n${m.text}\n`);
+    if (process.env.NODE_ENV === "production") {
+      console.info(`[email] not sent (no live email provider): to=${maskEmail(m.to)} subject="${m.subject}"`);
+    } else {
+      console.info(`\n[email] to=${m.to} subject="${m.subject}"\n${m.text}\n`);
+    }
     return { ok: true, providerId: `console-${Date.now()}` };
   },
 };
@@ -42,17 +57,22 @@ export function createMemoryProvider(): EmailProvider & { outbox: EmailMessage[]
   return p;
 }
 
-/** Resend HTTP API provider (no SDK dependency). */
-function resendProvider(apiKey: string): EmailProvider {
+/** Resend HTTP API provider (no SDK dependency). Exported for tests; use getEmailProvider() in app code. */
+export function resendProvider(apiKey: string, from: string): EmailProvider {
   return {
     name: "resend",
     async send(m) {
       try {
         const res = await fetch("https://api.resend.com/emails", {
           method: "POST",
-          headers: { Authorization: `Bearer ${apiKey}`, "Content-Type": "application/json" },
+          headers: {
+            Authorization: `Bearer ${apiKey}`,
+            "Content-Type": "application/json",
+            ...(m.idempotencyKey ? { "Idempotency-Key": m.idempotencyKey } : {}),
+          },
+          signal: AbortSignal.timeout(15_000),
           body: JSON.stringify({
-            from: process.env.EMAIL_FROM,
+            from,
             to: [m.to],
             subject: m.subject,
             html: m.html,
@@ -73,14 +93,39 @@ function resendProvider(apiKey: string): EmailProvider {
 
 let memorySingleton: ReturnType<typeof createMemoryProvider> | null = null;
 
+export type EmailConfigStatus = { provider: string; liveSending: boolean; problems: string[] };
+
+/**
+ * Reports the email setup without sending anything. Real sending needs ALL of:
+ * EMAIL_PROVIDER=resend, RESEND_API_KEY, EMAIL_FROM, and the explicit switch
+ * EMAIL_SENDING_ENABLED=true (so configuring Resend can't start sending by accident).
+ */
+export function emailConfigStatus(env: Record<string, string | undefined> = process.env): EmailConfigStatus {
+  const provider = env.EMAIL_PROVIDER || "console";
+  const problems: string[] = [];
+  if (provider === "resend") {
+    if (!env.RESEND_API_KEY) problems.push("RESEND_API_KEY is not set.");
+    if (!env.EMAIL_FROM) problems.push("EMAIL_FROM is not set (e.g. \"Daylight <hello@your-verified-domain.com>\").");
+    else if (/@example\.(com|org)>?$/i.test(env.EMAIL_FROM.trim())) problems.push("EMAIL_FROM still uses example.com; use your verified Resend domain.");
+    if (env.EMAIL_SENDING_ENABLED !== "true") problems.push("EMAIL_SENDING_ENABLED is not \"true\", so emails are logged instead of sent.");
+  }
+  return { provider, liveSending: provider === "resend" && problems.length === 0, problems };
+}
+
+let warnedNotLive = false;
+
 export function getEmailProvider(): EmailProvider {
   const kind = process.env.EMAIL_PROVIDER || "console";
-  if (kind === "resend") {
-    const key = process.env.RESEND_API_KEY;
-    if (!key) throw new Error("EMAIL_PROVIDER=resend requires RESEND_API_KEY");
-    return resendProvider(key);
-  }
   if (kind === "memory") return (memorySingleton ??= createMemoryProvider());
+  if (kind === "resend") {
+    const status = emailConfigStatus();
+    if (status.liveSending) return resendProvider(process.env.RESEND_API_KEY!, process.env.EMAIL_FROM!);
+    // Configured for Resend but not approved/complete: never send, never crash; log why once.
+    if (!warnedNotLive) {
+      console.warn(`[email] Resend selected but live sending is off: ${status.problems.join(" ")}`);
+      warnedNotLive = true;
+    }
+  }
   return consoleProvider;
 }
 

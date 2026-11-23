@@ -7,6 +7,7 @@ import { cn } from "../ui";
 const LINKS = [
   { href: "/admin", label: "Lessons" },
   { href: "/admin/overview", label: "Overview" },
+  { href: "/admin/settings", label: "Settings" },
 ];
 
 export function AdminNav() {

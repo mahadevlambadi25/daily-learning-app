@@ -6,7 +6,7 @@ export const MAX_TOPICS = 5;
 export const MIN_TOPICS = 1;
 export const WORDS_PER_MINUTE = 200;
 export const SESSION_COOKIE = "dl_session";
-export const SESSION_TTL_DAYS = 30;
+// Session lifetimes (learner 30 days, admin 24 hours) live in src/lib/auth/policy.ts.
 
 /** Absolute base URL for links in emails. On Vercel it falls back to the production domain. */
 export function appUrl(): string {

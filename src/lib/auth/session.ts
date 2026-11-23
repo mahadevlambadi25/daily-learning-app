@@ -3,8 +3,9 @@ import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { cache } from "react";
 import { prisma } from "@/lib/db";
-import { SESSION_COOKIE, SESSION_TTL_DAYS } from "@/lib/config";
+import { SESSION_COOKIE } from "@/lib/config";
 import { generateToken, hashToken } from "./tokens";
+import { isSessionActive, sessionTtlMs } from "./policy";
 import { ApiError } from "@/lib/api";
 import { homeFor, safeNext } from "@/lib/redirects";
 
@@ -22,10 +23,14 @@ export type SessionUser = {
   };
 };
 
-/** Creates a DB-backed session and sets the HTTP-only cookie. */
+/**
+ * Creates a DB-backed session and sets the HTTP-only cookie.
+ * Lifetime depends on role: 24 hours for admins, 30 days for learners.
+ */
 export async function createSession(userId: string): Promise<void> {
+  const isAdmin = (await prisma.role.count({ where: { userId, role: "admin" } })) > 0;
   const token = generateToken();
-  const expiresAt = new Date(Date.now() + SESSION_TTL_DAYS * 86_400_000);
+  const expiresAt = new Date(Date.now() + sessionTtlMs(isAdmin));
   await prisma.session.create({ data: { tokenHash: hashToken(token), userId, expiresAt } });
   const jar = await cookies();
   jar.set(SESSION_COOKIE, token, {
@@ -56,13 +61,19 @@ export const getSessionUser = cache(async (): Promise<SessionUser | null> => {
     where: { tokenHash: hashToken(token) },
     include: { user: { include: { profile: true, roles: true } } },
   });
-  if (!session || session.expiresAt < new Date() || !session.user.profile) return null;
+  if (!session || !session.user.profile) return null;
   const { user } = session;
+  const isAdmin = user.roles.some((r) => r.role === "admin");
+  // Enforced on every request, so older 30-day admin sessions are capped at 24h too.
+  if (!isSessionActive(session, isAdmin)) {
+    await prisma.session.deleteMany({ where: { id: session.id } });
+    return null;
+  }
   const p = user.profile!;
   return {
     id: user.id,
     email: user.email,
-    isAdmin: user.roles.some((r) => r.role === "admin"),
+    isAdmin,
     profile: {
       displayName: p.displayName,
       timezone: p.timezone,

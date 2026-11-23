@@ -3,6 +3,7 @@ import { ApiError } from "@/lib/api";
 import { MAX_TOPICS, MIN_TOPICS } from "@/lib/config";
 import { safeTimezone } from "@/lib/time";
 import { generateToken, hashPassword, hashToken, needsRehash, verifyPassword } from "@/lib/auth/tokens";
+import { passwordProblems } from "@/lib/auth/policy";
 import { getEmailProvider, passwordResetEmail } from "./email";
 import { track } from "./analytics";
 
@@ -53,11 +54,44 @@ export async function requestPasswordReset(email: string): Promise<void> {
   const user = await prisma.user.findUnique({ where: { email: email.toLowerCase() } });
   if (!user) return;
   const token = generateToken();
-  await prisma.passwordResetToken.create({
-    data: { userId: user.id, tokenHash: hashToken(token), expiresAt: new Date(Date.now() + RESET_TTL_MS) },
+  // Only the newest link works: earlier unused links are cancelled.
+  await prisma.$transaction([
+    prisma.passwordResetToken.deleteMany({ where: { userId: user.id, usedAt: null } }),
+    prisma.passwordResetToken.create({
+      data: { userId: user.id, tokenHash: hashToken(token), expiresAt: new Date(Date.now() + RESET_TTL_MS) },
+    }),
+  ]);
+  const result = await getEmailProvider().send({
+    ...passwordResetEmail(user.email, token),
+    idempotencyKey: `password-reset/${hashToken(token).slice(0, 32)}`,
   });
-  const result = await getEmailProvider().send(passwordResetEmail(user.email, token));
   if (!result.ok) console.error("[auth] password reset email failed", result.error);
+}
+
+/**
+ * Change password while signed in: verifies the current password, applies the password policy
+ * (12+ characters for admins), stores a new scrypt hash, and signs out every session and cancels
+ * pending reset links. The caller issues a fresh session for the current device.
+ */
+export async function changePassword(userId: string, currentPassword: string, newPassword: string): Promise<void> {
+  const user = await prisma.user.findUnique({ where: { id: userId }, include: { roles: true } });
+  if (!user) throw new ApiError(404, "not_found", "Account not found.");
+
+  if (!(await verifyPassword(currentPassword, user.passwordHash))) {
+    throw new ApiError(400, "wrong_password", "Your current password is incorrect.", { currentPassword: "Incorrect password." });
+  }
+  const isAdmin = user.roles.some((r) => r.role === "admin");
+  const problems = passwordProblems(newPassword, { email: user.email, isAdmin });
+  if (newPassword === currentPassword) problems.unshift("Choose a password you haven't been using.");
+  if (problems.length) throw new ApiError(400, "weak_password", problems[0], { newPassword: problems.join(" ") });
+
+  const passwordHash = await hashPassword(newPassword);
+  await prisma.$transaction([
+    prisma.user.update({ where: { id: userId }, data: { passwordHash } }),
+    prisma.session.deleteMany({ where: { userId } }),
+    prisma.passwordResetToken.deleteMany({ where: { userId, usedAt: null } }),
+    prisma.auditLog.create({ data: { actorId: userId, action: "password_changed", entityType: "user", entityId: userId } }),
+  ]);
 }
 
 export async function resetPassword(token: string, newPassword: string): Promise<string> {
@@ -65,12 +99,19 @@ export async function resetPassword(token: string, newPassword: string): Promise
   if (!record || record.usedAt || record.expiresAt < new Date()) {
     throw new ApiError(400, "invalid_token", "This reset link is invalid or has expired. Request a new one.");
   }
+  const user = await prisma.user.findUniqueOrThrow({ where: { id: record.userId }, include: { roles: true } });
+  const problems = passwordProblems(newPassword, { email: user.email, isAdmin: user.roles.some((r) => r.role === "admin") });
+  if (problems.length) throw new ApiError(400, "weak_password", problems[0], { password: problems.join(" ") });
+
   const passwordHash = await hashPassword(newPassword);
   await prisma.$transaction([
     prisma.user.update({ where: { id: record.userId }, data: { passwordHash } }),
     prisma.passwordResetToken.update({ where: { id: record.id }, data: { usedAt: new Date() } }),
+    // Any other pending links die with this reset.
+    prisma.passwordResetToken.deleteMany({ where: { userId: record.userId, usedAt: null, id: { not: record.id } } }),
     // Sign out everywhere after a password change.
     prisma.session.deleteMany({ where: { userId: record.userId } }),
+    prisma.auditLog.create({ data: { actorId: record.userId, action: "password_reset", entityType: "user", entityId: record.userId } }),
   ]);
   return record.userId;
 }

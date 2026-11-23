@@ -172,7 +172,8 @@ async function sendDigest(r: Recipient, date: string, provider: EmailProvider): 
     unsubscribeToken: r.unsubscribeToken,
     lessons: deliveries.map((d) => ({ id: d.lesson.id, title: d.lesson.title, hook: d.lesson.hook, topicName: d.lesson.topic.name })),
   });
-  const result = await provider.send(message);
+  // Same key on retries: if the provider already accepted it, it won't send a second copy.
+  const result = await provider.send({ ...message, idempotencyKey: `daily-digest/${r.userId}/${date}` });
   const ids = deliveries.map((d) => d.id);
 
   if (result.ok) {

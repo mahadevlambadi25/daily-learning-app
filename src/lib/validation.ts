@@ -164,6 +164,12 @@ export const aiDraftRequestSchema = z.object({
   sourceNotes: z.string().trim().max(4000, "Source notes max 4000 characters").default(""),
 });
 
+/** Shape only; strength rules (role-dependent) are applied by the service via passwordProblems(). */
+export const changePasswordSchema = z.object({
+  currentPassword: z.string().min(1, "Enter your current password").max(128),
+  newPassword: z.string().min(1, "Enter a new password").max(128, "Use at most 128 characters"),
+});
+
 export const pushSubscriptionSchema = z.object({
   endpoint: z.string().url().startsWith("https://").max(1000),
   keys: z.object({ p256dh: z.string().min(1).max(200), auth: z.string().min(1).max(100) }),

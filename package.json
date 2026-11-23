@@ -21,6 +21,7 @@
     "db:reset": "prisma migrate reset --force",
     "content:validate": "node scripts/validate-content.mjs",
     "content:check-links": "node scripts/check-sources.mjs",
+    "email:check": "tsx scripts/email-check.ts",
     "admin:create": "tsx scripts/create-admin.ts",
     "job:daily": "tsx scripts/run-daily-job.ts"
   },
