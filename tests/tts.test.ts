@@ -3,7 +3,7 @@ import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { findWords, speechChunks, toPieces, wordAt } from "@/lib/tts/text";
 import { followScrollDelta, SpeechController, type Highlight, type Status, type UtteranceLike } from "@/lib/tts/controller";
-import { pickVoice, shortVoiceName, SYSTEM_DEFAULT, voiceLabel, voicesForMenu, type VoiceLike } from "@/lib/tts/voices";
+import { accentLabel, pickVoice, shortVoiceName, SYSTEM_DEFAULT, voiceLabel, voicesForMenu, type VoiceLike } from "@/lib/tts/voices";
 import { Speakable } from "@/components/speakable";
 
 // ---- Fakes --------------------------------------------------------------------------------
@@ -14,6 +14,9 @@ class FakeSynth {
   spoken: FakeUtterance[] = [];
   current: FakeUtterance | null = null;
   cancels = 0;
+  get speaking() {
+    return this.current != null;
+  }
   private n = 0;
   createUtterance = (text: string): UtteranceLike => {
     const u: FakeUtterance = { id: ++this.n, text, rate: 1, lang: "", voice: null, onstart: null, onend: null, onerror: null, onboundary: null };
@@ -321,6 +324,41 @@ describe("speech controller", () => {
     expect(synth.spoken).toHaveLength(1);
   });
 
+  it("starts speaking immediately inside the tap when the engine is idle", () => {
+    const { synth, c } = setup(["Hello there."]);
+    c.play();
+    expect(synth.current?.text).toBe("Hello there."); // no timer tick needed
+    expect(synth.cancels).toBe(0); // no cancel() on an idle engine
+  });
+
+  it("reports waiting from play until the voice starts", () => {
+    const synth = new FakeSynth();
+    const waits: boolean[] = [];
+    synth.speak = function (u) {
+      this.current = u as FakeUtterance; // engine accepted it but hasn't started yet
+      this.spoken.push(this.current);
+    };
+    const c = new SpeechController({ synth, createUtterance: synth.createUtterance, segments: ["Slow voice."], timers: new FakeTimers(), onHighlight: () => {}, onWaiting: (w) => waits.push(w) });
+    c.play();
+    expect(waits).toEqual([true]);
+    synth.current!.onstart!();
+    expect(waits).toEqual([true, false]);
+    c.pause();
+    expect(waits).toEqual([true, false]);
+  });
+
+  it("stops waiting when paused before the voice starts", () => {
+    const synth = new FakeSynth();
+    const waits: boolean[] = [];
+    synth.speak = function (u) {
+      this.current = u as FakeUtterance;
+    };
+    const c = new SpeechController({ synth, createUtterance: synth.createUtterance, segments: ["Slow voice."], timers: new FakeTimers(), onHighlight: () => {}, onWaiting: (w) => waits.push(w) });
+    c.play();
+    c.pause();
+    expect(waits).toEqual([true, false]);
+  });
+
   it("skips a chunk the engine fails on instead of stalling", () => {
     const { synth, timers, c } = setup(["Bad one.", "Good one."]);
     c.play();
@@ -353,6 +391,15 @@ describe("voice selection", () => {
 
   it("labels include language and region", () => {
     expect(voiceLabel(voice("Heera", "en-IN"))).toMatch(/Heera.*English.*India/);
+  });
+
+  it("accent labels name English voices by region", () => {
+    expect(accentLabel("en-IN")).toBe("India");
+    expect(accentLabel("en_US")).toBe("US");
+    expect(accentLabel("en-GB")).toBe("UK");
+    expect(accentLabel("en-GB", true)).toBe("United Kingdom");
+    expect(accentLabel("en")).toBe("English");
+    expect(accentLabel("fr-FR")).toBe("French");
   });
 
   it("short names drop vendor and language suffixes for the picker", () => {

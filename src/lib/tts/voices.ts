@@ -32,6 +32,24 @@ export function voiceLabel(v: VoiceLike): string {
   return v.name.toLowerCase().includes(lang.toLowerCase()) ? v.name : `${v.name} – ${lang}`;
 }
 
+const SHORT_REGION: Record<string, string> = { US: "US", GB: "UK", IN: "India", AU: "Australia", CA: "Canada", IE: "Ireland", NZ: "New Zealand", ZA: "South Africa" };
+
+/**
+ * Accent label for the picker. English voices are named by region ("India", "US", "UK"),
+ * others by language ("French"). `long` gives the full region name for group headings.
+ */
+export function accentLabel(lang: string, long = false): string {
+  const [code, region] = norm(lang).split("-");
+  if (code?.toLowerCase() !== "en" || !region) return code?.toLowerCase() === "en" ? "English" : languageLabel(code ?? lang);
+  const r = region.toUpperCase();
+  if (!long && SHORT_REGION[r]) return SHORT_REGION[r];
+  try {
+    return new Intl.DisplayNames(["en"], { type: "region" }).of(r) ?? r;
+  } catch {
+    return r;
+  }
+}
+
 /** Short display name for the picker: "Microsoft Zira - English (United States)" → "Zira". */
 export function shortVoiceName(v: VoiceLike): string {
   const short = v.name

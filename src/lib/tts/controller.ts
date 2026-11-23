@@ -29,7 +29,7 @@ export type UtteranceLike = {
   onerror: ((e: { error?: string }) => void) | null;
   onboundary: ((e: BoundaryEventLike) => void) | null;
 };
-export type SynthLike = { speak(u: UtteranceLike): void; cancel(): void; paused?: boolean; resume?(): void };
+export type SynthLike = { speak(u: UtteranceLike): void; cancel(): void; paused?: boolean; speaking?: boolean; pending?: boolean; resume?(): void };
 export type Timers = { set(fn: () => void, ms: number): unknown; clear(id: unknown): void };
 
 export type ControllerOptions = {
@@ -40,6 +40,8 @@ export type ControllerOptions = {
   onStatus?: (s: Status) => void;
   onBoundary?: (b: BoundarySupport) => void;
   onProgress?: (fraction: number) => void;
+  /** true from pressing play until the voice actually starts (online voices can take a moment). */
+  onWaiting?: (waiting: boolean) => void;
   timers?: Timers;
   /** How long to wait for the first word boundary before deciding the voice doesn't send any. */
   boundaryTimeoutMs?: number;
@@ -48,8 +50,8 @@ export type ControllerOptions = {
 const defaultTimers: Timers = { set: (fn, ms) => setTimeout(fn, ms), clear: (id) => clearTimeout(id as ReturnType<typeof setTimeout>) };
 
 export class SpeechController {
-  private readonly o: Required<Omit<ControllerOptions, "onStatus" | "onBoundary" | "onProgress">> &
-    Pick<ControllerOptions, "onStatus" | "onBoundary" | "onProgress">;
+  private readonly o: Required<Omit<ControllerOptions, "onStatus" | "onBoundary" | "onProgress" | "onWaiting">> &
+    Pick<ControllerOptions, "onStatus" | "onBoundary" | "onProgress" | "onWaiting">;
   private readonly words: Word[][];
   private run = 0;
   private seg = 0;
@@ -60,6 +62,7 @@ export class SpeechController {
   private boundary: BoundarySupport = "unknown";
   private watchdog: unknown = null;
   private disposed = false;
+  private waiting = false;
 
   constructor(opts: ControllerOptions) {
     this.o = { timers: defaultTimers, boundaryTimeoutMs: 1500, ...opts };
@@ -127,15 +130,21 @@ export class SpeechController {
   }
 
   private start(seg: number, from: number, fromScratch = false): void {
-    this.cancelSpeech();
+    const busy = !!(this.o.synth.speaking || this.o.synth.pending || this.o.synth.paused);
+    // Calling cancel() on an idle engine delays the next speak() on some phones, so skip it.
+    this.cancelSpeech(busy);
     const run = this.run;
     if (fromScratch) {
       this.word = -1;
       this.emit(null);
     }
     this.setStatus("playing");
-    // Defer one tick: some engines drop speak() issued synchronously after cancel().
-    this.o.timers.set(() => this.speakSegment(run, seg, from), 0);
+    this.setWaiting(true);
+    // Speak straight away while still inside the tap (mobile browsers start faster and some
+    // require it). Only when something was just cancelled, wait a tick: some engines drop a
+    // speak() issued synchronously after cancel().
+    if (busy) this.o.timers.set(() => this.speakSegment(run, seg, from), 0);
+    else this.speakSegment(run, seg, from);
   }
 
   private speakSegment(run: number, seg: number, from: number): void {
@@ -166,6 +175,7 @@ export class SpeechController {
 
     u.onstart = () => {
       if (run !== this.run) return;
+      this.setWaiting(false);
       if (this.boundary === "unknown") {
         this.clearWatchdog();
         this.watchdog = this.o.timers.set(() => {
@@ -177,6 +187,7 @@ export class SpeechController {
       if (run !== this.run || this.disposed) return;
       if (e.name && e.name !== "word") return; // ignore sentence boundaries
       sawBoundary = true;
+      this.setWaiting(false);
       if (this.boundary !== "word") {
         this.clearWatchdog();
         this.setBoundary("word");
@@ -189,6 +200,7 @@ export class SpeechController {
     };
     const next = () => {
       if (run !== this.run || this.disposed) return;
+      this.setWaiting(false); // some engines never fire onstart
       this.clearWatchdog();
       // A chunk with several words but no boundary at all: this voice doesn't report them.
       if (!sawBoundary && this.boundary === "unknown" && findWords(chunk.text).length > 1) this.noBoundaries();
@@ -210,7 +222,14 @@ export class SpeechController {
     this.emit({ seg: this.seg, word: null });
   }
 
+  private setWaiting(w: boolean): void {
+    if (this.waiting === w) return;
+    this.waiting = w;
+    if (!this.disposed) this.o.onWaiting?.(w);
+  }
+
   private finish(): void {
+    this.setWaiting(false);
     this.seg = 0;
     this.word = -1;
     this.emit(null);
@@ -218,10 +237,11 @@ export class SpeechController {
     this.setStatus("done");
   }
 
-  private cancelSpeech(): void {
+  private cancelSpeech(engine = true): void {
     this.run++; // invalidates every callback from earlier utterances
+    this.setWaiting(false);
     this.clearWatchdog();
-    this.o.synth.cancel();
+    if (engine) this.o.synth.cancel();
   }
 
   private clearWatchdog(): void {
