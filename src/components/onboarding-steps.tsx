@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { cn } from "./ui";
 
 const STEPS = [
@@ -11,7 +10,9 @@ export function OnboardingSteps({ current }: { current: 0 | 1 }) {
     <ol className="mb-10 flex items-center gap-3 text-sm font-semibold" aria-label="Onboarding progress">
       {STEPS.map((s, i) => (
         <li key={s.href} className="flex items-center gap-3">
-          <Link
+          {/* Plain <a> on purpose: a full load always shows the saved selections. The client router
+              could reuse a stale copy of the step rendered before topics were saved. */}
+          <a
             href={s.href}
             aria-current={i === current ? "step" : undefined}
             className={cn("flex items-center gap-2", i <= current ? "text-ink" : "pointer-events-none text-muted")}
@@ -25,7 +26,7 @@ export function OnboardingSteps({ current }: { current: 0 | 1 }) {
               {i + 1}
             </span>
             {s.label}
-          </Link>
+          </a>
           {i < STEPS.length - 1 && <span className={cn("h-0.5 w-10 rounded-full", i < current ? "bg-success" : "bg-line")} aria-hidden />}
         </li>
       ))}

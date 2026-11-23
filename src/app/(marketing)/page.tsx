@@ -1,6 +1,7 @@
 import { redirect } from "next/navigation";
 import { ArrowRight, BookOpenCheck, Headphones, ListChecks, ShieldCheck, Sparkles, Target, Timer } from "lucide-react";
 import { getSessionUser } from "@/lib/auth/session";
+import { homeFor } from "@/lib/redirects";
 import { getTopicCatalogue } from "@/server/topics";
 import { MarketingHeader } from "@/components/marketing-header";
 import { SiteFooter } from "@/components/site-footer";
@@ -10,7 +11,7 @@ import { LinkButton } from "@/components/ui";
 
 export default async function LandingPage() {
   const user = await getSessionUser();
-  if (user) redirect(user.profile.onboardedAt ? "/today" : "/onboarding/topics");
+  if (user) redirect(homeFor({ isAdmin: user.isAdmin, onboarded: Boolean(user.profile.onboardedAt) }));
 
   const topics = await getTopicCatalogue();
   const featured = topics.filter((t) => t.isFeatured);

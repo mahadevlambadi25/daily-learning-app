@@ -56,7 +56,8 @@ export function TopicPicker({ topics, initialSelected, mode }: Props) {
       return;
     }
     if (mode === "onboarding") {
-      router.push("/onboarding/preferences");
+      // replace, not push: after onboarding, Back must not land on the topics step again.
+      router.replace("/onboarding/preferences");
     } else {
       setSaving(false);
       setSaved(true);
