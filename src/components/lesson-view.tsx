@@ -3,7 +3,9 @@
 import Link from "next/link";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { ArrowLeft, BookOpen, CheckCircle2, Clock, ExternalLink, Headphones, Lightbulb, ListChecks, Undo2 } from "lucide-react";
-import { parseBody, speechSegments } from "@/lib/lesson-content";
+import { ACTION_HEADING, parseBody, speechSegments, TAKEAWAYS_HEADING } from "@/lib/lesson-content";
+import { followScrollDelta, type Highlight } from "@/lib/tts/controller";
+import { Speakable } from "./speakable";
 import { api, track } from "@/lib/client-api";
 import type { LearnerLesson } from "@/server/lessons";
 import { ListenPlayer } from "./listen-player";
@@ -17,35 +19,48 @@ type Mode = "read" | "listen";
 
 export function LessonView({ lesson, initialMode = "read", preview = false }: { lesson: LearnerLesson; initialMode?: Mode; preview?: boolean }) {
   const [mode, setMode] = useState<Mode>(initialMode);
-  const [speaking, setSpeaking] = useState<number | null>(null);
   const [follow, setFollow] = useState(true);
   const [completed, setCompleted] = useState(lesson.completed);
   const [completing, setCompleting] = useState(false);
   const [celebrate, setCelebrate] = useState(false);
   const segRefs = useRef<Map<number, HTMLElement>>(new Map());
+  const stickyRef = useRef<HTMLDivElement>(null);
+  const activeEl = useRef<HTMLElement | null>(null);
+  const followRef = useRef(follow);
+  useEffect(() => {
+    followRef.current = follow;
+  }, [follow]);
 
-  // Element numbering below follows the speech order: title (0), body blocks, takeaways, action.
+  // Element numbering follows the speech order: title, hook, body, takeaways, action.
   const blocks = useMemo(() => parseBody(lesson.body), [lesson.body]);
-  const { segments, takeawayStart } = useMemo(() => speechSegments(lesson), [lesson]);
-  const bodyStart = 1;
+  const { segments, hookIndex, bodyStart, takeawayStart } = useMemo(() => speechSegments(lesson), [lesson]);
 
-  /** Props for a speakable element: registers it for follow-along and highlights it while read aloud. */
+  /** Props for a spoken element: lets read-aloud find its words (data-w spans inside). */
   const seg = (i: number, className?: string) => ({
     "data-seg": i,
     ref: (el: HTMLElement | null) => {
       if (el) segRefs.current.set(i, el);
       else segRefs.current.delete(i);
     },
-    className: cn(className, speaking === i && "is-speaking"),
+    className,
   });
 
-  // Scroll the paragraph being read into view.
-  useEffect(() => {
-    if (speaking == null || !follow) return;
-    segRefs.current.get(speaking)?.scrollIntoView({ behavior: "smooth", block: "center" });
-  }, [speaking, follow]);
-
-  const onSegmentChange = useCallback((i: number | null) => setSpeaking(i), []);
+  /**
+   * Applied straight to the DOM (no React state), so highlighting a new word every ~300 ms
+   * never re-renders the lesson. Exactly one word (or, in fallback, one passage) is marked.
+   */
+  const onHighlight = useCallback((h: Highlight) => {
+    activeEl.current?.classList.remove("tts-word", "tts-block");
+    activeEl.current = null;
+    if (!h) return;
+    const segEl = segRefs.current.get(h.seg);
+    if (!segEl) return;
+    const el = h.word == null ? segEl : segEl.querySelector<HTMLElement>(`[data-w="${h.word}"]`);
+    if (!el) return;
+    el.classList.add(h.word == null ? "tts-block" : "tts-word");
+    activeEl.current = el;
+    if (followRef.current) keepInView(el, stickyRef.current);
+  }, []);
   const onFirstPlay = useCallback(() => {
     if (!preview) track("lesson_listen_started", { lessonId: lesson.id });
   }, [lesson.id, preview]);
@@ -88,7 +103,7 @@ export function LessonView({ lesson, initialMode = "read", preview = false }: { 
         </Reveal>
         <Reveal delay={60}>
           <h1 {...seg(0, "mt-5 font-display text-4xl leading-[1.1] font-semibold tracking-tight text-balance sm:text-5xl")}>
-            {lesson.title}
+            <Speakable text={lesson.title} />
           </h1>
         </Reveal>
         <Reveal delay={120} className="mt-5 flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-muted">
@@ -110,7 +125,7 @@ export function LessonView({ lesson, initialMode = "read", preview = false }: { 
       </header>
 
       {/* Read / Listen toggle */}
-      <div className="sticky top-16 z-30 -mx-4 mt-8 bg-bg/85 px-4 py-3 backdrop-blur-xl sm:mx-0 sm:rounded-full sm:px-0">
+      <div ref={stickyRef} className="sticky top-16 z-30 -mx-4 mt-8 bg-bg/85 px-4 py-3 backdrop-blur-xl sm:mx-0 sm:rounded-full sm:px-0">
         <div className="flex items-center justify-between gap-3">
           <div className="inline-flex rounded-full border border-line bg-surface p-1 shadow-card" role="group" aria-label="Reading mode">
             {(["read", "listen"] as const).map((m) => (
@@ -138,27 +153,29 @@ export function LessonView({ lesson, initialMode = "read", preview = false }: { 
         </div>
         {mode === "listen" && (
           <div className="mt-3">
-            <ListenPlayer segments={segments} onSegmentChange={onSegmentChange} onFirstPlay={onFirstPlay} />
+            <ListenPlayer segments={segments} onHighlight={onHighlight} onFirstPlay={onFirstPlay} />
           </div>
         )}
       </div>
 
       {/* Hook + body */}
       <Reveal>
-        <p className="mt-8 border-l-4 border-accent pl-5 font-display text-xl leading-relaxed text-ink/90 italic sm:text-2xl">{lesson.hook}</p>
+        <p {...seg(hookIndex, "mt-8 border-l-4 border-accent pl-5 font-display text-xl leading-relaxed text-ink/90 italic sm:text-2xl")}>
+          <Speakable text={lesson.hook} />
+        </p>
       </Reveal>
 
       <div className="prose-lesson mt-8">
         {blocks.map((b, bi) =>
           b.type === "p" ? (
             <p key={bi} {...seg(bodyIndex++)}>
-              {b.text}
+              <Speakable text={b.text} />
             </p>
           ) : (
             <ul key={bi}>
               {b.items.map((item, ii) => (
                 <li key={ii} {...seg(bodyIndex++)}>
-                  {item}
+                  <Speakable text={item} />
                 </li>
               ))}
             </ul>
@@ -169,15 +186,18 @@ export function LessonView({ lesson, initialMode = "read", preview = false }: { 
       {/* Key takeaways */}
       <Reveal className="mt-10">
         <section aria-labelledby="takeaways" className="rounded-3xl bg-ink p-6 text-bg sm:p-8">
-          <h2 id="takeaways" {...seg(takeawayStart, cn("flex items-center gap-2 font-display text-2xl font-semibold", speaking === takeawayStart && "text-ink"))}>
-            <ListChecks className="size-6 text-accent" aria-hidden /> Key takeaways
+          <h2 id="takeaways" className="flex items-center gap-2 font-display text-2xl font-semibold">
+            <ListChecks className="size-6 text-accent" aria-hidden />
+            <span {...seg(takeawayStart)}>
+              <Speakable text={TAKEAWAYS_HEADING} />
+            </span>
           </h2>
           <ol className="mt-5 space-y-4">
             {lesson.takeaways.map((t, i) => (
               <li key={i} className="flex gap-4">
                 <span className="grid size-8 shrink-0 place-items-center rounded-full bg-accent font-bold text-accent-ink">{i + 1}</span>
-                <span {...seg(takeawayStart + 1 + i, cn("pt-1 text-lg leading-relaxed", speaking === takeawayStart + 1 + i && "text-ink"))}>
-                  {t}
+                <span {...seg(takeawayStart + 1 + i, "pt-1 text-lg leading-relaxed")}>
+                  <Speakable text={t} />
                 </span>
               </li>
             ))}
@@ -188,11 +208,14 @@ export function LessonView({ lesson, initialMode = "read", preview = false }: { 
       {/* Practical action */}
       <Reveal className="mt-6">
         <section aria-labelledby="action" className="rounded-3xl border-2 border-accent/40 bg-accent-soft p-6 sm:p-8">
-          <h2 id="action" {...seg(takeawayStart + 1 + lesson.takeaways.length, "flex items-center gap-2 text-sm font-bold tracking-wider text-accent uppercase")}>
-            <Lightbulb className="size-5" aria-hidden /> Try this today
+          <h2 id="action" className="flex items-center gap-2 text-sm font-bold tracking-wider text-accent uppercase">
+            <Lightbulb className="size-5" aria-hidden />
+            <span {...seg(takeawayStart + 1 + lesson.takeaways.length)}>
+              <Speakable text={ACTION_HEADING} />
+            </span>
           </h2>
           <p {...seg(takeawayStart + 2 + lesson.takeaways.length, "mt-3 text-lg leading-relaxed")}>
-            {lesson.actionText}
+            <Speakable text={lesson.actionText} />
           </p>
         </section>
       </Reveal>
@@ -278,4 +301,18 @@ export function LessonView({ lesson, initialMode = "read", preview = false }: { 
       )}
     </article>
   );
+}
+
+/**
+ * Follow-along: scrolls only when the active word leaves the comfortable reading band (below
+ * the sticky Read/Listen bar, above the mobile nav), and then brings it near the middle.
+ * Instant jump when the user prefers reduced motion.
+ */
+function keepInView(el: HTMLElement, sticky: HTMLElement | null) {
+  const top = (sticky?.getBoundingClientRect().bottom ?? 0) + 12;
+  const bottom = window.innerHeight - (window.matchMedia("(min-width: 768px)").matches ? 24 : 88);
+  const delta = followScrollDelta(el.getBoundingClientRect(), { top, bottom: Math.max(bottom, top + 40) });
+  if (!delta) return;
+  const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  window.scrollBy({ top: delta, behavior: reduce ? "instant" : "smooth" });
 }

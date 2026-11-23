@@ -107,6 +107,19 @@ body {
   line-height: 1.7;
   margin-bottom: 0.35em;
 }
+/* Read-aloud: the single word being spoken. box-shadow (not padding) adds room without moving
+   the text; box-decoration-break keeps it neat if a word wraps. No transitions or animation. */
+.tts-word {
+  background: #fcd77b;
+  color: #1f2937;
+  border-radius: 4px;
+  box-shadow: 0 0 0 2px #fcd77b;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+}
+
+/* Fallback when the voice doesn't report word positions: the whole passage being read. */
+.tts-block,
 .is-speaking {
   background: var(--accent-soft);
   box-shadow: 0 0 0 6px var(--accent-soft);

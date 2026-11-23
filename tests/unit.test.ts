@@ -51,9 +51,15 @@ describe("lesson content", () => {
   });
 
   it("builds the read-aloud script from lesson content only", () => {
-    const { segments, takeawayStart } = speechSegments({ title: "T", body: "P1\n\n- a", takeaways: ["x", "y", "z"], actionText: "Do" });
-    expect(segments).toEqual(["T", "P1", "a", "Key takeaways.", "x", "y", "z", "Try this today.", "Do"]);
-    expect(segments[takeawayStart]).toBe("Key takeaways.");
+    const { segments, takeawayStart, hookIndex, bodyStart } = speechSegments({ title: "T", body: "P1\n\n- a", takeaways: ["x", "y", "z"], actionText: "Do" });
+    expect(segments).toEqual(["T", "P1", "a", "Key takeaways", "x", "y", "z", "Try this today", "Do"]);
+    expect(segments[takeawayStart]).toBe("Key takeaways");
+    expect(hookIndex).toBe(-1);
+    expect(bodyStart).toBe(1);
+    const withHook = speechSegments({ title: "T", hook: "H", body: "P1", takeaways: [], actionText: "Do" });
+    expect(withHook.segments.slice(0, 3)).toEqual(["T", "H", "P1"]);
+    expect(withHook.hookIndex).toBe(1);
+    expect(withHook.bodyStart).toBe(2);
   });
 });
 

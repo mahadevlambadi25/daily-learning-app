@@ -37,17 +37,23 @@ export function parseBody(body: string): BodyBlock[] {
 }
 
 /**
- * Read-aloud script: title, body, takeaways and the practical action (no UI labels).
- * `takeawayStart` is the index of the "Key takeaways." segment so the UI can map
- * segments back to the elements it highlights.
+ * Read-aloud script, in reading order: title, hook, body, the "Key takeaways" heading and items,
+ * then the "Try this today" heading and action. Each segment is exactly the text shown on screen
+ * for one element (so speech character offsets map 1:1 onto the rendered words).
+ * Returned indexes let the UI attach each element to its segment number.
  */
-export function speechSegments(lesson: { title: string; body: string; takeaways: string[]; actionText: string }) {
+export function speechSegments(lesson: { title: string; hook?: string; body: string; takeaways: string[]; actionText: string }) {
   const segments = [lesson.title];
+  const hookIndex = lesson.hook ? segments.push(lesson.hook) - 1 : -1;
+  const bodyStart = segments.length;
   for (const b of parseBody(lesson.body)) {
     if (b.type === "p") segments.push(b.text);
     else segments.push(...b.items);
   }
   const takeawayStart = segments.length;
-  segments.push("Key takeaways.", ...lesson.takeaways, "Try this today.", lesson.actionText);
-  return { segments, takeawayStart };
+  segments.push(TAKEAWAYS_HEADING, ...lesson.takeaways, ACTION_HEADING, lesson.actionText);
+  return { segments, hookIndex, bodyStart, takeawayStart };
 }
+
+export const TAKEAWAYS_HEADING = "Key takeaways";
+export const ACTION_HEADING = "Try this today";

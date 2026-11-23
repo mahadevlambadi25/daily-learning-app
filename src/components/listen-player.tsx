@@ -1,170 +1,150 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Info, Pause, Play, RotateCcw, Square, Volume2 } from "lucide-react";
+import { SpeechController, type BoundarySupport, type Highlight, type Status, type UtteranceLike } from "@/lib/tts/controller";
+import { loadRate, loadSavedVoice, pickVoice, saveRate, saveVoice, SYSTEM_DEFAULT, voicesForMenu } from "@/lib/tts/voices";
 import { cn } from "./ui";
+import { VoicePicker } from "./voice-picker";
 
-const RATES = [0.75, 1, 1.25, 1.5, 1.75];
-
-type Status = "idle" | "playing" | "paused" | "done";
+const RATES = [0.75, 1, 1.25, 1.5, 1.75] as const;
 
 /**
- * Browser-native read-aloud (PRD §10). Speaks one segment at a time, which avoids long-utterance
- * cut-offs in some browsers and lets us highlight and follow the current paragraph.
- * Pause is implemented as cancel + remember position, which behaves consistently across browsers.
- * Never autoplays, and always stops when the component unmounts or the page is hidden.
+ * Browser-native read-aloud (PRD §10) with word-by-word highlighting.
+ * The SpeechController does the speaking and reports which word the voice is on (from the
+ * browser's own word-boundary events); this component is only the controls around it.
+ * Never autoplays, and always goes silent when it unmounts or the page is hidden.
  */
 export function ListenPlayer({
   segments,
-  onSegmentChange,
+  onHighlight,
   onFirstPlay,
 }: {
   segments: string[];
-  onSegmentChange: (index: number | null) => void;
+  onHighlight: (h: Highlight) => void;
   onFirstPlay?: () => void;
 }) {
   const [supported, setSupported] = useState<boolean | null>(null);
-  const [noVoices, setNoVoices] = useState(false);
+  const [voices, setVoices] = useState<SpeechSynthesisVoice[]>([]);
+  const [voiceUri, setVoiceUri] = useState<string>(SYSTEM_DEFAULT);
   const [status, setStatus] = useState<Status>("idle");
-  const [index, setIndex] = useState(0);
+  const [progress, setProgress] = useState(0);
   const [rate, setRate] = useState(1);
-  const runId = useRef(0);
+  const [boundary, setBoundary] = useState<BoundarySupport>("unknown");
+  const [voicesSettled, setVoicesSettled] = useState(false);
+  const ctrl = useRef<SpeechController | null>(null);
   const started = useRef(false);
-  const voice = useRef<SpeechSynthesisVoice | null>(null);
-
-  // Detect support and pick an English voice once voices load.
+  const voiceRef = useRef<SpeechSynthesisVoice | null>(null);
+  const rateRef = useRef(1);
+  const highlightRef = useRef(onHighlight);
   useEffect(() => {
-    if (typeof window === "undefined" || !("speechSynthesis" in window) || typeof SpeechSynthesisUtterance === "undefined") {
-      setSupported(false);
-      return;
-    }
-    setSupported(true);
+    highlightRef.current = onHighlight;
+  }, [onHighlight]);
+
+  // Support check + saved speed (client only, so server and first client render match).
+  useEffect(() => {
+    const ok = typeof window !== "undefined" && "speechSynthesis" in window && typeof SpeechSynthesisUtterance !== "undefined";
+    setSupported(ok);
+    const r = loadRate(RATES, 1);
+    rateRef.current = r;
+    setRate(r);
+  }, []);
+
+  // Voices arrive asynchronously (and can change, e.g. when a language pack installs).
+  useEffect(() => {
+    if (!supported) return;
     const synth = window.speechSynthesis;
-    const pick = () => {
-      const voices = synth.getVoices();
-      if (!voices.length) return false;
-      const lang = navigator.language || "en-US";
-      voice.current =
-        voices.find((v) => v.lang === lang && v.localService) ??
-        voices.find((v) => v.lang.startsWith("en") && v.localService) ??
-        voices.find((v) => v.lang.startsWith("en")) ??
-        voices[0];
-      setNoVoices(false);
-      return true;
+    const load = () => {
+      const list = synth.getVoices();
+      setVoices(list);
+      const current = voiceRef.current;
+      // Keep the chosen voice if it's still there; otherwise restore the saved one or fall back.
+      if (current && list.some((v) => v.voiceURI === current.voiceURI)) return;
+      const v = pickVoice(list, loadSavedVoice(), navigator.language || "en-US");
+      voiceRef.current = v;
+      setVoiceUri(v?.voiceURI ?? SYSTEM_DEFAULT);
+      ctrl.current?.setVoice(v);
     };
-    if (!pick()) {
-      synth.addEventListener("voiceschanged", pick);
-      const t = setTimeout(() => {
-        if (!synth.getVoices().length) setNoVoices(true);
-      }, 2500);
-      return () => {
-        synth.removeEventListener("voiceschanged", pick);
-        clearTimeout(t);
-      };
-    }
-  }, []);
+    load();
+    synth.addEventListener("voiceschanged", load);
+    const t = setTimeout(() => setVoicesSettled(true), 2500); // don't flash "no voices" while they load
+    return () => {
+      synth.removeEventListener("voiceschanged", load);
+      clearTimeout(t);
+    };
+  }, [supported]);
 
-  const stopSpeech = useCallback(() => {
-    runId.current++; // invalidates callbacks from cancelled utterances
-    if (typeof window !== "undefined" && "speechSynthesis" in window) window.speechSynthesis.cancel();
-  }, []);
-
-  const speakFrom = useCallback(
-    (start: number, speed: number) => {
-      stopSpeech();
-      const id = runId.current;
-      const synth = window.speechSynthesis;
-      const speak = (i: number) => {
-        if (id !== runId.current) return;
-        if (i >= segments.length) {
-          setStatus("done");
-          setIndex(0);
-          onSegmentChange(null);
-          return;
-        }
-        setIndex(i);
-        onSegmentChange(i);
-        const u = new SpeechSynthesisUtterance(segments[i]);
-        u.rate = speed;
-        if (voice.current) {
-          u.voice = voice.current;
-          u.lang = voice.current.lang;
-        }
-        u.onend = () => speak(i + 1);
-        u.onerror = (e) => {
-          if (id !== runId.current) return;
-          if (e.error === "interrupted" || e.error === "canceled") return;
-          speak(i + 1);
-        };
-        synth.speak(u);
-      };
-      setStatus("playing");
-      speak(start);
-    },
-    [segments, onSegmentChange, stopSpeech],
-  );
-
-  // Stop cleanly on route change/unmount and when the tab is closed.
+  // One controller per lesson script.
   useEffect(() => {
-    const onHide = () => stopSpeech();
+    if (!supported) return;
+    const synth = window.speechSynthesis;
+    const c = new SpeechController({
+      synth: synth as unknown as ConstructorParameters<typeof SpeechController>[0]["synth"],
+      createUtterance: (text) => new SpeechSynthesisUtterance(text) as unknown as UtteranceLike,
+      segments,
+      onHighlight: (h) => highlightRef.current(h),
+      onStatus: setStatus,
+      onBoundary: setBoundary,
+      onProgress: setProgress,
+    });
+    c.setRate(rateRef.current);
+    c.setVoice(voiceRef.current);
+    ctrl.current = c;
+    const onHide = () => c.stop();
     window.addEventListener("pagehide", onHide);
     return () => {
       window.removeEventListener("pagehide", onHide);
-      stopSpeech();
-      onSegmentChange(null);
+      c.dispose();
+      ctrl.current = null;
+      highlightRef.current(null);
+      setStatus("idle");
+      setProgress(0);
     };
-  }, [stopSpeech, onSegmentChange]);
+  }, [supported, segments]);
 
   function play() {
     if (!started.current) {
       started.current = true;
       onFirstPlay?.();
     }
-    speakFrom(status === "done" ? 0 : index, rate);
-  }
-  function pause() {
-    stopSpeech();
-    setStatus("paused");
-  }
-  function restart() {
-    speakFrom(0, rate);
-  }
-  function stop() {
-    stopSpeech();
-    setStatus("idle");
-    setIndex(0);
-    onSegmentChange(null);
+    ctrl.current?.play();
   }
   function changeRate(r: number) {
+    rateRef.current = r;
     setRate(r);
-    if (status === "playing") speakFrom(index, r);
+    saveRate(r);
+    ctrl.current?.setRate(r);
+  }
+  function changeVoice(uri: string) {
+    const v = uri === SYSTEM_DEFAULT ? null : (voices.find((x) => x.voiceURI === uri) ?? null);
+    voiceRef.current = v;
+    setVoiceUri(v?.voiceURI ?? SYSTEM_DEFAULT);
+    saveVoice(v);
+    ctrl.current?.setVoice(v);
   }
 
-  if (supported === false || noVoices) {
+  if (supported === false) {
     return (
       <div role="status" className="flex items-start gap-3 rounded-3xl border border-line bg-surface-2 p-5 text-sm">
         <Info className="mt-0.5 size-5 shrink-0 text-accent" aria-hidden />
         <div>
           <p className="font-semibold">Read-aloud isn&apos;t available here</p>
-          <p className="mt-1 text-muted">
-            {supported === false
-              ? "Your browser doesn't support speech playback. Try a recent version of Chrome, Edge, Safari or Firefox."
-              : "No speech voice is installed on this device. You can add one in your system's language or accessibility settings."}
-          </p>
+          <p className="mt-1 text-muted">Your browser doesn&apos;t support speech playback. Try a recent version of Chrome, Edge, Safari or Firefox.</p>
         </div>
       </div>
     );
   }
 
   const playing = status === "playing";
-  const progress = segments.length ? Math.round(((status === "done" ? segments.length : index) / segments.length) * 100) : 0;
+  const menu = voicesForMenu(voices);
+  const pct = Math.round(progress * 100);
 
   return (
     <div className="rounded-3xl border border-line bg-surface p-4 shadow-lift sm:p-5" aria-label="Read-aloud player" role="region">
       <div className="flex items-center gap-3 sm:gap-4">
         <button
           type="button"
-          onClick={playing ? pause : play}
+          onClick={playing ? () => ctrl.current?.pause() : play}
           disabled={supported === null}
           aria-label={playing ? "Pause" : status === "paused" ? "Resume" : "Play"}
           className={cn(
@@ -186,24 +166,38 @@ export function ListenPlayer({
               "Finished"
             ) : (
               <>
-                <Volume2 className="size-4 text-accent" aria-hidden /> Press play to hear this lesson
+                <Volume2 className="size-4 shrink-0 text-accent" aria-hidden /> <span className="truncate">Press play to hear this lesson</span>
               </>
             )}
           </p>
           <div className="mt-2 h-1.5 overflow-hidden rounded-full bg-surface-2" aria-hidden>
-            <div className="h-full rounded-full bg-accent transition-[width] duration-500" style={{ width: `${progress}%` }} />
+            <div className="h-full rounded-full bg-accent transition-[width] duration-500" style={{ width: `${pct}%` }} />
           </div>
         </div>
         <div className="flex items-center gap-1">
-          <button type="button" onClick={restart} aria-label="Restart from the beginning" title="Restart" className="grid size-10 place-items-center rounded-full text-muted hover:bg-surface-2 hover:text-ink">
+          <button
+            type="button"
+            onClick={() => ctrl.current?.restart()}
+            aria-label="Restart from the beginning"
+            title="Restart"
+            className="grid size-10 place-items-center rounded-full text-muted hover:bg-surface-2 hover:text-ink"
+          >
             <RotateCcw className="size-4" />
           </button>
-          <button type="button" onClick={stop} aria-label="Stop" title="Stop" disabled={status === "idle"} className="grid size-10 place-items-center rounded-full text-muted hover:bg-surface-2 hover:text-ink disabled:opacity-40">
+          <button
+            type="button"
+            onClick={() => ctrl.current?.stop()}
+            aria-label="Stop"
+            title="Stop"
+            disabled={status === "idle"}
+            className="grid size-10 place-items-center rounded-full text-muted hover:bg-surface-2 hover:text-ink disabled:opacity-40"
+          >
             <Square className="size-4" />
           </button>
         </div>
       </div>
-      <div className="mt-3 flex flex-wrap items-center justify-between gap-2 border-t border-line pt-3">
+
+      <div className="mt-3 flex flex-wrap items-center gap-x-3 gap-y-2 border-t border-line pt-3">
         <div className="flex items-center gap-1" role="group" aria-label="Playback speed">
           {RATES.map((r) => (
             <button
@@ -217,8 +211,17 @@ export function ListenPlayer({
             </button>
           ))}
         </div>
-        <p className="text-xs text-muted">The voice comes from your device, so it varies.</p>
+        <VoicePicker voices={menu} value={voiceUri} onChange={changeVoice} disabled={supported === null} />
       </div>
+
+      {boundary === "none" ? (
+        <p role="status" className="mt-2 flex items-start gap-1.5 text-xs text-muted">
+          <Info className="mt-px size-3.5 shrink-0 text-accent" aria-hidden />
+          This voice doesn&apos;t report word timing, so the whole passage is highlighted. Pick another voice for word-by-word.
+        </p>
+      ) : supported && voicesSettled && !voices.length ? (
+        <p className="mt-2 text-xs text-muted">Your device didn&apos;t list any voices, so its default voice is used.</p>
+      ) : null}
     </div>
   );
 }

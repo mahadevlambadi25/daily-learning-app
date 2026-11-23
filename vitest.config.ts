@@ -3,6 +3,7 @@ import path from "node:path";
 
 export default defineConfig({
   resolve: { alias: { "@": path.resolve(__dirname, "src") } },
+  esbuild: { jsx: "automatic" }, // match Next.js so .tsx components render in tests
   test: {
     environment: "node",
     include: ["tests/**/*.test.ts"],
