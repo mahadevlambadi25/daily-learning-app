@@ -1,6 +1,6 @@
 /**
  * Checks the email configuration WITHOUT sending anything.
- *   npm run email:check                       (uses .env / current environment)
+ *   npm run email:check                       (reads the current shell environment; does not load .env)
  * Live sending requires EMAIL_PROVIDER=resend, RESEND_API_KEY, EMAIL_FROM (verified domain)
  * and EMAIL_SENDING_ENABLED=true.
  */

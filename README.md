@@ -42,6 +42,7 @@ Sign in as the admin with `SEED_ADMIN_EMAIL` / `SEED_ADMIN_PASSWORD` and open `/
 | `npm run content:check-links` | Checks every seed source URL responds; flags sites that block automated checks for a manual look |
 | `npm run admin:create -- you@example.com` | Grants admin to an existing account (no public admin sign-up) |
 | `npm run job:daily` | Runs the daily delivery job once, locally |
+| `npm run email:check` | Reports whether real email delivery is on and lists anything missing. Never sends. Reads the shell environment, not `.env`. |
 | `npm run typecheck` | TypeScript check |
 
 ## Architecture
@@ -84,6 +85,25 @@ Browser SpeechSynthesis reads lessons aloud on demand (no audio pipeline)
 - **Job:** every 15 minutes, for each user whose local time has passed their delivery time, it assigns lessons and, only if they opted in, sends one digest. It claims a unique `NotificationLog(user, channel, template, date)` row *before* sending. Transient failures retry on later runs, up to 3 attempts, and are never duplicated.
 - Scheduled lessons auto-publish when their time arrives (by the job, or lazily when a feed loads).
 - Topics with no eligible lessons are left out of the feed with a friendly note. Admins see low coverage on **Admin → Overview** and in the job summary.
+
+## Email delivery (Resend)
+
+The daily digest and password-reset emails are delivered through Resend. **Real delivery happens only when all four of these are set.** If any is missing, the app logs each email instead of sending it, and keeps working:
+
+| Variable | Value |
+| --- | --- |
+| `EMAIL_PROVIDER` | `resend` |
+| `RESEND_API_KEY` | A Resend API key with *Sending access*, restricted to your domain. Mark it **Sensitive** in Vercel. |
+| `EMAIL_FROM` | A sender on your **verified** domain, e.g. `Daylight <hello@mail.yourdomain.com>`. `example.com` addresses are rejected. |
+| `EMAIL_SENDING_ENABLED` | `true`. This is a safety switch: `false`, or any other value, **disables real email delivery** even when Resend is fully configured. |
+
+Optional: `EMAIL_REPLY_TO` (where replies go). Also set `SUPPORT_EMAIL`, the contact address shown on the legal pages and in emails.
+
+**Production needs a verified sending domain.** You can't send from a `vercel.app` address, and Resend's test sender only delivers to your own account.
+1. In Resend, go to **Domains → Add Domain**. A subdomain such as `mail.yourdomain.com` keeps your main domain's reputation separate.
+2. At your DNS provider, add the records Resend shows: SPF (TXT + MX on `send.…`) and DKIM (TXT on `resend._domainkey.…`). Also add DMARC: a TXT record on `_dmarc.yourdomain.com`, starting with `v=DMARC1; p=none;`.
+3. Wait until Resend shows the domain as **Verified**. Then create the API key and set the variables above in Vercel (Production).
+4. Set `EMAIL_SENDING_ENABLED=true` last, when you're ready to send, and redeploy. To check a set of values before deploying, export them in your shell and run `npm run email:check`. It should report `live sending: ON` (the script doesn't read `.env`). Then request a password reset for your own account and check **Resend → Logs**.
 
 ## Daily reminders (Web Push)
 
@@ -146,8 +166,11 @@ Example lesson payload: see `prisma/seed-content/*.json` (same shape as PRD Appe
 | `SEED_ON_BUILD` | no | Set to `false` to skip seeding during the Vercel build |
 | `CRON_SECRET` | yes | ≥16 chars; protects the job endpoint |
 | `EMAIL_PROVIDER` | yes | `console` \| `resend` (`memory` is test-only) |
-| `RESEND_API_KEY`, `EMAIL_FROM`, `EMAIL_REPLY_TO` | for email | Verified sending domain required (SPF/DKIM/DMARC) |
-| `NEXT_PUBLIC_APP_NAME`, `SUPPORT_EMAIL` | no | Branding and contact address |
+| `RESEND_API_KEY`, `EMAIL_FROM` | for email | Resend key (Sensitive) and a sender on a verified domain (SPF/DKIM/DMARC). See [Email delivery](#email-delivery-resend). |
+| `EMAIL_SENDING_ENABLED` | for email | Must be `true` for real delivery. `false` (the default in `.env.example`) logs emails instead of sending them. |
+| `EMAIL_REPLY_TO` | no | Reply-to address for emails |
+| `NEXT_PUBLIC_APP_NAME` | no | Branding |
+| `SUPPORT_EMAIL` | prod | Contact address on the legal pages and in emails (falls back to `support@example.com`) |
 | `VAPID_PUBLIC_KEY`, `VAPID_PRIVATE_KEY`, `VAPID_SUBJECT` | for reminders | Web Push keys (`npx web-push generate-vapid-keys`) |
 | `AI_PROVIDER`, `GEMINI_API_KEY`, `GEMINI_MODEL` | for AI drafts | Admin "Generate draft". Off when the key is empty. |
 | `SEED_ADMIN_EMAIL`, `SEED_ADMIN_PASSWORD` | no | Admin account created by the seed |
@@ -161,7 +184,7 @@ Example lesson payload: see `prisma/seed-content/*.json` (same shape as PRD Appe
 **First deploy:**
 1. In Vercel: **Add New → Project →** import the GitHub repo. Framework: Next.js (detected). Don't deploy yet.
 2. **Storage → Create Database → Neon (Postgres)** and connect it to the project. This sets `DATABASE_URL` and `DATABASE_URL_UNPOOLED` automatically.
-3. **Settings → Environment Variables**: add `CRON_SECRET`, `SEED_ADMIN_EMAIL`, `SEED_ADMIN_PASSWORD`, and the optional `VAPID_*`, `EMAIL_*`, `RESEND_API_KEY` and `GEMINI_API_KEY`. `APP_URL` is optional, because it defaults to the Vercel production domain.
+3. **Settings → Environment Variables**: add `CRON_SECRET`, `SEED_ADMIN_EMAIL`, `SEED_ADMIN_PASSWORD`, `SUPPORT_EMAIL`, and the optional `VAPID_*` and `GEMINI_API_KEY`. For email, add the Resend variables from [Email delivery](#email-delivery-resend). Add `EMAIL_SENDING_ENABLED=true` only once the domain is verified. `APP_URL` is optional, because it defaults to the Vercel production domain.
 4. **Deploy.** Then sign in at `/admin/login` with the seed admin.
 5. In GitHub: **Settings → Secrets and variables → Actions**, add `APP_URL` (your Vercel URL) and `CRON_SECRET` (the same value as in Vercel). Run **Actions → Daily delivery → Run workflow** once, then check **Admin → Overview → Scheduled job runs**.
 
