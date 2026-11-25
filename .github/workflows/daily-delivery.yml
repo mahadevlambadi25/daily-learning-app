@@ -1,7 +1,11 @@
 # Calls the app's daily delivery job every 15 minutes (Vercel's free plan only allows daily crons).
 # Needs two repository secrets (GitHub → Settings → Secrets and variables → Actions):
-#   APP_URL      e.g. https://daily-learning-app.vercel.app   (no trailing slash)
-#   CRON_SECRET  the same value as CRON_SECRET in Vercel
+#   APP_URL      e.g. https://daily-learning-app.vercel.app   (https, no trailing slash)
+#   CRON_SECRET  the same value as CRON_SECRET in Vercel (at least 16 characters)
+# The run FAILS (exit 1) if either secret is missing or malformed, so a misconfiguration
+# can never hide behind a green run. Secret values are never echoed: GitHub masks them, the
+# script never prints them, and the Authorization header is passed to curl on stdin (not argv).
+# The repo is public, so the job's response body (user counts) is only printed on failure.
 # Note: GitHub may delay scheduled runs by a few minutes, and pauses schedules in repos with
 # no activity for 60 days (re-enable from the Actions tab).
 name: Daily delivery
@@ -13,20 +17,60 @@ on:
 
 permissions: {}
 
+concurrency:
+  group: daily-delivery
+  cancel-in-progress: false
+
 jobs:
   deliver:
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
+      - name: Check configuration
+        env:
+          APP_URL: ${{ secrets.APP_URL }}
+          CRON_SECRET: ${{ secrets.CRON_SECRET }}
+        run: |
+          set -euo pipefail
+          missing=0
+          if [ -z "${APP_URL:-}" ]; then
+            echo "::error title=Missing secret::APP_URL repository secret is not set (Settings → Secrets and variables → Actions)."
+            missing=1
+          fi
+          if [ -z "${CRON_SECRET:-}" ]; then
+            echo "::error title=Missing secret::CRON_SECRET repository secret is not set (Settings → Secrets and variables → Actions)."
+            missing=1
+          fi
+          [ "$missing" -eq 0 ] || exit 1
+          case "$APP_URL" in
+            https://*) ;;
+            *) echo "::error title=Invalid secret::APP_URL must start with https://"; exit 1 ;;
+          esac
+          case "$APP_URL" in
+            */) echo "::error title=Invalid secret::APP_URL must not end with a slash"; exit 1 ;;
+          esac
+          if [ "${#CRON_SECRET}" -lt 16 ]; then
+            echo "::error title=Invalid secret::CRON_SECRET must be at least 16 characters (the app rejects shorter values)."
+            exit 1
+          fi
+          echo "Configuration OK (APP_URL and CRON_SECRET are set)."
+
       - name: Run due deliveries
         env:
           APP_URL: ${{ secrets.APP_URL }}
           CRON_SECRET: ${{ secrets.CRON_SECRET }}
         run: |
-          if [ -z "$APP_URL" ] || [ -z "$CRON_SECRET" ]; then
-            echo "::warning::APP_URL or CRON_SECRET secret is not set; skipping."
-            exit 0
+          set -euo pipefail
+          body="$(mktemp)"
+          # Header comes from stdin (-H @-) so the secret never appears in the process list.
+          status="$(printf 'Authorization: Bearer %s\n' "$CRON_SECRET" | curl --silent --show-error \
+            --max-time 90 --retry 2 --retry-delay 20 \
+            -X POST -H @- -o "$body" -w '%{http_code}' \
+            "$APP_URL/api/jobs/daily-delivery")" || { echo "::error title=Request failed::Could not reach the delivery endpoint."; exit 1; }
+          if [ "$status" -ge 200 ] && [ "$status" -lt 300 ]; then
+            echo "Daily delivery job succeeded (HTTP $status)."
+          else
+            echo "::error title=Delivery job failed::Endpoint returned HTTP $status (401 = CRON_SECRET does not match Vercel)."
+            head -c 500 "$body"; echo
+            exit 1
           fi
-          curl --fail-with-body --silent --show-error --max-time 90 --retry 2 --retry-delay 20 \
-            -X POST -H "Authorization: Bearer $CRON_SECRET" \
-            "$APP_URL/api/jobs/daily-delivery"
